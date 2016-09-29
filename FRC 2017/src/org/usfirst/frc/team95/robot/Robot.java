@@ -1,9 +1,13 @@
 
 package org.usfirst.frc.team95.robot;
 
+import edu.wpi.first.wpilibj.ADXL345_I2C;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team95.robot.commands.ExampleCommand;
 import org.usfirst.frc.team95.robot.subsystems.ExampleSubsystem;
@@ -25,6 +29,7 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     SendableChooser chooser;
 
+    ADXL345_I2C Giro;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -35,7 +40,9 @@ public class Robot extends IterativeRobot {
         chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
-    }
+        //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
+        Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
+    }// ADXL345_I2C.DataFormat_Range.k2G
 	
 	/**
      * This function is called once each time the robot enters Disabled mode.
@@ -47,6 +54,7 @@ public class Robot extends IterativeRobot {
     }
 	
 	public void disabledPeriodic() {
+		commonPeriodic();
 		Scheduler.getInstance().run();
 	}
 
@@ -60,7 +68,7 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-        autonomousCommand = (Command) chooser.getSelected();
+    	autonomousCommand = (Command) chooser.getSelected();
         
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -81,6 +89,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+    	commonPeriodic();
         Scheduler.getInstance().run();
     }
 
@@ -96,7 +105,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
+        commonPeriodic();
+    	Scheduler.getInstance().run();
     }
     
     /**
@@ -104,5 +114,15 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+    
+    //This is run in disabled, teleop, and auto periodics.
+    public void commonPeriodic() {
+    	System.out.println("Giro X");
+    	System.out.println(Giro.getX());
+    	System.out.println("Giro Z");
+    	System.out.println(Giro.getZ());
+    	System.out.println("Giro Y");
+    	System.out.println(Giro.getY());
     }
 }
