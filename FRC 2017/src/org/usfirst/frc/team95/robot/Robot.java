@@ -140,9 +140,11 @@ public class Robot extends IterativeRobot {
     	System.out.println(Giro.getY());*/
     	
     	System.out.println("things");
-    	System.out.println(gr.getValue());
+    	System.out.println(gr.getX());
     	
-    	SmartDashboard.putNumber("things", gr.getValue());
+    	SmartDashboard.putNumber("X", gr.getX());
+    	SmartDashboard.putNumber("Y", gr.getY());
+    	SmartDashboard.putNumber("Z", gr.getZ());
     	//Kalman filter alpha
     	/*v = Giro.getX();//first pred v = v
     	if (firstFilt == false) {
