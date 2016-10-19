@@ -29,7 +29,16 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     SendableChooser chooser;
 
-    ADXL345_I2C Giro;
+    //ADXL345_I2C Giro;
+    GyroReader gr;
+  
+    //Kalman variables
+    double predV;
+    double pM;
+    double fV;
+    double preFV;
+    double v;
+    boolean firstFilt = false;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -41,7 +50,9 @@ public class Robot extends IterativeRobot {
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
-        Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
+        //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
+        gr = new GyroReader();
+
     }// ADXL345_I2C.DataFormat_Range.k2G
 	
 	/**
@@ -118,11 +129,30 @@ public class Robot extends IterativeRobot {
     
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
+    	/*SmartDashboard.putNumber("Gyro X:", Giro.getX());
+    	SmartDashboard.putNumber("Gyro Y:", Giro.getY());
+    	SmartDashboard.putNumber("Gyro Z:", Giro.getZ());
     	System.out.println("Giro X");
     	System.out.println(Giro.getX());
     	System.out.println("Giro Z");
     	System.out.println(Giro.getZ());
     	System.out.println("Giro Y");
-    	System.out.println(Giro.getY());
+    	System.out.println(Giro.getY());*/
+    	
+    	System.out.println("things");
+    	System.out.println(gr.getValue());
+    	
+    	SmartDashboard.putNumber("things", gr.getValue());
+    	//Kalman filter alpha
+    	/*v = Giro.getX();//first pred v = v
+    	if (firstFilt == false) {
+    		predV = v;
+    		firstFilt = true;
+    	}
+    	*/
+    	//avg v and pred v to get fv
+    	//find pm with fv and previous fv
+    	//pred v = fv + pm
+    	
     }
 }
