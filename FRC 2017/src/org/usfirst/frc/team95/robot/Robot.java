@@ -4,6 +4,7 @@ package org.usfirst.frc.team95.robot;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
@@ -30,15 +31,17 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser;
 
     //ADXL345_I2C Giro;
-    GyroReader gr;
-  
-    //Kalman variables
+    GyroReader gyro;
+    Timer cycleTime;   //for common periodic 
+    double totalX, totalY, totalZ;
+    
+    /*Kalman variables
     double predV;
     double pM;
     double fV;
     double preFV;
     double v;
-    boolean firstFilt = false;
+    boolean firstFilt = false;*/
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -51,7 +54,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auto mode", chooser);
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
-        gr = new GyroReader();
+        gyro = new GyroReader();
 
     }// ADXL345_I2C.DataFormat_Range.k2G
 	
@@ -129,32 +132,34 @@ public class Robot extends IterativeRobot {
     
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
-    	/*SmartDashboard.putNumber("Gyro X:", Giro.getX());
-    	SmartDashboard.putNumber("Gyro Y:", Giro.getY());
-    	SmartDashboard.putNumber("Gyro Z:", Giro.getZ());
-    	System.out.println("Giro X");
-    	System.out.println(Giro.getX());
-    	System.out.println("Giro Z");
-    	System.out.println(Giro.getZ());
-    	System.out.println("Giro Y");
-    	System.out.println(Giro.getY());*/
+    	//cycleTime.reset();
+    	cycleTime.start();
     	
     	System.out.println("things");
-    	System.out.println(gr.getX());
+    	System.out.println(gyro.getXAng());
     	
-    	SmartDashboard.putNumber("X", gr.getX());
-    	SmartDashboard.putNumber("Y", gr.getY());
-    	SmartDashboard.putNumber("Z", gr.getZ());
+    	SmartDashboard.putNumber("X", gyro.getXAng());
+    	SmartDashboard.putNumber("Y", gyro.getYAng());
+    	SmartDashboard.putNumber("Z", gyro.getZAng());
+    	
     	//Kalman filter alpha
     	/*v = Giro.getX();//first pred v = v
     	if (firstFilt == false) {
     		predV = v;
     		firstFilt = true;
     	}
-    	*/
+    	
     	//avg v and pred v to get fv
     	//find pm with fv and previous fv
-    	//pred v = fv + pm
+    	//pred v = fv + pm*/
     	
+    	totalX = totalX + gyro.getXAng() * cycleTime.get();
+    	totalY = totalY + gyro.getYAng() * cycleTime.get();
+    	totalZ = totalZ + gyro.getZAng() * cycleTime.get();
+    	SmartDashboard.putNumber("TX", totalX);
+    	SmartDashboard.putNumber("TY", totalY);
+    	SmartDashboard.putNumber("TZ", totalZ);
+    	cycleTime.stop();
+    	cycleTime.reset();
     }
 }
