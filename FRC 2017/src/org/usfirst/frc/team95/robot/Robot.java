@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 
     Command autonomousCommand;
-    SendableChooser chooser;
+    SendableChooser chooser; // hello!
 
     //ADXL345_I2C Giro;
     GyroReader gyro;
