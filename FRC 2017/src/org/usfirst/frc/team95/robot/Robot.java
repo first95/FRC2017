@@ -4,6 +4,7 @@ package org.usfirst.frc.team95.robot;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -32,8 +33,10 @@ public class Robot extends IterativeRobot {
 
     //ADXL345_I2C Giro;
     GyroReader gyro;
-    Timer cycleTime;   //for common periodic 
+    //Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
+    
+    Joystick driveStick;
     
     /*Kalman variables
     double predV;
@@ -48,6 +51,7 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
+		RobotMap.init();
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
@@ -55,7 +59,10 @@ public class Robot extends IterativeRobot {
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
+        
+        driveStick = new Joystick(0);
 
+        //cycleTimer = new timer();
     }// ADXL345_I2C.DataFormat_Range.k2G
 	
 	/**
@@ -121,6 +128,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         commonPeriodic();
     	Scheduler.getInstance().run();
+    	
+    	RobotMap.drive.arcade(driveStick);
     }
     
     /**
@@ -133,7 +142,7 @@ public class Robot extends IterativeRobot {
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
     	//cycleTime.reset();
-    	cycleTime.start();
+    	//cycleTime.start();
     	
     	System.out.println("things");
     	System.out.println(gyro.getXAng());
@@ -153,13 +162,13 @@ public class Robot extends IterativeRobot {
     	//find pm with fv and previous fv
     	//pred v = fv + pm*/
     	
-    	totalX = totalX + gyro.getXAng() * cycleTime.get();
-    	totalY = totalY + gyro.getYAng() * cycleTime.get();
-    	totalZ = totalZ + gyro.getZAng() * cycleTime.get();
-    	SmartDashboard.putNumber("TX", totalX);
-    	SmartDashboard.putNumber("TY", totalY);
-    	SmartDashboard.putNumber("TZ", totalZ);
-    	cycleTime.stop();
-    	cycleTime.reset();
+    	//totalX = totalX + gyro.getXAng() * cycleTime.get();
+    	//totalY = totalY + gyro.getYAng() * cycleTime.get();
+    	//totalZ = totalZ + gyro.getZAng() * cycleTime.get();
+    	//SmartDashboard.putNumber("TX", totalX);
+    	//SmartDashboard.putNumber("TY", totalY);
+    	//SmartDashboard.putNumber("TZ", totalZ);
+    	//cycleTime.stop();
+    	//cycleTime.reset();
     }
 }
