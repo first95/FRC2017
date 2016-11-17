@@ -1,7 +1,5 @@
 package org.usfirst.frc.team95.robot;
 
-import javax.swing.text.StyleConstants.ColorConstants;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -16,8 +14,8 @@ public class Drive {
 	}
 	
 	public void tank(double leftsp, double rightsp) {
-		left.set(leftsp);
-		right.set(-rightsp);
+		left.set(-leftsp);
+		right.set(rightsp);
 	}
 	
 	public void arcade(double forward, double spin) {

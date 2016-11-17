@@ -28,9 +28,13 @@ public class RobotMap {
 		right2 = new CANTalon(5);
 		right3 = new CANTalon(6);
 		drive = new Drive(left1, right1);
-		left2.set(left1.get());
-		left3.set(left1.get());
-		right2.set(right1.get());
-		right3.set(right1.get());
+		left2.changeControlMode(CANTalon.TalonControlMode.Follower);
+		left2.set(1);
+		left3.changeControlMode(CANTalon.TalonControlMode.Follower);
+		left3.set(1);
+		right2.changeControlMode(CANTalon.TalonControlMode.Follower);
+		right2.set(4);
+		right3.changeControlMode(CANTalon.TalonControlMode.Follower);
+		right3.set(4);
     }
 }

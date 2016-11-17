@@ -33,18 +33,9 @@ public class Robot extends IterativeRobot {
 
     //ADXL345_I2C Giro;
     GyroReader gyro;
-    //Timer cycleTime;   //for common periodic 
+    Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
-    
-    Joystick driveStick;
-    
-    /*Kalman variables
-    double predV;
-    double pM;
-    double fV;
-    double preFV;
-    double v;
-    boolean firstFilt = false;*/
+   
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -60,9 +51,9 @@ public class Robot extends IterativeRobot {
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
         
-        driveStick = new Joystick(0);
 
-        //cycleTimer = new timer();
+        cycleTime = new Timer();
+        cycleTime.reset();  
     }// ADXL345_I2C.DataFormat_Range.k2G
 	
 	/**
@@ -129,7 +120,7 @@ public class Robot extends IterativeRobot {
         commonPeriodic();
     	Scheduler.getInstance().run();
     	
-    	RobotMap.drive.arcade(driveStick);
+    	RobotMap.drive.arcade(Constants.driveStick);
     }
     
     /**
@@ -142,33 +133,22 @@ public class Robot extends IterativeRobot {
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
     	//cycleTime.reset();
-    	//cycleTime.start();
+    	cycleTime.start();
     	
     	System.out.println("things");
     	System.out.println(gyro.getXAng());
     	
-    	SmartDashboard.putNumber("X", gyro.getXAng());
-    	SmartDashboard.putNumber("Y", gyro.getYAng());
-    	SmartDashboard.putNumber("Z", gyro.getZAng());
+    	//SmartDashboard.putNumber("X", gyro.getCompassX());
+    	//SmartDashboard.putNumber("Y", gyro.getCompassY());
+    	//SmartDashboard.putNumber("Z", gyro.getCompassZ());
     	
-    	//Kalman filter alpha
-    	/*v = Giro.getX();//first pred v = v
-    	if (firstFilt == false) {
-    		predV = v;
-    		firstFilt = true;
-    	}
-    	
-    	//avg v and pred v to get fv
-    	//find pm with fv and previous fv
-    	//pred v = fv + pm*/
-    	
-    	//totalX = totalX + gyro.getXAng() * cycleTime.get();
-    	//totalY = totalY + gyro.getYAng() * cycleTime.get();
-    	//totalZ = totalZ + gyro.getZAng() * cycleTime.get();
-    	//SmartDashboard.putNumber("TX", totalX);
-    	//SmartDashboard.putNumber("TY", totalY);
-    	//SmartDashboard.putNumber("TZ", totalZ);
-    	//cycleTime.stop();
-    	//cycleTime.reset();
+    	totalX = totalX + (gyro.getXAng() * cycleTime.get());
+    	totalY = totalY + (gyro.getYAng() * cycleTime.get());
+    	totalZ = totalZ + (gyro.getZAng() * cycleTime.get());
+    	SmartDashboard.putNumber("TX", totalX);
+    	SmartDashboard.putNumber("TY", totalY);
+    	SmartDashboard.putNumber("TZ", totalZ);
+    	cycleTime.stop();
+    	cycleTime.reset();
     }
 }
