@@ -53,40 +53,5 @@ public class GyroReader {
 	    //return rawAccel.get();// 0.00390625
 	    return rawAccel.getShort(0) / unitsToDeg;
 	}
-	
-	/*public double getCompassX() {
-		
-	    ByteBuffer rawAccel = ByteBuffer.allocateDirect(2);
-	    m_i2c.read(03, 2, rawAccel);
-	    
-	    // Sensor is little endian... swap bytes
-	    rawAccel.order(ByteOrder.BIG_ENDIAN);
-	    
-	    //return rawAccel.get();// 0.00390625
-	    return rawAccel.getShort(0);
-	}
-	
-	public double getCompassZ() {
-		
-	    ByteBuffer rawAccel = ByteBuffer.allocateDirect(2);
-	    m_i2c.read(05, 2, rawAccel);
-	    
-	    // Sensor is little endian... swap bytes
-	    rawAccel.order(ByteOrder.BIG_ENDIAN);
-	    
-	    //return rawAccel.get();// 0.00390625
-	    return rawAccel.getShort(0);
-	}
-	
-	public double getCompassY() {
-	
-    ByteBuffer rawAccel = ByteBuffer.allocateDirect(2);
-    m_i2c.read(07, 2, rawAccel);
-    
-    // Sensor is little endian... swap bytes
-    rawAccel.order(ByteOrder.BIG_ENDIAN);
-    
-    //return rawAccel.get();// 0.00390625
-    return rawAccel.getShort(0);
-		}*/
 }
+

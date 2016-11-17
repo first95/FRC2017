@@ -33,6 +33,7 @@ public class Robot extends IterativeRobot {
 
     //ADXL345_I2C Giro;
     GyroReader gyro;
+    CompassReader compass;
     Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
    
@@ -50,6 +51,7 @@ public class Robot extends IterativeRobot {
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
+        compass = new CompassReader();
         
 
         cycleTime = new Timer();
@@ -138,9 +140,13 @@ public class Robot extends IterativeRobot {
     	System.out.println("things");
     	System.out.println(gyro.getXAng());
     	
-    	//SmartDashboard.putNumber("X", gyro.getCompassX());
-    	//SmartDashboard.putNumber("Y", gyro.getCompassY());
-    	//SmartDashboard.putNumber("Z", gyro.getCompassZ());
+    	SmartDashboard.putNumber("X", gyro.getXAng());
+    	SmartDashboard.putNumber("Y", gyro.getYAng());
+    	SmartDashboard.putNumber("Z", gyro.getZAng());
+    	
+    	SmartDashboard.putNumber("CX", compass.getCompX()); 
+    	//SmartDashboard.putNumber("CY", compass.getCompY()); 
+    	SmartDashboard.putNumber("CZ", compass.getCompZ()); 
     	
     	totalX = totalX + (gyro.getXAng() * cycleTime.get());
     	totalY = totalY + (gyro.getYAng() * cycleTime.get());
