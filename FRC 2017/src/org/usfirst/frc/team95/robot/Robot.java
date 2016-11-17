@@ -145,7 +145,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Z", gyro.getZAng());
     	
     	SmartDashboard.putNumber("CX", compass.getCompX()); 
-    	//SmartDashboard.putNumber("CY", compass.getCompY()); 
+    	SmartDashboard.putNumber("CY", compass.getCompY()); 
     	SmartDashboard.putNumber("CZ", compass.getCompZ()); 
     	
     	totalX = totalX + (gyro.getXAng() * cycleTime.get());
