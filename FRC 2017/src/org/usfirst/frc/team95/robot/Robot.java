@@ -4,6 +4,8 @@ package org.usfirst.frc.team95.robot;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,38 +17,19 @@ import org.usfirst.frc.team95.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
-//comment
-public class Robot extends IterativeRobot {
 
+@SuppressWarnings("unused")
+public class Robot extends IterativeRobot {
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
-
     Command autonomousCommand;
     SendableChooser chooser;
-
-    //ADXL345_I2C Giro;
+    RobotDrive drive;
+    Joystick stick;
     GyroReader gyro;
     Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
-    
-    /*Kalman variables
-    double predV;
-    double pM;
-    double fV;
-    double preFV;
-    double v;
-    boolean firstFilt = false;*/
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
+
     public void robotInit() {
 		oi = new OI();
         chooser = new SendableChooser();
@@ -56,6 +39,8 @@ public class Robot extends IterativeRobot {
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
+        drive = new RobotDrive(RobotMap.left1, RobotMap.right1);
+        stick = new Joystick(0);
 
     }// ADXL345_I2C.DataFormat_Range.k2G
 	
@@ -162,5 +147,13 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("TZ", totalZ);
     	cycleTime.stop();
     	cycleTime.reset();
+    	
+    	driveRobot(stick.getX(), stick.getY());
+    	
     }
+    public int driveRobot(double throttle, double turn){
+    	Drive.arcade(drive, throttle, turn);
+    	return 0;
+    }
+    
 }
