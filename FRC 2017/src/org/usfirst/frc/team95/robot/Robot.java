@@ -135,7 +135,7 @@ public class Robot extends IterativeRobot {
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
     	//cycleTime.reset();
-    	cycleTime.start();
+    	//cycleTime.start();
     	
     	System.out.println("things");
     	System.out.println(gyro.getXAng());
@@ -148,13 +148,19 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("CY", compass.getCompY()); 
     	SmartDashboard.putNumber("CZ", compass.getCompZ()); 
     	
-    	totalX = totalX + (gyro.getXAng() * cycleTime.get());
-    	totalY = totalY + (gyro.getYAng() * cycleTime.get());
-    	totalZ = totalZ + (gyro.getZAng() * cycleTime.get());
-    	SmartDashboard.putNumber("TX", totalX);
-    	SmartDashboard.putNumber("TY", totalY);
-    	SmartDashboard.putNumber("TZ", totalZ);
-    	cycleTime.stop();
-    	cycleTime.reset();
+    	SmartDashboard.putString("hex x", Double.toHexString(compass.getCompX())); 
+    	SmartDashboard.putString("hex y", Double.toHexString(compass.getCompY()));
+    	SmartDashboard.putString("hex z", Double.toHexString(compass.getCompZ()));
+    	
+    	SmartDashboard.putNumber("ang", Math.atan2(compass.getCompZ(), compass.getCompX()));
+    	
+    	//totalX = totalX + (gyro.getXAng() * cycleTime.get());
+    	//totalY = totalY + (gyro.getYAng() * cycleTime.get());
+    	//totalZ = totalZ + (gyro.getZAng() * cycleTime.get());
+    	//SmartDashboard.putNumber("TX", totalX);
+    	//SmartDashboard.putNumber("TY", totalY);
+    	//SmartDashboard.putNumber("TZ", totalZ);
+    	//cycleTime.stop();
+    	//cycleTime.reset();
     }
 }
