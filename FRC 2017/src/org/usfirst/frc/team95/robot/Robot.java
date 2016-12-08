@@ -137,12 +137,9 @@ public class Robot extends IterativeRobot {
     	//cycleTime.reset();
     	//cycleTime.start();
     	
-    	System.out.println("things");
-    	System.out.println(gyro.getXAng());
-    	
-    	SmartDashboard.putNumber("X", gyro.getXAng());
-    	SmartDashboard.putNumber("Y", gyro.getYAng());
-    	SmartDashboard.putNumber("Z", gyro.getZAng());
+    	SmartDashboard.putNumber("X", Math.atan2(compass.getCompZ(), compass.getCompX()));//gyro.getXAng());
+    	SmartDashboard.putNumber("Y", Math.atan2(compass.getCompY(), compass.getCompX()));//gyro.getYAng());
+    	SmartDashboard.putNumber("Z", Math.atan2(compass.getCompZ(), compass.getCompY()));//gyro.getZAng());
     	
     	SmartDashboard.putNumber("CX", compass.getCompX()); 
     	SmartDashboard.putNumber("CY", compass.getCompY()); 
@@ -152,7 +149,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putString("hex y", Double.toHexString(compass.getCompY()));
     	SmartDashboard.putString("hex z", Double.toHexString(compass.getCompZ()));
     	
-    	SmartDashboard.putNumber("ang", Math.atan2(compass.getCompZ(), compass.getCompX()));
+    	SmartDashboard.putNumber("ATAN z/x", Math.atan2(compass.getCompZ(), compass.getCompX()));
+    	SmartDashboard.putNumber("ATAN y/x", Math.atan2(compass.getCompY(), compass.getCompX()));
+    	SmartDashboard.putNumber("ATAN z/y", Math.atan2(compass.getCompZ(), compass.getCompY()));
     	
     	//totalX = totalX + (gyro.getXAng() * cycleTime.get());
     	//totalY = totalY + (gyro.getYAng() * cycleTime.get());
