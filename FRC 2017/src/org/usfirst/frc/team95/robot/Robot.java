@@ -138,20 +138,21 @@ public class Robot extends IterativeRobot {
     	//cycleTime.start();
     	
     	SmartDashboard.putNumber("X", Math.atan2(compass.getCompZ(), compass.getCompX()));//gyro.getXAng());
-    	SmartDashboard.putNumber("Y", Math.atan2(compass.getCompY(), compass.getCompX()));//gyro.getYAng());
+    	SmartDashboard.putNumber("Y", Math.atan2(compass.getCompY(), compass.getCompX()));//gyro.getYAng());//promising goes -pi to zero to pi, abrupt change from pi to -pi
     	SmartDashboard.putNumber("Z", Math.atan2(compass.getCompZ(), compass.getCompY()));//gyro.getZAng());
     	
     	SmartDashboard.putNumber("CX", compass.getCompX()); 
     	SmartDashboard.putNumber("CY", compass.getCompY()); 
     	SmartDashboard.putNumber("CZ", compass.getCompZ()); 
     	
+    	//SmartDashboard.putBoolean("test", true);
     	SmartDashboard.putString("hex x", Double.toHexString(compass.getCompX())); 
     	SmartDashboard.putString("hex y", Double.toHexString(compass.getCompY()));
     	SmartDashboard.putString("hex z", Double.toHexString(compass.getCompZ()));
-    	
-    	SmartDashboard.putNumber("ATAN z/x", Math.atan2(compass.getCompZ(), compass.getCompX()));
-    	SmartDashboard.putNumber("ATAN y/x", Math.atan2(compass.getCompY(), compass.getCompX()));
-    	SmartDashboard.putNumber("ATAN z/y", Math.atan2(compass.getCompZ(), compass.getCompY()));
+
+    	//SmartDashboard.putNumber("ATAN z/x", Math.atan2(compass.getCompZ(), compass.getCompX()));
+    	//SmartDashboard.putNumber("ATAN y/x", Math.atan2(compass.getCompY(), compass.getCompX()));
+    	//SmartDashboard.putNumber("ATAN z/y", Math.atan2(compass.getCompZ(), compass.getCompY()));
     	
     	//totalX = totalX + (gyro.getXAng() * cycleTime.get());
     	//totalY = totalY + (gyro.getYAng() * cycleTime.get());
