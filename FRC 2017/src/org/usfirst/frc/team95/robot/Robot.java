@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
+import java.lang.reflect.Array;
+
 import org.usfirst.frc.team95.robot.commands.ExampleCommand;
 import org.usfirst.frc.team95.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,6 +40,8 @@ public class Robot extends IterativeRobot {
     Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
    
+    Double angle, angDead, prevADead, angAvg;
+    Double[] angleRec;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -53,9 +58,14 @@ public class Robot extends IterativeRobot {
         gyro = new GyroReader();
         compass = new CompassReader();
         
-
         cycleTime = new Timer();
         cycleTime.reset();  
+        angleRec = new Double[4];       
+        prevADead = 5.3;
+        angleRec[3] = 0.1;
+        angleRec[2] = 0.1;
+        angleRec[1] = 0.1;
+        angleRec[0] = 0.1;
     }// ADXL345_I2C.DataFormat_Range.k2G
 	
 	/**
@@ -136,16 +146,38 @@ public class Robot extends IterativeRobot {
     public void commonPeriodic() {
     	//cycleTime.reset();
     	//cycleTime.start();
-    	
-    	SmartDashboard.putNumber("X", Math.atan2(compass.getCompZ(), compass.getCompX()));//gyro.getXAng());
-    	SmartDashboard.putNumber("Y", Math.atan2(compass.getCompY(), compass.getCompX()));//gyro.getYAng());//promising goes -pi to zero to pi, abrupt change from pi to -pi
-    	SmartDashboard.putNumber("Z", Math.atan2(compass.getCompZ(), compass.getCompY()));//gyro.getZAng());
+        
+        angle = Math.atan2(compass.getCompY(), compass.getCompX());
+        
+        //storing 4 most recent angle values
+        angleRec[3] = angleRec[2];
+        angleRec[2] = angleRec[1];
+        angleRec[1] = angleRec[0];
+        angleRec[0] = angle;
+        
+        //angle Dead banding
+        if (angle <= prevADead +.15 && angle >= prevADead -.15) {
+        	angDead = prevADead;
+        } else {
+        	angDead = angle;
+        }
+        prevADead = angDead;
+        
+        //angle averaging
+        angAvg = ((angleRec[0] + angleRec[1] + angleRec[2] + angleRec[3]) / 4);
+        
+    	SmartDashboard.putNumber("X", Math.atan2(compass.getCompZ(), compass.getCompX()));
+    	SmartDashboard.putNumber("Y", Math.atan2(compass.getCompY(), compass.getCompX()));
+    	SmartDashboard.putNumber("Z", Math.atan2(compass.getCompZ(), compass.getCompY()));
     	
     	SmartDashboard.putNumber("CX", compass.getCompX()); 
     	SmartDashboard.putNumber("CY", compass.getCompY()); 
     	SmartDashboard.putNumber("CZ", compass.getCompZ()); 
     	
-    	//SmartDashboard.putBoolean("test", true);
+    	SmartDashboard.putNumber("Angle", angle);
+    	SmartDashboard.putNumber("Angle Dead", angDead);
+    	SmartDashboard.putNumber("Angle avg", angAvg);
+    	
     	SmartDashboard.putString("hex x", Double.toHexString(compass.getCompX())); 
     	SmartDashboard.putString("hex y", Double.toHexString(compass.getCompY()));
     	SmartDashboard.putString("hex z", Double.toHexString(compass.getCompZ()));
