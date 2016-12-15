@@ -59,7 +59,8 @@ public class Robot extends IterativeRobot {
         compass = new CompassReader();
         
         cycleTime = new Timer();
-        cycleTime.reset();  
+        cycleTime.reset();
+        cycleTime.start();
         angleRec = new Double[4];       
         prevADead = 5.3;
         angleRec[3] = 0.1;
@@ -181,18 +182,21 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putString("hex x", Double.toHexString(compass.getCompX())); 
     	SmartDashboard.putString("hex y", Double.toHexString(compass.getCompY()));
     	SmartDashboard.putString("hex z", Double.toHexString(compass.getCompZ()));
-
-    	//SmartDashboard.putNumber("ATAN z/x", Math.atan2(compass.getCompZ(), compass.getCompX()));
-    	//SmartDashboard.putNumber("ATAN y/x", Math.atan2(compass.getCompY(), compass.getCompX()));
-    	//SmartDashboard.putNumber("ATAN z/y", Math.atan2(compass.getCompZ(), compass.getCompY()));
     	
-    	//totalX = totalX + (gyro.getXAng() * cycleTime.get());
-    	//totalY = totalY + (gyro.getYAng() * cycleTime.get());
-    	//totalZ = totalZ + (gyro.getZAng() * cycleTime.get());
-    	//SmartDashboard.putNumber("TX", totalX);
-    	//SmartDashboard.putNumber("TY", totalY);
-    	//SmartDashboard.putNumber("TZ", totalZ);
-    	//cycleTime.stop();
-    	//cycleTime.reset();
+    	/*System.out.println("new cycle");
+    	System.out.println("CompX");
+    	System.out.println(compass.getCompX());
+    	System.out.println("CompY");
+    	System.out.println(compass.getCompY());
+    	System.out.println("CompZ");
+    	System.out.println(compass.getCompZ());
+    	System.out.println("GyroX");
+    	System.out.println(gyro.getXAng());
+    	System.out.println("GyroY");
+    	System.out.println(gyro.getYAng());
+    	System.out.println("GyroZ");
+    	System.out.println(gyro.getZAng());
+    	System.out.println("time");
+    	System.out.println(cycleTime.get());*/
     }
 }
