@@ -148,7 +148,7 @@ public class Robot extends IterativeRobot {
     	//cycleTime.reset();
     	//cycleTime.start();
         
-        angle = Math.atan2(compass.getCompY(), compass.getCompX());
+        angle = Math.atan2(compass.getRawCompY(), compass.getRawCompX());
         
         //storing 4 most recent angle values
         angleRec[3] = angleRec[2];
@@ -167,29 +167,31 @@ public class Robot extends IterativeRobot {
         //angle averaging
         angAvg = ((angleRec[0] + angleRec[1] + angleRec[2] + angleRec[3]) / 4);
         
-    	SmartDashboard.putNumber("X", Math.atan2(compass.getCompZ(), compass.getCompX()));
-    	SmartDashboard.putNumber("Y", Math.atan2(compass.getCompY(), compass.getCompX()));
-    	SmartDashboard.putNumber("Z", Math.atan2(compass.getCompZ(), compass.getCompY()));
+        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", ");
+        
+    	SmartDashboard.putNumber("X", Math.atan2(compass.getRawCompZ(), compass.getRawCompX()));
+    	SmartDashboard.putNumber("Y", Math.atan2(compass.getRawCompY(), compass.getRawCompX()));
+    	SmartDashboard.putNumber("Z", Math.atan2(compass.getRawCompZ(), compass.getRawCompY()));
     	
-    	SmartDashboard.putNumber("CX", compass.getCompX()); 
-    	SmartDashboard.putNumber("CY", compass.getCompY()); 
-    	SmartDashboard.putNumber("CZ", compass.getCompZ()); 
+    	SmartDashboard.putNumber("CX", compass.getRawCompX()); 
+    	SmartDashboard.putNumber("CY", compass.getRawCompY()); 
+    	SmartDashboard.putNumber("CZ", compass.getRawCompZ()); 
     	
     	SmartDashboard.putNumber("Angle", angle);
     	SmartDashboard.putNumber("Angle Dead", angDead);
     	SmartDashboard.putNumber("Angle avg", angAvg);
     	
-    	SmartDashboard.putString("hex x", Double.toHexString(compass.getCompX())); 
-    	SmartDashboard.putString("hex y", Double.toHexString(compass.getCompY()));
-    	SmartDashboard.putString("hex z", Double.toHexString(compass.getCompZ()));
+    	SmartDashboard.putString("hex x", Double.toHexString(compass.getRawCompX())); 
+    	SmartDashboard.putString("hex y", Double.toHexString(compass.getRawCompY()));
+    	SmartDashboard.putString("hex z", Double.toHexString(compass.getRawCompZ()));
     	
     	/*System.out.println("new cycle");
     	System.out.println("CompX");
-    	System.out.println(compass.getCompX());
+    	System.out.println(compass.getRawCompX());
     	System.out.println("CompY");
-    	System.out.println(compass.getCompY());
+    	System.out.println(compass.getRawCompY());
     	System.out.println("CompZ");
-    	System.out.println(compass.getCompZ());
+    	System.out.println(compass.getRawCompZ());
     	System.out.println("GyroX");
     	System.out.println(gyro.getXAng());
     	System.out.println("GyroY");
