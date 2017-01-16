@@ -4,12 +4,16 @@ package org.usfirst.frc.team95.robot;
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
+import java.lang.reflect.Array;
+
 import org.usfirst.frc.team95.robot.commands.ExampleCommand;
 import org.usfirst.frc.team95.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -32,22 +36,19 @@ public class Robot extends IterativeRobot {
 
     //ADXL345_I2C Giro;
     GyroReader gyro;
+    CompassReader compass;
     Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
-    
-    /*Kalman variables
-    double predV;
-    double pM;
-    double fV;
-    double preFV;
-    double v;
-    boolean firstFilt = false;*/
+   
+    Double angle, angDead, prevADead, angAvg;
+    Double[] angleRec;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 		oi = new OI();
+		RobotMap.init();
         chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
@@ -55,7 +56,17 @@ public class Robot extends IterativeRobot {
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
-
+        compass = new CompassReader();
+        
+        cycleTime = new Timer();
+        cycleTime.reset();
+        cycleTime.start();
+        angleRec = new Double[4];       
+        prevADead = 5.3;
+        angleRec[3] = 0.1;
+        angleRec[2] = 0.1;
+        angleRec[1] = 0.1;
+        angleRec[0] = 0.1;
     }// ADXL345_I2C.DataFormat_Range.k2G
 	
 	/**
@@ -121,6 +132,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         commonPeriodic();
     	Scheduler.getInstance().run();
+    	
+    	RobotMap.drive.arcade(Constants.driveStick);
     }
     
     /**
@@ -133,33 +146,59 @@ public class Robot extends IterativeRobot {
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
     	//cycleTime.reset();
-    	cycleTime.start();
+    	//cycleTime.start();
+        
+        angle = Math.atan2(compass.getRawCompY(), compass.getRawCompX());
+        
+        //storing 4 most recent angle values
+        angleRec[3] = angleRec[2];
+        angleRec[2] = angleRec[1];
+        angleRec[1] = angleRec[0];
+        angleRec[0] = angle;
+        
+        //angle Dead banding
+        if (angle <= prevADead +.15 && angle >= prevADead -.15) {
+        	angDead = prevADead;
+        } else {
+        	angDead = angle;
+        }
+        prevADead = angDead;
+        
+        //angle averaging
+        angAvg = ((angleRec[0] + angleRec[1] + angleRec[2] + angleRec[3]) / 4);
+        
+        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", ");
+        
+    	SmartDashboard.putNumber("X", Math.atan2(compass.getRawCompZ(), compass.getRawCompX()));
+    	SmartDashboard.putNumber("Y", Math.atan2(compass.getRawCompY(), compass.getRawCompX()));
+    	SmartDashboard.putNumber("Z", Math.atan2(compass.getRawCompZ(), compass.getRawCompY()));
     	
-    	System.out.println("things");
+    	SmartDashboard.putNumber("CX", compass.getRawCompX()); 
+    	SmartDashboard.putNumber("CY", compass.getRawCompY()); 
+    	SmartDashboard.putNumber("CZ", compass.getRawCompZ()); 
+    	
+    	SmartDashboard.putNumber("Angle", angle);
+    	SmartDashboard.putNumber("Angle Dead", angDead);
+    	SmartDashboard.putNumber("Angle avg", angAvg);
+    	
+    	SmartDashboard.putString("hex x", Double.toHexString(compass.getRawCompX())); 
+    	SmartDashboard.putString("hex y", Double.toHexString(compass.getRawCompY()));
+    	SmartDashboard.putString("hex z", Double.toHexString(compass.getRawCompZ()));
+    	
+    	/*System.out.println("new cycle");
+    	System.out.println("CompX");
+    	System.out.println(compass.getRawCompX());
+    	System.out.println("CompY");
+    	System.out.println(compass.getRawCompY());
+    	System.out.println("CompZ");
+    	System.out.println(compass.getRawCompZ());
+    	System.out.println("GyroX");
     	System.out.println(gyro.getXAng());
-    	
-    	SmartDashboard.putNumber("X", gyro.getXAng());
-    	SmartDashboard.putNumber("Y", gyro.getYAng());
-    	SmartDashboard.putNumber("Z", gyro.getZAng());
-    	
-    	//Kalman filter alpha
-    	/*v = Giro.getX();//first pred v = v
-    	if (firstFilt == false) {
-    		predV = v;
-    		firstFilt = true;
-    	}
-    	
-    	//avg v and pred v to get fv
-    	//find pm with fv and previous fv
-    	//pred v = fv + pm*/
-    	
-    	totalX = totalX + gyro.getXAng() * cycleTime.get();
-    	totalY = totalY + gyro.getYAng() * cycleTime.get();
-    	totalZ = totalZ + gyro.getZAng() * cycleTime.get();
-    	SmartDashboard.putNumber("TX", totalX);
-    	SmartDashboard.putNumber("TY", totalY);
-    	SmartDashboard.putNumber("TZ", totalZ);
-    	cycleTime.stop();
-    	cycleTime.reset();
+    	System.out.println("GyroY");
+    	System.out.println(gyro.getYAng());
+    	System.out.println("GyroZ");
+    	System.out.println(gyro.getZAng());
+    	System.out.println("time");
+    	System.out.println(cycleTime.get());*/
     }
 }
