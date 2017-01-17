@@ -17,8 +17,102 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.ejml.data.DenseMatrix64F;
+import org.ejml.simple.SimpleMatrix;
+
+import edu.wpi.first.wpilibj.Timer;
 
 public class FilteredCompassReader extends CompassReader {
+	GyroReader gyro = new GyroReader();
+	KalmanFilterSimple kf = new KalmanFilterSimple();
+	double lastUpdateTimestamp;
+	boolean isFirstUpdate = true;
+	double lastMeasuredHeading = 0.0;
+	double lastEstimatedHeading = 0.0;
+	double lastDTheta = 0.0;
+	double lastEstimatedAngVel = 0.0;
+	DenseMatrix64F R;
+	double headingBoost = 0.0;
+	
+	FilteredCompassReader() {
+		super();
+		
+		DenseMatrix64F F =  makeF(0.1); // TODO 
+		DenseMatrix64F Q = new DenseMatrix64F(new double[][]{
+			{0.05, 0.0},
+			{0.0,  1.0},
+		}); 
+		DenseMatrix64F H = new DenseMatrix64F(new double[][]{
+			{1.0, 0.0},
+			{0.0, 1.0},
+			{0.0, 1.0},
+		}); 
+		R = new DenseMatrix64F(new double[][]{
+			{10.0, 0.0, 0.0},
+			{ 0.0, 1.0, 0.0},
+			{ 0.0, 0.0, 0.0},
+		}); 
+		kf.configure(F, Q, H);
+
+		isFirstUpdate = true;
+	}
+	
+	private DenseMatrix64F makeF(double dt) {
+		return new DenseMatrix64F(new double[][]{
+			{1.0, dt / 45},
+			{0.0, 1.0},
+		});
+	}
+	
+	public void updateEstimate() {
+		double w = gyro.getZAng();
+		double theta = getHeading();
+		double dt = 0;
+		
+		double now = Timer.getFPGATimestamp();
+		if(!isFirstUpdate) 
+		{ dt = now - lastUpdateTimestamp; }
+		updateEstimate(theta, w, dt);
+		
+		lastUpdateTimestamp = now;
+		isFirstUpdate = false;
+	}
+	
+	private void updateEstimate(double theta_measured, double w_measured, double dt) {
+		if(dt == 0.0) {
+			// Initial measurement
+			
+		} else {
+			// Normal update
+			double theta_demod;
+			if((theta_measured >  Math.PI / 2.0 && lastMeasuredHeading < -Math.PI / 2.0) ||
+			   (theta_measured < -Math.PI / 2.0 && lastMeasuredHeading >  Math.PI / 2.0)) {
+				// Defunct the modulo
+				headingBoost += 2 * Math.PI;
+			}
+			theta_demod = theta_measured + headingBoost;
+			DenseMatrix64F z = new DenseMatrix64F(new double [][]{
+				{theta_demod},
+				{lastDTheta},
+				{w_measured},
+			});
+			kf.setF(makeF(dt));
+			kf.predict();
+			kf.update(null, R);
+			double[] est = kf.getState().getData();
+			lastDTheta = est[0] - lastEstimatedHeading;
+			lastMeasuredHeading = theta_measured;
+			lastEstimatedHeading = est[0];
+			lastEstimatedAngVel  = est[1];
+		}
+	}
+	
+	public double getFilteredHeading() {
+		return 0;
+	}
+	public double getFilteredAngularVelocity() {
+		return 0;
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -29,6 +123,12 @@ public class FilteredCompassReader extends CompassReader {
 		final int NUM_DATAPOINTS;
 		final double DT;
 		final String DATA_FILENAME;
+		final int COL_CORR_MAG_Y;
+		final int COL_CORR_MAG_Z;
+		final int COL_GYRO_Z;
+		
+		FilteredCompassReader fcr = new FilteredCompassReader();
+//		System.out.println("Time: " + Timer.getFPGATimestamp());
 		
 		switch(dataset) {
 		case 0:
@@ -36,6 +136,9 @@ public class FilteredCompassReader extends CompassReader {
 			NUM_DATAPOINTS = 7162;
 			DT = 0.1;
 			DATA_FILENAME = "data/2017-1-13 IMU sensor data with corrections - Kovaka.csv";
+			COL_CORR_MAG_Y = 6;
+			COL_CORR_MAG_Z = 7;
+			COL_GYRO_Z = 5;    
 			break;
 		}
 		
@@ -108,9 +211,6 @@ public class FilteredCompassReader extends CompassReader {
 		try {
 			// I deep-sixed the column headers, they were:
 			// X,Y,Z,gX,gY,gZ,Hard Fe Y a=-36,Hard Fe Z ß=-221.5
-			final int COL_CORR_MAG_Y = 6;
-			final int COL_CORR_MAG_Z = 7;
-			final int COL_GYRO_Z = 5;
 			double heading_boost = 0.0;
 			for(CSVRecord record : parser.getRecords()) {
 				t_measured[i] = Math.atan2(Double.parseDouble(record.get(COL_CORR_MAG_Y)), Double.parseDouble(record.get(COL_CORR_MAG_Z)));
