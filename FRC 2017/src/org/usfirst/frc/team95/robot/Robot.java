@@ -167,7 +167,7 @@ public class Robot extends IterativeRobot {
         //angle averaging
         angAvg = ((angleRec[0] + angleRec[1] + angleRec[2] + angleRec[3]) / 4);
         
-        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", ");
+        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
     	SmartDashboard.putNumber("X", Math.atan2(compass.getRawCompZ(), compass.getRawCompX()));
     	SmartDashboard.putNumber("Y", Math.atan2(compass.getRawCompY(), compass.getRawCompX()));
@@ -180,6 +180,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Angle", angle);
     	SmartDashboard.putNumber("Angle Dead", angDead);
     	SmartDashboard.putNumber("Angle avg", angAvg);
+    	
+    	SmartDashboard.putNumber("Heading", compass.getHeading());
     	
     	SmartDashboard.putString("hex x", Double.toHexString(compass.getRawCompX())); 
     	SmartDashboard.putString("hex y", Double.toHexString(compass.getRawCompY()));
