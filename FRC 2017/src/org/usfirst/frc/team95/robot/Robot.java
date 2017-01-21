@@ -43,7 +43,8 @@ public class Robot extends IterativeRobot {
    
     Double angle, angDead, prevADead, angAvg, headingToPres;
     Double[] angleRec;
-    boolean justPressed, pressedLast;
+    ButtonTracker headPres;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -60,7 +61,8 @@ public class Robot extends IterativeRobot {
         gyro = new GyroReader();
         compass = new CompassReader();
         header = new HeadingPreservation();
-        
+        headPres = new ButtonTracker(Constants.driveStick,2);
+        		
         cycleTime = new Timer();
         cycleTime.reset();
         cycleTime.start();
@@ -137,17 +139,13 @@ public class Robot extends IterativeRobot {
     	Scheduler.getInstance().run();
     	
     	if(Constants.driveStick.getRawButton(2)) {
-    		justPressed = true;
-    		if(justPressed &! pressedLast) {
+    		if(headPres.justPressedp()) {
     			headingToPres = compass.getHeading();
     		}
     		
     		header.setHeading(headingToPres);
-    		pressedLast = true;
     	} else {
     		RobotMap.drive.arcade(Constants.driveStick);
-    		justPressed = false;
-    		pressedLast = false;
     	}
     }
     

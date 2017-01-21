@@ -2,10 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Users/spami/wpilib/java/current/lib/NetworkTables.jar"/>
-	<classpathentry kind="lib" path="C:/Users/spami/wpilib/java/current/lib/NetworkTables-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/spami/wpilib/java/current/lib/WPILib.jar"/>
-	<classpathentry kind="lib" path="C:/Users/spami/wpilib/java/current/lib/WPILib-sources.jar"/>
 	<classpathentry kind="lib" path="libs/commons-csv-1.4/commons-csv-1.4.jar"/>
 	<classpathentry kind="lib" path="libs/ejml-v0.30-libs/EJML-core-0.30-sources.jar"/>
 	<classpathentry kind="lib" path="libs/ejml-v0.30-libs/EJML-core-0.30.jar"/>
@@ -29,5 +25,9 @@
 	<classpathentry kind="lib" path="libs/jfreechart-1.0.19/orsonpdf-1.6-eval.jar"/>
 	<classpathentry kind="lib" path="libs/jfreechart-1.0.19/servlet.jar"/>
 	<classpathentry kind="lib" path="libs/jfreechart-1.0.19/swtgraphics2d.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/NetworkTables.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/NetworkTables-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/WPILib.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/WPILib-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

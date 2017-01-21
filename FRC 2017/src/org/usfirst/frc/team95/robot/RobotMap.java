@@ -13,7 +13,7 @@ public class RobotMap {
     // following variables to use with your drivetrain subsystem.
     public static CANTalon left1, left2, left3, right1, right2, right3;
 	public static Drive drive;
-    
+	public static Object driveLock = null;
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
