@@ -60,7 +60,7 @@ public class CompassReader {
 		double alpha = -164;
 		double beta = -25;
 		double y = getRawCompY() - alpha;
-		double z = getRawCompZ() -																														 beta;
+		double z = getRawCompZ() - beta;
 		//Just using Hard Fe correction
 		//double theta = -0.77964007;
 		//double sigma = 2.397130726;

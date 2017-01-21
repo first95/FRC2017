@@ -37,6 +37,7 @@ public class Robot extends IterativeRobot {
     //ADXL345_I2C Giro;
     GyroReader gyro;
     CompassReader compass;
+    HeadingPreservation header;
     Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
    
@@ -57,6 +58,7 @@ public class Robot extends IterativeRobot {
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
         compass = new CompassReader();
+        header = new HeadingPreservation();
         
         cycleTime = new Timer();
         cycleTime.reset();
@@ -133,7 +135,11 @@ public class Robot extends IterativeRobot {
         commonPeriodic();
     	Scheduler.getInstance().run();
     	
-    	RobotMap.drive.arcade(Constants.driveStick);
+    	if(Constants.driveStick.getRawButton(2)) {
+    		header.setHeading(1.2);//compass.getHeading());
+    	} else {
+    		RobotMap.drive.arcade(Constants.driveStick);
+    	}
     }
     
     /**
