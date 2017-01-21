@@ -2,6 +2,7 @@
 package org.usfirst.frc.team95.robot;
 
 import edu.wpi.first.wpilibj.ADXL345_I2C;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -13,7 +14,13 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
+import org.usfirst.frc.team95.robot.auto.Auto;
+import org.usfirst.frc.team95.robot.auto.Nothing;
+import org.usfirst.frc.team95.robot.auto.RotateBy;
+import org.usfirst.frc.team95.robot.auto.SequentialMove;
+import org.usfirst.frc.team95.robot.auto.TimedMove;
 import org.usfirst.frc.team95.robot.commands.ExampleCommand;
 import org.usfirst.frc.team95.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -45,6 +52,10 @@ public class Robot extends IterativeRobot {
     Double[] angleRec;
     ButtonTracker headPres;
     
+    Auto move;
+    SendableChooser a, b, c;
+    ArrayList<PollableSubsystem> updates = new ArrayList<PollableSubsystem>();
+    ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -72,7 +83,33 @@ public class Robot extends IterativeRobot {
         angleRec[2] = 0.1;
         angleRec[1] = 0.1;
         angleRec[0] = 0.1;
-    }// ADXL345_I2C.DataFormat_Range.k2G
+        
+        for (PollableSubsystem p : updates) {
+			p.init();
+		}
+		a = new SendableChooser();
+		b = new SendableChooser();
+		c = new SendableChooser();
+		a.addDefault("None", new Nothing());
+		a.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
+		a.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
+		a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
+		a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		b.addDefault("None", new Nothing());
+		b.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
+		b.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
+		b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
+		b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		c.addDefault("None", new Nothing());
+		c.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
+		c.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
+		c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
+		c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		SmartDashboard.putData("1st", a);
+		SmartDashboard.putData("2nd", b);
+		SmartDashboard.putData("3rd", c);
+		
+    }
 	
 	/**
      * This function is called once each time the robot enters Disabled mode.
@@ -98,28 +135,41 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	autonomousCommand = (Command) chooser.getSelected();
-        
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
-    	
-    	// schedule the autonomous command (example)
-        if (autonomousCommand != null) autonomousCommand.start();
-    }
+
+		System.out.println("Auto INIT");
+
+		Auto am = (Auto) a.getSelected();
+		Auto bm = (Auto) b.getSelected();
+		Auto cm = (Auto) c.getSelected();
+		String picked = "We picked: ";
+		picked += am.getClass().getName() + ", ";
+		picked += bm.getClass().getName() + ", ";
+		picked += cm.getClass().getName();
+		DriverStation.reportError(picked, false);
+		Auto[] m = { am, bm, cm };
+
+		move = new SequentialMove(m);
+		//move = new TimedStraightMove(0.3, 10);
+		move.init();
+	}
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
     	commonPeriodic();
+    	for (Auto x : runningAutonomousMoves) {
+			// System.out.println("Running " + x.getClass().getName());
+			x.update();
+			if (x.done()) {
+				x.stop();
+				runningAutonomousMoves.remove(x);
+			}
+		}
+
+		System.out.println("Auto Periodic");
+		move.update();
+
         Scheduler.getInstance().run();
     }
 
@@ -215,5 +265,6 @@ public class Robot extends IterativeRobot {
     	System.out.println(gyro.getZAng());
     	System.out.println("time");
     	System.out.println(cycleTime.get());*/
+    	headPres.update();
     }
 }
