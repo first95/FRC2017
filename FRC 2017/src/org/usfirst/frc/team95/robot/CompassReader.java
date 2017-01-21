@@ -6,7 +6,7 @@ import java.nio.ByteOrder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
 
-//vsdfg
+
 
 public class CompassReader {
 	private I2C m_i2c;
