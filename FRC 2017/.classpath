@@ -25,9 +25,9 @@
 	<classpathentry kind="lib" path="libs/jfreechart-1.0.19/orsonpdf-1.6-eval.jar"/>
 	<classpathentry kind="lib" path="libs/jfreechart-1.0.19/servlet.jar"/>
 	<classpathentry kind="lib" path="libs/jfreechart-1.0.19/swtgraphics2d.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/NetworkTables.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/NetworkTables-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/WPILib.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Spencer/wpilib/java/current/lib/WPILib-sources.jar"/>
+	<classpathentry kind="lib" path="build/jars/NetworkTables.jar"/>
+	<classpathentry kind="lib" path="build/jars/NetworkTables-sources.jar"/>
+	<classpathentry kind="lib" path="build/jars/WPILib.jar"/>
+	<classpathentry kind="lib" path="build/jars/WPILib-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
