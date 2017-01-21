@@ -37,11 +37,13 @@ public class Robot extends IterativeRobot {
     //ADXL345_I2C Giro;
     GyroReader gyro;
     CompassReader compass;
+    HeadingPreservation header;
     Timer cycleTime;   //for common periodic 
     double totalX, totalY, totalZ;
    
-    Double angle, angDead, prevADead, angAvg;
+    Double angle, angDead, prevADead, angAvg, headingToPres;
     Double[] angleRec;
+    boolean justPressed, pressedLast;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -57,6 +59,7 @@ public class Robot extends IterativeRobot {
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
         compass = new CompassReader();
+        header = new HeadingPreservation();
         
         cycleTime = new Timer();
         cycleTime.reset();
@@ -133,7 +136,19 @@ public class Robot extends IterativeRobot {
         commonPeriodic();
     	Scheduler.getInstance().run();
     	
-    	RobotMap.drive.arcade(Constants.driveStick);
+    	if(Constants.driveStick.getRawButton(2)) {
+    		justPressed = true;
+    		if(justPressed &! pressedLast) {
+    			headingToPres = compass.getHeading();
+    		}
+    		
+    		header.setHeading(headingToPres);
+    		pressedLast = true;
+    	} else {
+    		RobotMap.drive.arcade(Constants.driveStick);
+    		justPressed = false;
+    		pressedLast = false;
+    	}
     }
     
     /**
@@ -167,7 +182,7 @@ public class Robot extends IterativeRobot {
         //angle averaging
         angAvg = ((angleRec[0] + angleRec[1] + angleRec[2] + angleRec[3]) / 4);
         
-        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", ");
+        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
     	SmartDashboard.putNumber("X", Math.atan2(compass.getRawCompZ(), compass.getRawCompX()));
     	SmartDashboard.putNumber("Y", Math.atan2(compass.getRawCompY(), compass.getRawCompX()));
@@ -180,6 +195,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Angle", angle);
     	SmartDashboard.putNumber("Angle Dead", angDead);
     	SmartDashboard.putNumber("Angle avg", angAvg);
+    	
+    	SmartDashboard.putNumber("Heading", compass.getHeading());
     	
     	SmartDashboard.putString("hex x", Double.toHexString(compass.getRawCompX())); 
     	SmartDashboard.putString("hex y", Double.toHexString(compass.getRawCompY()));

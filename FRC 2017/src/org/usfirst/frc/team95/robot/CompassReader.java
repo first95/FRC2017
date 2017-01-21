@@ -56,18 +56,22 @@ public class CompassReader {
 
 	public double getHeading() {
 		
-		double ang, yrot, zrot, ysig;
+		double ang;//, yrot, zrot, ysig;
+		double alpha = -164;
+		double beta = -25;
+		double y = getRawCompY() - alpha;
+		double z = getRawCompZ() - beta;
+		//Just using Hard Fe correction
+		//double theta = -0.77964007;
+		//double sigma = 2.397130726;
 		
-		double y = getRawCompY() + 36;
-		double z = getRawCompZ() + 221.5;
-		double theta = -0.77964007;
-		double sigma = 2.397130726;
-		
+		/*
 		yrot = (y * Math.cos(theta)) + (z * -Math.sin(theta));
 		zrot = (y * Math.sin(theta)) + (z* Math.cos(theta));
 		ysig = yrot/ sigma;
 		y = (ysig * Math.cos(-theta)) + (zrot * -Math.sin(-theta));
 		z = (ysig * Math.sin(-theta)) + (zrot * Math.cos(-theta));
+		*/
 		
 		ang = Math.atan2(z, y);
 		return ang;
