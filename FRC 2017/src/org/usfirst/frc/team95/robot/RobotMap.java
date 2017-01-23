@@ -1,6 +1,6 @@
 package org.usfirst.frc.team95.robot;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import com.ctre.CANTalon;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
