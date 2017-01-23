@@ -11,4 +11,15 @@ public class Constants {
 	public static double wheelDiameter = 6; //THIS NEEDS TO BE SET
 	public static double timeserRPM = 430.89; //THIS NEEDS TO BE SET
 	public static double autonomousRotateSpeed = .3; //THIS NEEDS TO BE SET
+	public static double RFVoltsToCm(double voltage) {
+		if (voltage - 0.0625 == 0) {
+			return 4;
+		}
+		
+		if (voltage > 40 || voltage < 0) {
+			return 40;
+		}
+		
+		return 11.75 / (voltage - 0.0625) - 0.42;
+	}
 }

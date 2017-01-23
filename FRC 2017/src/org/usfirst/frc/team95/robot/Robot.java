@@ -25,6 +25,7 @@ import org.usfirst.frc.team95.robot.commands.ExampleCommand;
 import org.usfirst.frc.team95.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -56,6 +57,8 @@ public class Robot extends IterativeRobot {
     SendableChooser a, b, c;
     ArrayList<PollableSubsystem> updates = new ArrayList<PollableSubsystem>();
     ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
+    
+    AnalogInput rangeFinder;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -73,7 +76,8 @@ public class Robot extends IterativeRobot {
         compass = new CompassReader();
         header = new HeadingPreservation();
         headPres = new ButtonTracker(Constants.driveStick,2);
-        		
+        rangeFinder = new AnalogInput(0);
+        
         cycleTime = new Timer();
         cycleTime.reset();
         cycleTime.start();
@@ -249,6 +253,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putString("hex x", Double.toHexString(compass.getRawCompX())); 
     	SmartDashboard.putString("hex y", Double.toHexString(compass.getRawCompY()));
     	SmartDashboard.putString("hex z", Double.toHexString(compass.getRawCompZ()));
+    	
+    	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
+    	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
     	
     	/*System.out.println("new cycle");
     	System.out.println("CompX");
