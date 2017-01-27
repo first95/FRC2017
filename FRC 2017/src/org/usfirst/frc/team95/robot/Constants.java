@@ -21,9 +21,13 @@ public class Constants {
 		}
 		
 		return 11.75 / (voltage - 0.0625) - 0.42;*/
-		double distance; //centimeters
-		voltage -= 0.052271;
-		distance = 13.378 / voltage;
+		double distance; //centimeters   IR range finder
+		//voltage -= 0.052271;
+		//distance = 13.378 / voltage;
+		//return (distance * 0.393701); //inches conversion
+		
+		//Sonar Range finder
+		distance = (voltage * 100) / .977; //mV to mm
 		return distance;
 	}
 }
