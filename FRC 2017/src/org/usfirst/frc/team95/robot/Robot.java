@@ -262,7 +262,7 @@ public class Robot extends IterativeRobot {
     	
     	
     	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
-    		//compass.compCal();
+    		//auto cal
     		tempy = compass.getRawCompY();
     		tempz = compass.getRawCompZ();
     		if (compCal1.justPressedp()){// && compCal2.justPressedp()) {
@@ -291,9 +291,11 @@ public class Robot extends IterativeRobot {
 			System.out.println("zmin" + zmin);
     		System.out.println("alpha" + alpha);
     		System.out.println("beta" + beta);
+    		//overides alpha and beta in compreader. 
+    		//lasts until code is rebooted rewriting code will be needed
     		compass.compCal(alpha, beta);
     	}
-    	
+    	//resets compass to  original calibration
     	if (compCalReset.Pressedp()) {
     		alpha = -164;
     		beta = -25;

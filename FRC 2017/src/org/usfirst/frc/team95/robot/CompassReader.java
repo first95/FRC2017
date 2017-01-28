@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
 public class CompassReader {
 	private I2C m_i2c;
 	final int deviceAddress = 0x1E;
-	double alphaOrig = -164;
-	double betaOrig = -25;
-	double alpha = -164;
+	static double alphaOrig = -164;
+	static double betaOrig = -25;
+	double alpha = -164;// these ones can be overwritten
 	double beta = -25;
 	public CompassReader() {
 		m_i2c = new I2C(I2C.Port.kOnboard, deviceAddress);	
