@@ -16,7 +16,7 @@ public class RotateBy extends Auto {
 		time = Math.abs(distance / (Constants.wheelDiameter * Math.PI));
 		time /= (Constants.timeserRPM * Constants.autonomousRotateSpeed);
 		time *= 60;
-		System.out.println(time);
+		// System.out.println(time);
 
 		// move * RPM
 	}
@@ -33,9 +33,9 @@ public class RotateBy extends Auto {
 
 	@Override
 	public void update() {
-		System.out.println("Time: " + time);
-		System.out.println("Angle: " + angle);
-		System.out.println("Distance: " + distance);
+		// System.out.println("Time: " + time);
+		// System.out.println("Angle: " + angle);
+		// System.out.println("Distance: " + distance);
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
 			if (timer.get() > time) {
