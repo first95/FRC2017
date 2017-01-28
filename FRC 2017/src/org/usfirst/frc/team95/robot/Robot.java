@@ -44,6 +44,7 @@ public class Robot extends IterativeRobot {
 
     //ADXL345_I2C Giro;
     GyroReader gyro;
+    VariableStore variableStore;
     CompassReader compass;
     HeadingPreservation header;
     Timer cycleTime;   //for common periodic 
@@ -73,8 +74,9 @@ public class Robot extends IterativeRobot {
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
-        compass = new CompassReader();
-        header = new HeadingPreservation();
+        variableStore = new VariableStore();
+        compass = new CompassReader(variableStore);
+        header = new HeadingPreservation(compass);
         headPres = new ButtonTracker(Constants.driveStick,2);
         compCal1 = new ButtonTracker(Constants.driveStick,11);
         compCal2 = new ButtonTracker(Constants.driveStick,16);
@@ -260,6 +262,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
     	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
     	
+    	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
+    	SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
     	
     	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
     		//auto cal

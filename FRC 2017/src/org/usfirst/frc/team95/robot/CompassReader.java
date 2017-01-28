@@ -6,18 +6,24 @@ import java.nio.ByteOrder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
 
-
-
 public class CompassReader {
 	private I2C m_i2c;
+	private VariableStore m_variables;
 	final int deviceAddress = 0x1E;
 	static double alphaOrig = -164;
 	static double betaOrig = -25;
-	double alpha = -164;// these ones can be overwritten
-	double beta = -25;
-	public CompassReader() {
-		m_i2c = new I2C(I2C.Port.kOnboard, deviceAddress);	
+	double alpha = alphaOrig;// these ones can be overwritten
+	double beta = betaOrig;
+	static String compassAlphaVariableName = "compass_alpha";
+	static String compassBetaVariableName = "compass_beta";
+	
+	public CompassReader(VariableStore variables) {
+		m_i2c = new I2C(I2C.Port.kOnboard, deviceAddress);
 		m_i2c.write(2, 0);
+		m_variables = variables;
+		alpha = variables.GetDouble(compassAlphaVariableName, alphaOrig);
+		beta = variables.GetDouble(compassBetaVariableName, betaOrig);
+		System.out.println("Using values " + alpha + " and " + beta);
 	}
 	
 	//private static final byte kDataRegister = 0x32;
@@ -82,6 +88,9 @@ public class CompassReader {
 	public void compCal(double newAlpha, double newBeta) {
 		alpha = newAlpha;
 		beta = newBeta;
+		m_variables.StoreValue(compassAlphaVariableName, newAlpha);
+		m_variables.StoreValue(compassBetaVariableName, newBeta);
+		
 		/*double ymin, ymax, zmin, zmax;
 		ymax = 100000;//start temp val
 		ymin = 100000;//start temp val
@@ -124,10 +133,7 @@ public class CompassReader {
 	}
 	
 	public void compReset() {
-		alpha = alphaOrig;
-		beta = betaOrig;
+		compCal(alphaOrig, betaOrig);
 	}
-	
-	
 }
 
