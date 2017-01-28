@@ -23,7 +23,6 @@ public class CompassReader {
 		m_variables = variables;
 		alpha = variables.GetDouble(compassAlphaVariableName, alphaOrig);
 		beta = variables.GetDouble(compassBetaVariableName, betaOrig);
-		System.out.println("Using values " + alpha + " and " + beta);
 	}
 	
 	//private static final byte kDataRegister = 0x32;

@@ -27,7 +27,7 @@ public class TimedMove extends Auto {
 
 	@Override
 	public void update() {
-		System.out.println("Update!");
+		// System.out.println("Update!");
 		if (timer.get() > time) {
 			done = true;
 			stop();

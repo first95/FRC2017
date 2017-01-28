@@ -147,7 +147,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
 
-		System.out.println("Auto INIT");
+		// System.out.println("Auto INIT");
 
 		Auto am = (Auto) a.getSelected();
 		Auto bm = (Auto) b.getSelected();
@@ -178,7 +178,7 @@ public class Robot extends IterativeRobot {
 			}
 		}
 
-		System.out.println("Auto Periodic");
+		// System.out.println("Auto Periodic");
 		move.update();
 
         Scheduler.getInstance().run();
@@ -221,7 +221,7 @@ public class Robot extends IterativeRobot {
     public void commonPeriodic() {
     	
         
-        //System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
+        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
     	SmartDashboard.putNumber("X", compass2.getMagX());
     	SmartDashboard.putNumber("Y", compass2.getMagY());
@@ -264,12 +264,12 @@ public class Robot extends IterativeRobot {
     		
     		alpha = (ymax + ymin) / 2;
     		beta = (zmax + zmin) / 2;
-			System.out.println("ymax" + ymax);
-			System.out.println("ymin" + ymin);
-			System.out.println("zmax" + zmax);
-			System.out.println("zmin" + zmin);
-    		System.out.println("alpha" + alpha);
-    		System.out.println("beta" + beta);
+			// System.out.println("ymax" + ymax);
+			// System.out.println("ymin" + ymin);
+			// System.out.println("zmax" + zmax);
+			// System.out.println("zmin" + zmin);
+    		// System.out.println("alpha" + alpha);
+    		// System.out.println("beta" + beta);
     		//overides alpha and beta in compreader. 
     		//lasts until code is rebooted rewriting code will be needed
     		compass.compCal(alpha, beta);

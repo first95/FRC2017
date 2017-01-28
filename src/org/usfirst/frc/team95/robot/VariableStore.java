@@ -50,7 +50,7 @@ public class VariableStore {
 			// Not really a failure. Storage doesn't exist yet.
 		}
 		catch (IOException e) {
-			System.out.println(e);
+			// System.out.println(e);
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class VariableStore {
 			}
 		}
 		catch (IOException e) {
-			System.out.println(e);
+			// System.out.println(e);
 		}
 		
 	}
