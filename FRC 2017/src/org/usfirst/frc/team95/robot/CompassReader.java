@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
 public class CompassReader {
 	private I2C m_i2c;
 	final int deviceAddress = 0x1E;
+	double alpha = -164;
+	double beta = -25;
 	public CompassReader() {
 		m_i2c = new I2C(I2C.Port.kOnboard, deviceAddress);	
 		m_i2c.write(2, 0);
@@ -57,8 +59,6 @@ public class CompassReader {
 	public double getHeading() {
 		
 		double ang;//, yrot, zrot, ysig;
-		double alpha = -164;
-		double beta = -25;
 		double y = getRawCompY() - alpha;
 		double z = getRawCompZ() - beta;
 		//Just using Hard Fe correction
@@ -76,5 +76,45 @@ public class CompassReader {
 		ang = Math.atan2(z, y);
 		return ang;
 	}
+	
+	public void compCal() {
+		
+		double ymin, ymax, zmin, zmax;
+		ymax = 100000;//start temp val
+		ymin = 100000;//start temp val
+		zmax = 100000;//start temp val
+		zmin = 100000;//start temp val
+		
+		if(ymax == 100000) {
+			ymax = getRawCompY();
+		}
+		if(ymin == 100000) {
+			ymin = getRawCompY();
+		}
+		if(zmax == 100000) {
+			zmax = getRawCompZ();
+		}
+		if(zmin == 100000) {
+			zmin = getRawCompZ();
+		}
+		
+		if (getRawCompY() > ymax) {
+			ymax = getRawCompY();
+		} else if (getRawCompY() < ymin) {
+			ymin = getRawCompY();
+		}
+		
+		if (getRawCompZ() > zmax) {
+			zmax = getRawCompZ();
+		} else if (getRawCompZ() < zmin) {
+			zmin = getRawCompZ();
+		}
+		
+		alpha = (ymax - ymin) / 2;
+		beta = (zmax - zmin) / 2;
+		
+	}
+	
+	
 }
 

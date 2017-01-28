@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
    
     Double angle, angDead, prevADead, angAvg, headingToPres;
     Double[] angleRec;
-    ButtonTracker headPres;
+    ButtonTracker headPres, compCal1, compCal2;
     
     Auto move;
     SendableChooser a, b, c;
@@ -76,6 +76,8 @@ public class Robot extends IterativeRobot {
         compass = new CompassReader();
         header = new HeadingPreservation();
         headPres = new ButtonTracker(Constants.driveStick,2);
+        compCal1 = new ButtonTracker(Constants.driveStick,11);
+        compCal2 = new ButtonTracker(Constants.driveStick,16);
         rangeFinder = new AnalogInput(0);
         
         cycleTime = new Timer();
@@ -272,6 +274,12 @@ public class Robot extends IterativeRobot {
     	System.out.println(gyro.getZAng());
     	System.out.println("time");
     	System.out.println(cycleTime.get());*/
+    	
+    	while (compCal1.Pressedp() && compCal2.Pressedp()) {
+    		compass.compCal();
+    	}
+    	
+    	
     	headPres.update();
     }
 }
