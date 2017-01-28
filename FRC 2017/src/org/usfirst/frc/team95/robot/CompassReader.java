@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
 public class CompassReader {
 	private I2C m_i2c;
 	final int deviceAddress = 0x1E;
+	double alphaOrig = -164;
+	double betaOrig = -25;
 	double alpha = -164;
 	double beta = -25;
 	public CompassReader() {
@@ -77,9 +79,10 @@ public class CompassReader {
 		return ang;
 	}
 	
-	public void compCal() {
-		
-		double ymin, ymax, zmin, zmax;
+	public void compCal(double newAlpha, double newBeta) {
+		alpha = newAlpha;
+		beta = newBeta;
+		/*double ymin, ymax, zmin, zmax;
 		ymax = 100000;//start temp val
 		ymin = 100000;//start temp val
 		zmax = 100000;//start temp val
@@ -100,19 +103,29 @@ public class CompassReader {
 		
 		if (getRawCompY() > ymax) {
 			ymax = getRawCompY();
+			System.out.println("ymax" + ymax);
 		} else if (getRawCompY() < ymin) {
 			ymin = getRawCompY();
+			System.out.println("ymin" + ymin);
 		}
 		
 		if (getRawCompZ() > zmax) {
 			zmax = getRawCompZ();
+			System.out.println("zmax" + zmax);
 		} else if (getRawCompZ() < zmin) {
 			zmin = getRawCompZ();
+			System.out.println("zmin" + zmin);
 		}
 		
 		alpha = (ymax - ymin) / 2;
 		beta = (zmax - zmin) / 2;
-		
+		System.out.println("alpha" + alpha);
+		System.out.println("beta" + beta); */
+	}
+	
+	public void compReset() {
+		alpha = alphaOrig;
+		beta = betaOrig;
 	}
 	
 	
