@@ -39,6 +39,8 @@ public class Robot extends IterativeRobot {
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
 
+	VisionDisplay test;
+	
     Command autonomousCommand;
     SendableChooser chooser;
 
@@ -77,6 +79,12 @@ public class Robot extends IterativeRobot {
         header = new HeadingPreservation();
         headPres = new ButtonTracker(Constants.driveStick,2);
         rangeFinder = new AnalogInput(0);
+        
+        //Vision Stuff
+        
+        test = new VisionDisplay();
+        
+        //
         
         cycleTime = new Timer();
         cycleTime.reset();
@@ -234,7 +242,7 @@ public class Robot extends IterativeRobot {
         //angle averaging
         angAvg = ((angleRec[0] + angleRec[1] + angleRec[2] + angleRec[3]) / 4);
         
-        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
+        // System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
     	SmartDashboard.putNumber("X", Math.atan2(compass.getRawCompZ(), compass.getRawCompX()));
     	SmartDashboard.putNumber("Y", Math.atan2(compass.getRawCompY(), compass.getRawCompX()));
