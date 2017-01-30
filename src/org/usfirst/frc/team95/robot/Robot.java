@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
     Timer cycleTime;   //for common periodic 
     double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
    
-    Double angle, angDead, prevADead, angAvg, headingToPres;
+    Double headingToPres;
     Double[] angleRec;
     ButtonTracker headPres, compCal1, compCal2, compCalReset;
     
@@ -88,8 +88,7 @@ public class Robot extends IterativeRobot {
         cycleTime = new Timer();
         cycleTime.reset();
         cycleTime.start();
-        angleRec = new Double[4];       
-        prevADead = 5.3;
+        angleRec = new Double[4];
         angleRec[3] = 0.1;
         angleRec[2] = 0.1;
         angleRec[1] = 0.1;
@@ -226,6 +225,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("X", compass2.getMagX());
     	SmartDashboard.putNumber("Y", compass2.getMagY());
     	SmartDashboard.putNumber("Z", compass2.getMagZ());
+    	SmartDashboard.putNumber("ATanXY", Math.atan2(compass2.getMagX(), compass2.getMagY()));
+    	SmartDashboard.putNumber("ATanZY", Math.atan2(compass2.getMagZ(), compass2.getMagY()));
+    	SmartDashboard.putNumber("ATanXZ", Math.atan2(compass2.getMagX(), compass2.getMagZ()));
     	
     	SmartDashboard.putNumber("CX", compass.getRawCompX()); 
     	SmartDashboard.putNumber("CY", compass.getRawCompY()); 
@@ -243,7 +245,7 @@ public class Robot extends IterativeRobot {
     	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
     		//auto cal
     		tempy = compass.getRawCompY();
-    		tempz = compass.getRawCompZ();
+    			tempz = compass.getRawCompZ();
     		if (compCal1.justPressedp()){// && compCal2.justPressedp()) {
     			ymax = tempy;
     			ymin = tempy;
