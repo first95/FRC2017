@@ -39,6 +39,8 @@ public class Robot extends IterativeRobot {
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
 
+	VisionDisplay test;
+	
     Command autonomousCommand;
     SendableChooser chooser;
 
@@ -84,6 +86,12 @@ public class Robot extends IterativeRobot {
         compCal2 = new ButtonTracker(Constants.driveStick,16);
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
         rangeFinder = new AnalogInput(0);
+        
+        //Vision Stuff
+        
+        test = new VisionDisplay();
+        
+        //
         
         cycleTime = new Timer();
         cycleTime.reset();
@@ -220,7 +228,7 @@ public class Robot extends IterativeRobot {
     public void commonPeriodic() {
     	
         
-        System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
+        // System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
     	SmartDashboard.putNumber("X", compass2.getMagX());
     	SmartDashboard.putNumber("Y", compass2.getMagY());
