@@ -38,7 +38,7 @@ public class ButtonTracker implements PollableSubsystem {
 
 		if (usedNumbers.get(Joystick)[Channel] != null) {
 			// SmartDashboard.putBoolean("ERROR", true);
-			System.out.println("MORE THAN ONE BUTTON TRACKER PER BUTTON.");
+			// System.out.println("MORE THAN ONE BUTTON TRACKER PER BUTTON.");
 			DriverStation.reportError("MORE THAN ONE BUTTON TRACKER PER BUTTON!", false);
 		}
 

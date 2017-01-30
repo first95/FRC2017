@@ -30,10 +30,6 @@
 	<classpathentry kind="lib" path="libs/frc-2017/WPILib.jar"/>
 	<classpathentry kind="lib" path="libs/frc-2017/WPILib-sources.jar"/>
 	<classpathentry kind="lib" path="libs/CTRE-4.4.1.9/CTRLib.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Hobom/wpilib/java/current/lib/cscore.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Hobom/wpilib/java/current/lib/NetworkTables.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Hobom/wpilib/java/current/lib/opencv.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Hobom/wpilib/java/current/lib/WPILib.jar"/>
 	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
 	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>

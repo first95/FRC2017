@@ -5,9 +5,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class HeadingPreservation {
 	
 	double currentHeading, forward, spin;
-	CompassReader compass = new CompassReader();
+	CompassReader m_compass;
+	
+	public HeadingPreservation(CompassReader compass) {
+		m_compass = compass;
+	}
+	
 	public void setHeading(double angle) {
-		currentHeading = compass.getHeading();
+		currentHeading = m_compass.getHeading();
 		forward = Constants.driveStick.getY();
 		spin = angle - currentHeading;
 		if (spin > Math.PI) {

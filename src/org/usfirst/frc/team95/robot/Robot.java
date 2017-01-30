@@ -46,14 +46,16 @@ public class Robot extends IterativeRobot {
 
     //ADXL345_I2C Giro;
     GyroReader gyro;
+    VariableStore variableStore;
     CompassReader compass;
+    ADIS16448_IMU compass2;
     HeadingPreservation header;
     Timer cycleTime;   //for common periodic 
-    double totalX, totalY, totalZ;
+    double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
    
     Double angle, angDead, prevADead, angAvg, headingToPres;
     Double[] angleRec;
-    ButtonTracker headPres;
+    ButtonTracker headPres, compCal1, compCal2, compCalReset;
     
     Auto move;
     SendableChooser a, b, c;
@@ -75,9 +77,14 @@ public class Robot extends IterativeRobot {
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         //Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
         gyro = new GyroReader();
-        compass = new CompassReader();
-        header = new HeadingPreservation();
+        variableStore = new VariableStore();
+        compass = new CompassReader(variableStore);
+        compass2 = new ADIS16448_IMU();
+        header = new HeadingPreservation(compass);
         headPres = new ButtonTracker(Constants.driveStick,2);
+        compCal1 = new ButtonTracker(Constants.driveStick,11);
+        compCal2 = new ButtonTracker(Constants.driveStick,16);
+        compCalReset = new ButtonTracker(Constants.driveStick, 5);
         rangeFinder = new AnalogInput(0);
         
         //Vision Stuff
@@ -148,7 +155,7 @@ public class Robot extends IterativeRobot {
 	 */
     public void autonomousInit() {
 
-		System.out.println("Auto INIT");
+		// System.out.println("Auto INIT");
 
 		Auto am = (Auto) a.getSelected();
 		Auto bm = (Auto) b.getSelected();
@@ -179,7 +186,7 @@ public class Robot extends IterativeRobot {
 			}
 		}
 
-		System.out.println("Auto Periodic");
+		// System.out.println("Auto Periodic");
 		move.update();
 
         Scheduler.getInstance().run();
@@ -220,66 +227,71 @@ public class Robot extends IterativeRobot {
     
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
-    	//cycleTime.reset();
-    	//cycleTime.start();
-        
-        angle = Math.atan2(compass.getRawCompY(), compass.getRawCompX());
-        
-        //storing 4 most recent angle values
-        angleRec[3] = angleRec[2];
-        angleRec[2] = angleRec[1];
-        angleRec[1] = angleRec[0];
-        angleRec[0] = angle;
-        
-        //angle Dead banding
-        if (angle <= prevADead +.15 && angle >= prevADead -.15) {
-        	angDead = prevADead;
-        } else {
-        	angDead = angle;
-        }
-        prevADead = angDead;
-        
-        //angle averaging
-        angAvg = ((angleRec[0] + angleRec[1] + angleRec[2] + angleRec[3]) / 4);
+    	
         
         // System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
-    	SmartDashboard.putNumber("X", Math.atan2(compass.getRawCompZ(), compass.getRawCompX()));
-    	SmartDashboard.putNumber("Y", Math.atan2(compass.getRawCompY(), compass.getRawCompX()));
-    	SmartDashboard.putNumber("Z", Math.atan2(compass.getRawCompZ(), compass.getRawCompY()));
+    	SmartDashboard.putNumber("X", compass2.getMagX());
+    	SmartDashboard.putNumber("Y", compass2.getMagY());
+    	SmartDashboard.putNumber("Z", compass2.getMagZ());
     	
     	SmartDashboard.putNumber("CX", compass.getRawCompX()); 
     	SmartDashboard.putNumber("CY", compass.getRawCompY()); 
     	SmartDashboard.putNumber("CZ", compass.getRawCompZ()); 
     	
-    	SmartDashboard.putNumber("Angle", angle);
-    	SmartDashboard.putNumber("Angle Dead", angDead);
-    	SmartDashboard.putNumber("Angle avg", angAvg);
     	
     	SmartDashboard.putNumber("Heading", compass.getHeading());
-    	
-    	SmartDashboard.putString("hex x", Double.toHexString(compass.getRawCompX())); 
-    	SmartDashboard.putString("hex y", Double.toHexString(compass.getRawCompY()));
-    	SmartDashboard.putString("hex z", Double.toHexString(compass.getRawCompZ()));
     	
     	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
     	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
     	
-    	/*System.out.println("new cycle");
-    	System.out.println("CompX");
-    	System.out.println(compass.getRawCompX());
-    	System.out.println("CompY");
-    	System.out.println(compass.getRawCompY());
-    	System.out.println("CompZ");
-    	System.out.println(compass.getRawCompZ());
-    	System.out.println("GyroX");
-    	System.out.println(gyro.getXAng());
-    	System.out.println("GyroY");
-    	System.out.println(gyro.getYAng());
-    	System.out.println("GyroZ");
-    	System.out.println(gyro.getZAng());
-    	System.out.println("time");
-    	System.out.println(cycleTime.get());*/
+    	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
+    	SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
+    	
+    	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
+    		//auto cal
+    		tempy = compass.getRawCompY();
+    		tempz = compass.getRawCompZ();
+    		if (compCal1.justPressedp()){// && compCal2.justPressedp()) {
+    			ymax = tempy;
+    			ymin = tempy;
+    			zmax = tempz;
+    			zmin = tempz;
+    		}
+    		if (tempy > ymax) {
+    			ymax = tempy;
+    		} else if (tempy < ymin) {
+    			ymin = tempy;
+    		}
+    		
+    		if (tempz > zmax) {
+    			zmax = tempz;
+    		} else if (tempz < zmin) {
+    			zmin = tempz;
+    		}
+    		
+    		alpha = (ymax + ymin) / 2;
+    		beta = (zmax + zmin) / 2;
+			// System.out.println("ymax" + ymax);
+			// System.out.println("ymin" + ymin);
+			// System.out.println("zmax" + zmax);
+			// System.out.println("zmin" + zmin);
+    		// System.out.println("alpha" + alpha);
+    		// System.out.println("beta" + beta);
+    		//overides alpha and beta in compreader. 
+    		//lasts until code is rebooted rewriting code will be needed
+    		compass.compCal(alpha, beta);
+    	}
+    	//resets compass to  original calibration
+    	if (compCalReset.Pressedp()) {
+    		alpha = -164;
+    		beta = -25;
+    		compass.compReset();
+    	}
+    	
     	headPres.update();
+    	compCal1.update();
+    	compCal2.update();
+    	compCalReset.update();
     }
 }
