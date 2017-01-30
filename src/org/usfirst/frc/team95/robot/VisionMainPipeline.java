@@ -27,7 +27,7 @@ import org.opencv.imgproc.*;
  */
 
 public class VisionMainPipeline
-	{		
+	{
 		// Outputs
 		private Mat rgbThresholdOutput = new Mat();
 		private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
@@ -224,11 +224,11 @@ public class VisionMainPipeline
 						final double ratio = bb.width / (double) bb.height;
 						if (ratio < minRatio || ratio > maxRatio)
 							continue;
-						
+
 						// Run Stuff to Get Stuff, see the class for more :D
 						new VisionGatherDistanceAndOther(bb);
 						// -------------------------------------------------
-						
+
 						output.add(contour);
 
 					}

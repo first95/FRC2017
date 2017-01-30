@@ -16,6 +16,7 @@ public class VisionCameraSetUp
 
 		// Setup a mat to use
 		public static Mat mat = new Mat();
+		public static Mat finalMat = new Mat();
 		
 		// Make a new OpenCV camera capture
 		VideoCapture camera;
@@ -24,13 +25,7 @@ public class VisionCameraSetUp
 		public VisionCameraSetUp(VideoCapture cam)
 			{
 				camera = cam;
-			}
 
-		// THIS SECTION PAINTS AND COVERTS EVERYTHING
-		// THIS SECTION PAINTS AND COVERTS EVERYTHING
-		// THIS SECTION PAINTS AND COVERTS EVERYTHING
-
-			{
 				// Import pipelines to use
 				VisionMainPipeline p = new VisionMainPipeline();
 
@@ -44,11 +39,11 @@ public class VisionCameraSetUp
 
 						// Draw the contours to the mat
 						Imgproc.drawContours(mat, p.filterContoursOutput(), -1, new Scalar(0, 0, 255));
+						
+						finalMat = mat;
 
-					
+					}
 
-				
+			}
 
-			}	
-
-	}}
+	}
