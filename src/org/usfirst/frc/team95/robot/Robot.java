@@ -87,9 +87,9 @@ public class Robot extends IterativeRobot {
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
         rangeFinder = new AnalogInput(0);
         
-        //Vision Stuff
+        Vision Stuff
         
-        test = new VisionDisplay();
+        //test = new VisionDisplay();
         
         //
         
