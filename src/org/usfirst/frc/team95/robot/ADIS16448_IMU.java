@@ -1019,6 +1019,16 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
   public synchronized double getMagZ() {
     return m_mag_z;
   }
+  
+  public double getHeading(double alpha, double beta) {
+	  double angle;
+	  double x = getMagX();
+	  double z = getMagZ();
+	  x -= alpha;
+	  z -= beta;
+	  angle = Math.atan2(x, z);
+	  return angle;
+  }
 
   public synchronized double getPitch() {
     return m_pitch;

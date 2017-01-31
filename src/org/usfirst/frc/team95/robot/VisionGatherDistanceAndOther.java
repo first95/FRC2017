@@ -22,7 +22,7 @@ public class VisionGatherDistanceAndOther
 				double pixOffset, pix2Deg;
 				Point point;
 				int distanceCam2Tar;
-				NetworkTable table = NetworkTable.getTable("datatable");
+				//NetworkTable table = NetworkTable.getTable("datatable");
 
 				// Calculate Center of Tar
 				centerYOfTar = (contourRect.height / 2);
@@ -50,7 +50,7 @@ public class VisionGatherDistanceAndOther
 				// Draw a circle in the center of the tar
 				Imgproc.circle(VisionCameraSetUp.mat, point, 5, new Scalar(0, 0, 255), 5);
 				
-				table.putValue("Test", VisionCameraSetUp.finalMat);
+				//table.putValue("Test", VisionCameraSetUp.finalMat);
 				
 				
 

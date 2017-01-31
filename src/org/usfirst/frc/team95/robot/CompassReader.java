@@ -12,8 +12,8 @@ public class CompassReader {
 	final int deviceAddress = 0x1E;
 	static double alphaOrig = -164;
 	static double betaOrig = -25;
-	double alpha = alphaOrig;// these ones can be overwritten
-	double beta = betaOrig;
+	public double alpha = alphaOrig;// these ones can be overwritten
+	public double beta = betaOrig;
 	static String compassAlphaVariableName = "compass_alpha";
 	static String compassBetaVariableName = "compass_beta";
 	

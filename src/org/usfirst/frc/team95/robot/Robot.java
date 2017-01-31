@@ -228,7 +228,7 @@ public class Robot extends IterativeRobot {
     public void commonPeriodic() {
     	
         
-        // System.out.println(compass.getRawCompX() + ", " + compass.getRawCompY() + ", " + compass.getRawCompZ() + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
+        //System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
     	SmartDashboard.putNumber("X", compass2.getMagX());
     	SmartDashboard.putNumber("Y", compass2.getMagY());
@@ -242,7 +242,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("CZ", compass.getRawCompZ()); 
     	
     	
-    	SmartDashboard.putNumber("Heading", compass.getHeading());
+    	SmartDashboard.putNumber("Heading", compass2.getHeading(alpha, beta));
     	
     	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
     	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
@@ -252,8 +252,8 @@ public class Robot extends IterativeRobot {
     	
     	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
     		//auto cal
-    		tempy = compass.getRawCompY();
-    			tempz = compass.getRawCompZ();
+    		tempy = compass2.getMagX();
+    			tempz = compass2.getMagZ();
     		if (compCal1.justPressedp()){// && compCal2.justPressedp()) {
     			ymax = tempy;
     			ymin = tempy;
