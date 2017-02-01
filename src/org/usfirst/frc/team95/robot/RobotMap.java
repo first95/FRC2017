@@ -2,6 +2,8 @@ package org.usfirst.frc.team95.robot;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.first.wpilibj.Solenoid;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -14,6 +16,7 @@ public class RobotMap {
     public static CANTalon left1, left2, left3, right1, right2, right3;
 	public static Drive drive;
 	public static Object driveLock = null;
+	public static Solenoid gearPooper, gearMouth;
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
@@ -36,5 +39,8 @@ public class RobotMap {
 		right2.set(4);
 		right3.changeControlMode(CANTalon.TalonControlMode.Follower);
 		right3.set(4);
+		gearPooper = new Solenoid(1);
+		gearMouth = new Solenoid(2);
+		
     }
 }

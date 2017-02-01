@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot {
    
     Double headingToPres;
     Double[] angleRec;
-    ButtonTracker headPres, compCal1, compCal2, compCalReset;
+    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear;
     
     Auto move;
     SendableChooser a, b, c;
@@ -85,6 +85,8 @@ public class Robot extends IterativeRobot {
         compCal1 = new ButtonTracker(Constants.driveStick,11);
         compCal2 = new ButtonTracker(Constants.driveStick,16);
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
+        eatGear = new ButtonTracker(Constants.driveStick, 3);
+        poopGear = new ButtonTracker(Constants.driveStick, 4);
         rangeFinder = new AnalogInput(0);
         
         //Vision Stuff
@@ -206,6 +208,7 @@ public class Robot extends IterativeRobot {
         commonPeriodic();
     	Scheduler.getInstance().run();
     	
+    	//drive
     	if(Constants.driveStick.getRawButton(2)) {
     		if(headPres.justPressedp()) {
     			headingToPres = compass.getHeading();
@@ -215,6 +218,10 @@ public class Robot extends IterativeRobot {
     	} else {
     		RobotMap.drive.arcade(Constants.driveStick);
     	}
+    	
+    	//alpha gear code
+    	RobotMap.gearMouth.set(eatGear.Pressedp());
+    	RobotMap.gearPooper.set(poopGear.Pressedp());
     }
     
     /**
@@ -295,5 +302,7 @@ public class Robot extends IterativeRobot {
     	compCal1.update();
     	compCal2.update();
     	compCalReset.update();
+    	eatGear.update();
+    	poopGear.update();
     }
 }
