@@ -90,45 +90,6 @@ public class CompassReader {
 		m_variables.StoreValue(compassAlphaVariableName, newAlpha);
 		m_variables.StoreValue(compassBetaVariableName, newBeta);
 		
-		/*double ymin, ymax, zmin, zmax;
-		ymax = 100000;//start temp val
-		ymin = 100000;//start temp val
-		zmax = 100000;//start temp val
-		zmin = 100000;//start temp val
-		
-		if(ymax == 100000) {
-			ymax = getRawCompY();
-		}
-		if(ymin == 100000) {
-			ymin = getRawCompY();
-		}
-		if(zmax == 100000) {
-			zmax = getRawCompZ();
-		}
-		if(zmin == 100000) {
-			zmin = getRawCompZ();
-		}
-		
-		if (getRawCompY() > ymax) {
-			ymax = getRawCompY();
-			System.out.println("ymax" + ymax);
-		} else if (getRawCompY() < ymin) {
-			ymin = getRawCompY();
-			System.out.println("ymin" + ymin);
-		}
-		
-		if (getRawCompZ() > zmax) {
-			zmax = getRawCompZ();
-			System.out.println("zmax" + zmax);
-		} else if (getRawCompZ() < zmin) {
-			zmin = getRawCompZ();
-			System.out.println("zmin" + zmin);
-		}
-		
-		alpha = (ymax - ymin) / 2;
-		beta = (zmax - zmin) / 2;
-		System.out.println("alpha" + alpha);
-		System.out.println("beta" + beta); */
 	}
 	
 	public void compReset() {

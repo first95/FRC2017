@@ -126,6 +126,13 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
   private SPI m_spi;
   private DigitalOutput m_reset;
   private DigitalInput m_interrupt;
+  private VariableStore m_variables;
+  static double alphaOrig = -164;
+  static double betaOrig = -25;
+  public double alpha = alphaOrig;// these ones can be overwritten
+  public double beta = betaOrig;
+  static String compassAlphaVariableName = "compass_alpha";
+  static String compassBetaVariableName = "compass_beta";
 
   // Sample from the IMU
   private static class Sample {
@@ -219,9 +226,13 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
   /**
    * Constructor.
    */
-  public ADIS16448_IMU(Axis yaw_axis, AHRSAlgorithm algorithm) {
+  public ADIS16448_IMU(Axis yaw_axis, AHRSAlgorithm algorithm, VariableStore variables) {
     m_yaw_axis = yaw_axis;
     m_algorithm = algorithm;
+    
+    m_variables = variables;
+	alpha = variables.GetDouble(compassAlphaVariableName, alphaOrig);
+	beta = variables.GetDouble(compassBetaVariableName, betaOrig);
 
     // Force the IMU reset pin to toggle on startup
     //m_reset = new DigitalOutput(18);  // MXP DIO8
@@ -299,15 +310,15 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
   /*
    * Constructor assuming Complementary AHRS algorithm.
    */
-  public ADIS16448_IMU(Axis yaw_axis) {
-    this(yaw_axis, AHRSAlgorithm.kComplementary);
+  public ADIS16448_IMU(Axis yaw_axis, VariableStore variables) {
+    this(yaw_axis, AHRSAlgorithm.kComplementary, variables);
   }
 
   /*
    * Constructor assuming yaw axis is "Z" and Complementary AHRS algorithm.
    */
-  public ADIS16448_IMU() {
-    this(Axis.kZ, AHRSAlgorithm.kComplementary);
+  public ADIS16448_IMU(VariableStore variables) {
+    this(Axis.kZ, AHRSAlgorithm.kComplementary, variables);
   }
 
   /**
@@ -1020,7 +1031,7 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
     return m_mag_z;
   }
   
-  public double getHeading(double alpha, double beta) {
+  public double getHeading() {
 	  double angle;
 	  double x = getMagX();
 	  double z = getMagZ();

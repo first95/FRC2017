@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot {
         gyro = new GyroReader();
         variableStore = new VariableStore();
         compass = new CompassReader(variableStore);
-        compass2 = new ADIS16448_IMU();
+        compass2 = new ADIS16448_IMU(variableStore);
         header = new HeadingPreservation(compass);
         headPres = new ButtonTracker(Constants.driveStick,2);
         compCal1 = new ButtonTracker(Constants.driveStick,11);
@@ -242,7 +242,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("CZ", compass.getRawCompZ()); 
     	
     	
-    	SmartDashboard.putNumber("Heading", compass2.getHeading(alpha, beta));
+    	SmartDashboard.putNumber("Heading", compass2.getHeading());
     	
     	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
     	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
