@@ -16,7 +16,7 @@ public class RobotMap {
     public static CANTalon left1, left2, left3, right1, right2, right3;
 	public static Drive drive;
 	public static Object driveLock = null;
-	public static Solenoid gearPooper, gearMouth;
+	public static Solenoid gearPooper, gearMouth, pushFaceOut;
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;
@@ -41,6 +41,7 @@ public class RobotMap {
 		right3.set(4);
 		gearPooper = new Solenoid(1);
 		gearMouth = new Solenoid(2);
+		pushFaceOut = new Solenoid(3);
 		
     }
 }

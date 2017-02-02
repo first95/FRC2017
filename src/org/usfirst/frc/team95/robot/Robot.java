@@ -221,6 +221,7 @@ public class Robot extends IterativeRobot {
     	
     	//alpha gear code
     	RobotMap.gearMouth.set(eatGear.Pressedp());
+    	RobotMap.pushFaceOut.set(poopGear.Pressedp());
     	RobotMap.gearPooper.set(poopGear.Pressedp());
     }
     
@@ -260,7 +261,7 @@ public class Robot extends IterativeRobot {
     	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
     		//auto cal
     		tempy = compass2.getMagX();
-    			tempz = compass2.getMagZ();
+    		tempz = compass2.getMagZ();
     		if (compCal1.justPressedp()){// && compCal2.justPressedp()) {
     			ymax = tempy;
     			ymin = tempy;
