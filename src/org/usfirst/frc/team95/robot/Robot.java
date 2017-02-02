@@ -204,7 +204,7 @@ public class Robot extends IterativeRobot {
     	
     	//drive
     	if(Constants.driveStick.getRawButton(2)) {
-    		if(headPres.justPressedp()) {
+    		if(headPres.wasJustPressed()) {
     			headingToPres = compass.getHeading();
     		}
     		
@@ -214,9 +214,9 @@ public class Robot extends IterativeRobot {
     	}
     	
     	//alpha gear code
-    	RobotMap.gearMouth.set(eatGear.Pressedp());
-    	RobotMap.pushFaceOut.set(poopGear.Pressedp());
-    	RobotMap.gearPooper.set(poopGear.Pressedp());
+    	RobotMap.gearMouth.set(eatGear.isPressed());
+    	RobotMap.pushFaceOut.set(poopGear.isPressed());
+    	RobotMap.gearPooper.set(poopGear.isPressed());
     }
     
     /**
@@ -252,11 +252,11 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
     	SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
     	
-    	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
+    	if (compCal1.isPressed()){// && compCal2.Pressedp()) {
     		//auto cal
     		tempy = compass2.getMagX();
     		tempz = compass2.getMagZ();
-    		if (compCal1.justPressedp()){// && compCal2.justPressedp()) {
+    		if (compCal1.wasJustPressed()){// && compCal2.justPressedp()) {
     			ymax = tempy;
     			ymin = tempy;
     			zmax = tempz;
@@ -287,7 +287,7 @@ public class Robot extends IterativeRobot {
     		compass.compCal(alpha, beta);
     	}
     	//resets compass to  original calibration
-    	if (compCalReset.Pressedp()) {
+    	if (compCalReset.isPressed()) {
     		alpha = -164;
     		beta = -25;
     		compass.compReset();

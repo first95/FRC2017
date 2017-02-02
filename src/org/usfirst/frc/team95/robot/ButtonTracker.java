@@ -51,15 +51,15 @@ public class ButtonTracker implements PollableSubsystem {
 		this.move = move;
 	}
 
-	public boolean Pressedp() {
+	public boolean isPressed() {
 		return mNow;
 	}
 
-	public boolean justPressedp() {
+	public boolean wasJustPressed() {
 		return (mNow && (!mLast));
 	}
 
-	public boolean justUnPressedp() {
+	public boolean wasJustReleased() {
 		return (!mNow && mLast);
 	}
 
@@ -68,11 +68,11 @@ public class ButtonTracker implements PollableSubsystem {
 		mNow = mJoystick.getRawButton(mChannel);
 
 		if (this.move != null) {
-			if (justPressedp()) {
+			if (wasJustPressed()) {
 				this.move.init();
-			} else if (Pressedp()) {
+			} else if (isPressed()) {
 				this.move.update();
-			} else if (justUnPressedp()) {
+			} else if (wasJustReleased()) {
 				this.move.stop();
 			}
 		}
