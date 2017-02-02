@@ -21,8 +21,6 @@ import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.TimedMove;
-import org.usfirst.frc.team95.robot.commands.ExampleCommand;
-import org.usfirst.frc.team95.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -35,9 +33,6 @@ import edu.wpi.first.wpilibj.AnalogInput;
  * directory.
  */
 public class Robot extends IterativeRobot {
-
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static OI oi;
 
 	VisionDisplay test;
 	
@@ -68,10 +63,9 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-		oi = new OI();
 		RobotMap.init();
         chooser = new SendableChooser();
-        chooser.addDefault("Default Auto", new ExampleCommand());
+//        chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
         //ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
@@ -210,7 +204,7 @@ public class Robot extends IterativeRobot {
     	
     	//drive
     	if(Constants.driveStick.getRawButton(2)) {
-    		if(headPres.justPressedp()) {
+    		if(headPres.wasJustPressed()) {
     			headingToPres = compass.getHeading();
     		}
     		
@@ -220,9 +214,9 @@ public class Robot extends IterativeRobot {
     	}
     	
     	//alpha gear code
-    	RobotMap.gearMouth.set(eatGear.Pressedp());
-    	RobotMap.pushFaceOut.set(poopGear.Pressedp());
-    	RobotMap.gearPooper.set(poopGear.Pressedp());
+    	RobotMap.gearMouth.set(eatGear.isPressed());
+    	RobotMap.pushFaceOut.set(poopGear.isPressed());
+    	RobotMap.gearPooper.set(poopGear.isPressed());
     }
     
     /**
@@ -258,11 +252,11 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
     	SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
     	
-    	if (compCal1.Pressedp()){// && compCal2.Pressedp()) {
+    	if (compCal1.isPressed()){// && compCal2.Pressedp()) {
     		//auto cal
     		tempy = compass2.getMagX();
     		tempz = compass2.getMagZ();
-    		if (compCal1.justPressedp()){// && compCal2.justPressedp()) {
+    		if (compCal1.wasJustPressed()){// && compCal2.justPressedp()) {
     			ymax = tempy;
     			ymin = tempy;
     			zmax = tempz;
@@ -293,7 +287,7 @@ public class Robot extends IterativeRobot {
     		compass.compCal(alpha, beta);
     	}
     	//resets compass to  original calibration
-    	if (compCalReset.Pressedp()) {
+    	if (compCalReset.isPressed()) {
     		alpha = -164;
     		beta = -25;
     		compass.compReset();
