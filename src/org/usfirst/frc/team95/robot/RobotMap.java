@@ -11,16 +11,14 @@ import edu.wpi.first.wpilibj.Solenoid;
  * floating around.
  */
 public class RobotMap {
-    // For example to map the left and right motors, you could define the
-    // following variables to use with your drivetrain subsystem.
     public static CANTalon left1, left2, left3, right1, right2, right3;
 	public static Drive drive;
+	// Autonomous moves wishing to control the robot's drive base
+	// should set the driveLock object to "this" (that is, themselves).
+	// They should also check that the driveLock object is null prior to
+	// controlling the drive motors.
 	public static Object driveLock = null;
 	public static Solenoid gearPooper, gearMouth, pushFaceOut;
-    // If you are using multiple modules, make sure to define both the port
-    // number and the module. For example you with a rangefinder:
-    // public static int rangefinderPort = 1;
-    // public static int rangefinderModule = 1;
     
     public static void init() {
 		// drive motors

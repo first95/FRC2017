@@ -39,7 +39,6 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
     SendableChooser chooser;
 
-    //ADXL345_I2C Giro;
     GyroReader gyro;
     VariableStore variableStore;
     CompassReader compass;

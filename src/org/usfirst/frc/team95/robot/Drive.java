@@ -34,8 +34,10 @@ public class Drive {
 			x = 0;
 		}
 		
-		x *=Math.abs(x);
-		y *=Math.abs(y);
+		// "Exponential" drive, where the movements are more sensitive during slow movement,
+		// permitting easier fine control
+		x *= Math.abs(x);
+		y *= Math.abs(y);
 		arcade(y,x);
 		
 	}
