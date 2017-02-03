@@ -43,5 +43,11 @@ public class RobotMap {
 		gearMouth = new Solenoid(2);
 		pushFaceOut = new Solenoid(3);
 		
+		left1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
+		left2.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
+		left3.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
+		right1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
+		right2.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
+		right3.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
     }
 }
