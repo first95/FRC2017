@@ -5,10 +5,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class HeadingPreservation {
 	
 	double currentHeading, forward, spin;
-	CompassReader m_compass;
+	ADIS16448_IMU m_compass;
 	
-	public HeadingPreservation(CompassReader compass) {
+	
+	/*public HeadingPreservation(CompassReader compass) {
 		m_compass = compass;
+	}*/
+	
+	public HeadingPreservation(ADIS16448_IMU compass2) {
+		m_compass = compass2;
 	}
 	
 	public void setHeading(double angle) {

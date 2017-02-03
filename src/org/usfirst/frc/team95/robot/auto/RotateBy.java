@@ -1,21 +1,22 @@
 package org.usfirst.frc.team95.robot.auto;
 
+import org.usfirst.frc.team95.robot.ADIS16448_IMU;
 import org.usfirst.frc.team95.robot.Constants;
+import org.usfirst.frc.team95.robot.HeadingPreservation;
 import org.usfirst.frc.team95.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Timer;
 
 public class RotateBy extends Auto {
 	double angle, distance, time;
-	Timer timer = new Timer();
+	HeadingPreservation spinner;
+	ADIS16448_IMU compass2;
 	boolean done = false;
 
 	public RotateBy(double angle) {
-		this.angle = angle; // Note to self: the problem is with units
-		distance = angle * Constants.robotWidth;
-		time = Math.abs(distance / (Constants.wheelDiameter * Math.PI));
-		time /= (Constants.timeserRPM * Constants.autonomousRotateSpeed);
-		time *= 60;
+		this.angle = angle;
+		compass2 = new ADIS16448_IMU(null);
+		spinner = new HeadingPreservation(compass2);
 		// System.out.println(time);
 
 		// move * RPM
@@ -23,11 +24,10 @@ public class RotateBy extends Auto {
 
 	@Override
 	public void init() {
-		timer.reset();
-		timer.start();
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
-			RobotMap.drive.tank(Constants.autonomousRotateSpeed * -sign(distance), 0);
+			//RobotMap.drive.tank(Constants.autonomousRotateSpeed * -sign(distance), 0);
+			spinner.setHeading(angle);
 		}
 	}
 
@@ -38,12 +38,12 @@ public class RotateBy extends Auto {
 		// System.out.println("Distance: " + distance);
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
-			if (timer.get() > time) {
+			if (compass2.getHeading() == angle) {
 				done = true;
 				RobotMap.driveLock = null;
 				RobotMap.drive.tank(0, 0);
 			} else {
-				RobotMap.drive.tank(Constants.autonomousRotateSpeed * -sign(distance), 0);
+				spinner.setHeading(angle);
 			}
 		}
 
