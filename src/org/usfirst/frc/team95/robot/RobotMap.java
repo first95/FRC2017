@@ -27,6 +27,7 @@ public class RobotMap {
 		left3 = new CANTalon(3);
 		right1 = new CANTalon(4);
 		right2 = new CANTalon(5);
+		right3 = new CANTalon(6);
 		winchRight = new CANTalon(7);
 		winchLeft = new CANTalon(8);
 		drive = new Drive(left1, right1);
