@@ -6,9 +6,6 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.networktables.NetworkTableKeyNotDefined;
-
 public class VisionGatherDistanceAndOther
 	{
 
@@ -22,7 +19,6 @@ public class VisionGatherDistanceAndOther
 				double pixOffset, pix2Deg;
 				Point point;
 				int distanceCam2Tar;
-				//NetworkTable table = NetworkTable.getTable("datatable");
 
 				// Calculate Center of Tar
 				centerYOfTar = (contourRect.height / 2);
@@ -43,16 +39,12 @@ public class VisionGatherDistanceAndOther
 				distanceCam2Tar = (8052 / contourRect.height);
 
 				// Print everything out
-				System.out.println("X COORD: " + rectBottomLeftAndHalfWidthX);
+				//System.out.println("X COORD: " + rectBottomLeftAndHalfWidthX);
 				System.out.println("Degree: " + pix2Deg);
-				System.out.println("Distance: " + distanceCam2Tar);
+				System.out.println("Distance: " + distanceCam2Tar + "in");
 
 				// Draw a circle in the center of the tar
 				Imgproc.circle(VisionCameraSetUp.mat, point, 5, new Scalar(0, 0, 255), 5);
 				
-				//table.putValue("Test", VisionCameraSetUp.finalMat);
-				
-				
-
 			}
 	}

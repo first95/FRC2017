@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 public class Robot extends IterativeRobot {
 
 	VisionDisplay test;
+	NetworkTable visionData = NetworkTable.getTable("CameraOutput");
 	
     Command autonomousCommand;
     SendableChooser chooser;
@@ -84,6 +86,7 @@ public class Robot extends IterativeRobot {
         
         //Vision Stuff
         
+        visionData.putString("Test Value", "Test Value");
         test = new VisionDisplay();
         
         //
@@ -228,7 +231,11 @@ public class Robot extends IterativeRobot {
     //This is run in disabled, teleop, and auto periodics.
     public void commonPeriodic() {
     	
-        
+    	// Test Stuff For Vision
+		SmartDashboard.putNumber("MatNumCols", VisionCameraSetUp.finalMat.cols());
+		SmartDashboard.putNumber("MatNumRows", VisionCameraSetUp.finalMat.rows());
+        //
+		
         //System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
     	SmartDashboard.putNumber("X", compass2.getMagX());

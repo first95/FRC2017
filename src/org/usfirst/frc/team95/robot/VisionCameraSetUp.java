@@ -1,10 +1,17 @@
 package org.usfirst.frc.team95.robot;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.File;
+
 // Important Imports!
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.VideoWriter;
+import org.opencv.videoio.Videoio;
 
 // This class setups up the frame that displays camera stuff
 public class VisionCameraSetUp
@@ -17,7 +24,7 @@ public class VisionCameraSetUp
 		// Setup a mat to use
 		public static Mat mat = new Mat();
 		public static Mat finalMat = new Mat();
-		
+
 		// Make a new OpenCV camera capture
 		VideoCapture camera;
 
@@ -39,11 +46,10 @@ public class VisionCameraSetUp
 
 						// Draw the contours to the mat
 						Imgproc.drawContours(mat, p.filterContoursOutput(), -1, new Scalar(0, 0, 255));
-						
+
 						finalMat = mat;
-
+						
 					}
-
 			}
 
 	}

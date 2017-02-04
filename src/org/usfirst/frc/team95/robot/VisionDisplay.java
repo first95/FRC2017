@@ -4,8 +4,6 @@ package org.usfirst.frc.team95.robot;
 import org.opencv.core.Core;
 import org.opencv.videoio.VideoCapture;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class VisionDisplay
 	{
 
