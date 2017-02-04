@@ -4,19 +4,19 @@ import org.usfirst.frc.team95.robot.ADIS16448_IMU;
 import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.HeadingPreservation;
 import org.usfirst.frc.team95.robot.RobotMap;
-
-import edu.wpi.first.wpilibj.Timer;
+import org.usfirst.frc.team95.robot.VariableStore;
 
 public class RotateBy extends Auto {
 	double angle, distance, time;
 	HeadingPreservation spinner;
-	ADIS16448_IMU compass2;
+	ADIS16448_IMU compass;
 	boolean done = false;
 
-	public RotateBy(double angle) {
+	public RotateBy(double angle, ADIS16448_IMU compass2) {
 		this.angle = angle;
-		compass2 = new ADIS16448_IMU(null);
-		spinner = new HeadingPreservation(compass2);
+		compass = compass2;
+		spinner = new HeadingPreservation(compass);
+		
 		// System.out.println(time);
 
 		// move * RPM
@@ -27,7 +27,7 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 			//RobotMap.drive.tank(Constants.autonomousRotateSpeed * -sign(distance), 0);
-			spinner.setHeading(angle + compass2.getHeading());
+			spinner.setHeading(angle + compass.getHeading());
 		}
 	}
 
@@ -38,12 +38,12 @@ public class RotateBy extends Auto {
 		// System.out.println("Distance: " + distance);
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
-			if (compass2.getHeading() == angle) {
+			if (compass.getHeading() == angle) {
 				done = true;
 				RobotMap.driveLock = null;
 				RobotMap.drive.tank(0, 0);
 			} else {
-				spinner.setHeading(angle + compass2.getHeading());
+				spinner.setHeading(angle + compass.getHeading());
 			}
 		}
 

@@ -47,10 +47,10 @@ public class Robot extends IterativeRobot {
     ADIS16448_IMU compass2;
     HeadingPreservation header;
     Timer cycleTime;   //for common periodic 
-    double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
+    double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz, filteredRF, rfmin, rfmax;
    
     Double headingToPres;
-    Double[] angleRec;
+    Double[] rangeRecent;
     ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear;
     
     Auto move;
@@ -94,11 +94,17 @@ public class Robot extends IterativeRobot {
         cycleTime = new Timer();
         cycleTime.reset();
         cycleTime.start();
-        angleRec = new Double[4];
-        angleRec[3] = 0.1;
-        angleRec[2] = 0.1;
-        angleRec[1] = 0.1;
-        angleRec[0] = 0.1;
+        rangeRecent = new Double[10];
+        rangeRecent[9] = 0.1;
+        rangeRecent[8] = 0.1;
+        rangeRecent[7] = 0.1;
+        rangeRecent[6] = 0.1;
+        rangeRecent[5] = 0.1;
+        rangeRecent[4] = 0.1;
+        rangeRecent[3] = 0.1;
+        rangeRecent[2] = 0.1;
+        rangeRecent[1] = 0.1;
+        rangeRecent[0] = 0.1;
         
         for (PollableSubsystem p : updates) {
 			p.init();
@@ -109,18 +115,18 @@ public class Robot extends IterativeRobot {
 		a.addDefault("None", new Nothing());
 		a.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
 		a.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
-		a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
-		a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
+		a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 		b.addDefault("None", new Nothing());
 		b.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
 		b.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
-		b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
-		b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
+		b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 		c.addDefault("None", new Nothing());
 		c.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
 		c.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
-		c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
-		c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
+		c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 		SmartDashboard.putData("1st", a);
 		SmartDashboard.putData("2nd", b);
 		SmartDashboard.putData("3rd", c);
@@ -234,9 +240,27 @@ public class Robot extends IterativeRobot {
     	// Test Stuff For Vision
 		SmartDashboard.putNumber("MatNumCols", VisionCameraSetUp.finalMat.cols());
 		SmartDashboard.putNumber("MatNumRows", VisionCameraSetUp.finalMat.rows());
-        //
+        
+		for (int i = 9; i >0 ; i--) {
+			rangeRecent[i] = rangeRecent[i-1];
+		}
+		rangeRecent[0] = Constants.RFVoltsToCm(rangeFinder.getVoltage());
+		rfmax = rangeRecent[0];
+		rfmin = rangeRecent[0];
+		filteredRF = 0;
+		for (int j = 0; j <10; j++) {
+			if (rangeRecent[j] > rfmax) {
+				rfmax = rangeRecent[j];
+			}else if (rangeRecent[j] < rfmin) {
+				rfmin = rangeRecent[j];
+			}
+			filteredRF += rangeRecent[j];
+		}
+		filteredRF -= (rfmin + rfmax);
+		filteredRF /= 8;
 		
-        //System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
+        //System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ() + ", "  + cycleTime.get());
+        System.out.println(Constants.RFVoltsToCm(rangeFinder.getVoltage()) + ", " + filteredRF + ", "  + cycleTime.get());
         
     	SmartDashboard.putNumber("X", compass2.getMagX());
     	SmartDashboard.putNumber("Y", compass2.getMagY());
@@ -254,6 +278,7 @@ public class Robot extends IterativeRobot {
     	
     	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
     	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
+    	SmartDashboard.putNumber("Filtered Range Finder cm", filteredRF);
     	
     	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
     	SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
