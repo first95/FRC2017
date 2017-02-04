@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
         variableStore = new VariableStore();
         compass = new CompassReader(variableStore);
         compass2 = new ADIS16448_IMU(variableStore);
-        header = new HeadingPreservation(compass);
+        header = new HeadingPreservation(compass2);
         headPres = new ButtonTracker(Constants.driveStick,2);
         compCal1 = new ButtonTracker(Constants.driveStick,11);
         compCal2 = new ButtonTracker(Constants.driveStick,16);
