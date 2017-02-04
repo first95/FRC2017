@@ -27,7 +27,7 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 			//RobotMap.drive.tank(Constants.autonomousRotateSpeed * -sign(distance), 0);
-			spinner.setHeading(angle);
+			spinner.setHeading(angle + compass2.getHeading());
 		}
 	}
 
@@ -43,7 +43,7 @@ public class RotateBy extends Auto {
 				RobotMap.driveLock = null;
 				RobotMap.drive.tank(0, 0);
 			} else {
-				spinner.setHeading(angle);
+				spinner.setHeading(angle + compass2.getHeading());
 			}
 		}
 
