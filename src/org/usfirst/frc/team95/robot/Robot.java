@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
    
     Double headingToPres;
     Double[] rangeRecent;
-    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear;
+    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear, climb;
     
     Auto move;
     SendableChooser a, b, c;
@@ -82,6 +82,7 @@ public class Robot extends IterativeRobot {
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
         eatGear = new ButtonTracker(Constants.driveStick, 3);
         poopGear = new ButtonTracker(Constants.driveStick, 4);
+        climb = new ButtonTracker(Constants.driveStick, 8);
         rangeFinder = new AnalogInput(0);
         
         //Vision Stuff
@@ -221,6 +222,9 @@ public class Robot extends IterativeRobot {
     		RobotMap.drive.arcade(Constants.driveStick);
     	}
     	
+    	if (climb.isPressed()) {
+    		RobotMap.winchRight.set(.1);
+    	}
     	//alpha gear code
     	RobotMap.gearMouth.set(eatGear.isPressed());
     	RobotMap.pushFaceOut.set(poopGear.isPressed());
@@ -330,5 +334,6 @@ public class Robot extends IterativeRobot {
     	compCalReset.update();
     	eatGear.update();
     	poopGear.update();
+    	climb.update();
     }
 }
