@@ -25,6 +25,7 @@ import org.usfirst.frc.team95.robot.auto.TimedMove;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -48,6 +49,7 @@ public class Robot extends IterativeRobot {
     HeadingPreservation header;
     Timer cycleTime;   //for common periodic 
     double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz, filteredRF, rfmin, rfmax;
+    Compressor compressor;
    
     Double headingToPres;
     Double[] rangeRecent;
@@ -106,6 +108,10 @@ public class Robot extends IterativeRobot {
         rangeRecent[2] = 0.1;
         rangeRecent[1] = 0.1;
         rangeRecent[0] = 0.1;
+        
+        // Pneumatics
+        compressor = new Compressor();
+        compressor.start();
         
         for (PollableSubsystem p : updates) {
 			p.init();
