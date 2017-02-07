@@ -42,9 +42,9 @@ public class RobotMap {
 		winchLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
 		winchLeft.set(7);
 		winchLeft.setInverted(true);
-		gearPooper = new Solenoid(1);
-		gearMouth = new Solenoid(2);
-		pushFaceOut = new Solenoid(3);
+		gearPooper = new Solenoid(2);
+		gearMouth = new Solenoid(1);
+		pushFaceOut = new Solenoid(0);
 		
 		left1.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);
 		left2.setFeedbackDevice(CANTalon.FeedbackDevice.CtreMagEncoder_Absolute);

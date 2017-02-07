@@ -53,14 +53,14 @@ public class Robot extends IterativeRobot {
    
     Double headingToPres;
     Double[] rangeRecent;
-    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear, climb;
+    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear, climb, pushFace;
     
     Auto move;
     SendableChooser a, b, c;
     ArrayList<PollableSubsystem> updates = new ArrayList<PollableSubsystem>();
     ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
     
-    AnalogInput rangeFinder;
+    AnalogInput range1, range2, range3, range4;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -78,14 +78,18 @@ public class Robot extends IterativeRobot {
         compass = new CompassReader(variableStore);
         compass2 = new ADIS16448_IMU(variableStore);
         header = new HeadingPreservation(compass2);
-        headPres = new ButtonTracker(Constants.driveStick,2);
+        headPres = new ButtonTracker(Constants.driveStick, 1);
         compCal1 = new ButtonTracker(Constants.driveStick,11);
         compCal2 = new ButtonTracker(Constants.driveStick,16);
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
         eatGear = new ButtonTracker(Constants.driveStick, 3);
         poopGear = new ButtonTracker(Constants.driveStick, 4);
-        climb = new ButtonTracker(Constants.driveStick, 8);
-        rangeFinder = new AnalogInput(0);
+        climb = new ButtonTracker(Constants.driveStick, 9);
+        pushFace = new ButtonTracker(Constants.driveStick, 2);
+        range1 = new AnalogInput(0);
+        range2 = new AnalogInput(1);
+        range3 = new AnalogInput(2);
+        range4 = new AnalogInput(3);
         
         //Vision Stuff
         
@@ -218,7 +222,7 @@ public class Robot extends IterativeRobot {
     	Scheduler.getInstance().run();
     	
     	//drive
-    	if(Constants.driveStick.getRawButton(2)) {
+    	if(headPres.isPressed()) {
     		if(headPres.wasJustPressed()) {
     			headingToPres = compass.getHeading();
     		}
@@ -229,11 +233,13 @@ public class Robot extends IterativeRobot {
     	}
     	
     	if (climb.isPressed()) {
-    		RobotMap.winchRight.set(.1);
+    		RobotMap.winchRight.set(.5);
+    	} else {
+    		RobotMap.winchRight.set(0);
     	}
     	//alpha gear code
     	RobotMap.gearMouth.set(eatGear.isPressed());
-    	RobotMap.pushFaceOut.set(poopGear.isPressed());
+    	RobotMap.pushFaceOut.set(pushFace.isPressed());
     	RobotMap.gearPooper.set(poopGear.isPressed());
     }
     
@@ -254,7 +260,7 @@ public class Robot extends IterativeRobot {
 		for (int i = 9; i >0 ; i--) {
 			rangeRecent[i] = rangeRecent[i-1];
 		}
-		rangeRecent[0] = Constants.RFVoltsToCm(rangeFinder.getVoltage());
+		rangeRecent[0] = Constants.RFVoltsToCm(range1.getVoltage());
 		rfmax = rangeRecent[0];
 		rfmin = rangeRecent[0];
 		filteredRF = 0;
@@ -270,7 +276,7 @@ public class Robot extends IterativeRobot {
 		filteredRF /= 8;
 		
         //System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ() + ", "  + cycleTime.get());
-        System.out.println(Constants.RFVoltsToCm(rangeFinder.getVoltage()) + ", " + filteredRF + ", "  + cycleTime.get());
+        //System.out.println(Constants.RFVoltsToCm(range1.getVoltage()) + ", " + filteredRF + ", "  + cycleTime.get());
         
     	SmartDashboard.putNumber("X", compass2.getMagX());
     	SmartDashboard.putNumber("Y", compass2.getMagY());
@@ -286,8 +292,8 @@ public class Robot extends IterativeRobot {
     	
     	SmartDashboard.putNumber("Heading", compass2.getHeading());
     	
-    	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
-    	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
+    	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(range1.getVoltage()));
+    	SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
     	SmartDashboard.putNumber("Filtered Range Finder cm", filteredRF);
     	
     	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
@@ -340,6 +346,7 @@ public class Robot extends IterativeRobot {
     	compCalReset.update();
     	eatGear.update();
     	poopGear.update();
+    	pushFace.update();
     	climb.update();
     }
 }
