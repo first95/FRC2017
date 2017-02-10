@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Solenoid;
  * floating around.
  */
 public class RobotMap {
-    public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight;
+    public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight, intake, agitator, shooter;
 	public static Drive drive;
 	// Autonomous moves wishing to control the robot's drive base
 	// should set the driveLock object to "this" (that is, themselves).
@@ -30,6 +30,9 @@ public class RobotMap {
 		right3 = new CANTalon(6);
 		winchRight = new CANTalon(7);
 		winchLeft = new CANTalon(8);
+		intake = new CANTalon(9);
+		agitator = new CANTalon(10);
+		shooter = new CANTalon(11);
 		drive = new Drive(left1, right1);
 		left2.changeControlMode(CANTalon.TalonControlMode.Follower);
 		left2.set(1);

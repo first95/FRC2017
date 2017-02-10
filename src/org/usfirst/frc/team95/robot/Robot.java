@@ -52,7 +52,7 @@ public class Robot extends IterativeRobot {
    
     Double headingToPres;
     Double[] angleRec;
-    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear, intake, agitate, shoot;
+    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot;
     
     Auto move;
     SendableChooser a, b, c;
@@ -82,8 +82,9 @@ public class Robot extends IterativeRobot {
         compCal1 = new ButtonTracker(Constants.driveStick,11);
         compCal2 = new ButtonTracker(Constants.driveStick,16);
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
-        eatGear = new ButtonTracker(Constants.driveStick, 3);
-        poopGear = new ButtonTracker(Constants.driveStick, 4);
+        eatGear = new ButtonTracker(Constants.weaponStick, 5);
+        poopGear = new ButtonTracker(Constants.weaponStick, 4);
+        facePush = new ButtonTracker(Constants.weaponStick, 3);
         intake = new ButtonTracker(Constants.weaponStick, 1);
         agitate = new ButtonTracker(Constants.weaponStick, 2);
         shoot = new ButtonTracker(Constants.weaponStick, 6);
@@ -228,8 +229,26 @@ public class Robot extends IterativeRobot {
     	
     	//alpha gear code
     	RobotMap.gearMouth.set(eatGear.isPressed());
-    	RobotMap.pushFaceOut.set(poopGear.isPressed());
+    	RobotMap.pushFaceOut.set(facePush.isPressed());
     	RobotMap.gearPooper.set(poopGear.isPressed());
+    	
+    	if (intake.isPressed()) {
+    		RobotMap.intake.set(.3);
+    	}else {
+    		RobotMap.intake.set(.3);
+    	}
+    	
+    	if (agitate.isPressed()) {
+    		RobotMap.agitator.set(.3);
+    	}else {
+    		RobotMap.agitator.set(.3);
+    	}
+    	
+    	if (shoot.isPressed()) {
+    		RobotMap.shooter.set(.3);
+    	}else {
+    		RobotMap.shooter.set(.3);
+    	}
     }
     
     /**
@@ -321,5 +340,9 @@ public class Robot extends IterativeRobot {
     	compCalReset.update();
     	eatGear.update();
     	poopGear.update();
+    	facePush.update();
+    	intake.update();
+    	agitate.update();
+    	shoot.update();
     }
 }
