@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 package org.usfirst.frc.team95.robot;
 
 import edu.wpi.first.wpilibj.ADXL345_I2C;
@@ -111,18 +109,18 @@ public class Robot extends IterativeRobot {
 		a.addDefault("None", new Nothing());
 		a.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
 		a.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
-		a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
-		a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
+		a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 		b.addDefault("None", new Nothing());
 		b.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
 		b.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
-		b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
-		b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
+		b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 		c.addDefault("None", new Nothing());
 		c.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
 		c.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
-		c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
-		c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
+		c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 		c.addObject("Find + Rotate", new FindGearHolder());
 		SmartDashboard.putData("1st", a);
 		SmartDashboard.putData("2nd", b);
@@ -310,5 +308,3 @@ public class Robot extends IterativeRobot {
     	poopGear.update();
     }
 }
-=======
->>>>>>> 8077d1b0438f360dd7a0f1a9233c5212c7cb1b55
