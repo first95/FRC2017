@@ -18,6 +18,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team95.robot.auto.Auto;
+import org.usfirst.frc.team95.robot.auto.FindGearHolder;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
@@ -121,6 +122,7 @@ public class Robot extends IterativeRobot {
 		c.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
 		c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 		c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+		c.addObject("Find + Rotate", new FindGearHolder());
 		SmartDashboard.putData("1st", a);
 		SmartDashboard.putData("2nd", b);
 		SmartDashboard.putData("3rd", c);

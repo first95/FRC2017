@@ -1,34 +1,42 @@
 package org.usfirst.frc.team95.robot.auto;
 
+import org.usfirst.frc.team95.robot.VisionDisplay;
+import org.usfirst.frc.team95.robot.VisionGatherDistanceAndOther;
+
 public class FindGearHolder extends Auto
 	{
 
-	@Override
-	public void init()
-		{
-			// TODO Auto-generated method stub
-			
-		}
+		@Override
+		public void init()
+			{
 
-	@Override
-	public void update()
-		{
-			// TODO Auto-generated method stub
-			
-		}
+				for (int i = 0; i < 50; i++)
+					{
+						new VisionDisplay();
+					}
+				
+				new RotateBy((VisionGatherDistanceAndOther.pix2Deg) * (Math.PI / 180));
 
-	@Override
-	public void stop()
-		{
-			// TODO Auto-generated method stub
-			
-		}
+			}
 
-	@Override
-	public boolean done()
-		{
-			// TODO Auto-generated method stub
-			return false;
-		}
+		@Override
+		public void update()
+			{
+
+			}
+
+		@Override
+		public void stop()
+			{
+				// TODO Auto-generated method stub
+
+			}
+
+		@Override
+		public boolean done()
+			{
+				// TODO Auto-generated method stub
+				return false;
+			}
 
 	}

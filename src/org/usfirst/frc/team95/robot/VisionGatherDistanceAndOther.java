@@ -9,16 +9,19 @@ import org.opencv.imgproc.Imgproc;
 public class VisionGatherDistanceAndOther
 	{
 
+		// Vars
+		int centerXOfTar;
+		int centerYOfTar;
+		double constantPix2Deg = (3.0 / 16.0);
+		double pixOffset;
+		public static double pix2Deg;
+		Point point;
+		int distanceCam2Tar;
+		
 		public VisionGatherDistanceAndOther(Rect contourRect)
 			{
 
-				// Vars
-				int centerXOfTar;
-				int centerYOfTar;
-				double constantPix2Deg = (3.0 / 16.0);
-				double pixOffset, pix2Deg;
-				Point point;
-				int distanceCam2Tar;
+
 
 				// Calculate Center of Tar
 				centerYOfTar = (contourRect.height / 2);
@@ -47,4 +50,5 @@ public class VisionGatherDistanceAndOther
 				Imgproc.circle(VisionCameraSetUp.mat, point, 5, new Scalar(0, 0, 255), 5);
 				
 			}
+		
 	}
