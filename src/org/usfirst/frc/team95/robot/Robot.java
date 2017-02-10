@@ -25,6 +25,7 @@ import org.usfirst.frc.team95.robot.auto.TimedMove;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -58,7 +59,8 @@ public class Robot extends IterativeRobot {
     ArrayList<PollableSubsystem> updates = new ArrayList<PollableSubsystem>();
     ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
     
-    AnalogInput rangeFinder;
+    AnalogInput range1, range2, range3, range4;
+    DigitalOutput rangeFinder;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -82,7 +84,12 @@ public class Robot extends IterativeRobot {
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
         eatGear = new ButtonTracker(Constants.driveStick, 3);
         poopGear = new ButtonTracker(Constants.driveStick, 4);
-        rangeFinder = new AnalogInput(0);
+        range1 = new AnalogInput(0);
+        range2 = new AnalogInput(1);
+        range3 = new AnalogInput(2);
+        range4 = new AnalogInput(3);
+        
+        rangeFinder = new DigitalOutput(0);
         
         //Vision Stuff
         
@@ -239,6 +246,8 @@ public class Robot extends IterativeRobot {
 		
         //System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", "  + cycleTime.get() + ", " );
         
+		rangeFinder.pulse(.02);
+		
     	SmartDashboard.putNumber("X", compass2.getMagX());
     	SmartDashboard.putNumber("Y", compass2.getMagY());
     	SmartDashboard.putNumber("Z", compass2.getMagZ());
@@ -253,8 +262,11 @@ public class Robot extends IterativeRobot {
     	
     	SmartDashboard.putNumber("Heading", compass2.getHeading());
     	
-    	SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
-    	SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
+    	SmartDashboard.putNumber("Range1 Finder cm", Constants.RFVoltsToCm(range1.getVoltage()));
+    	SmartDashboard.putNumber("Range2 Finder cm", Constants.RFVoltsToCm(range2.getVoltage()));
+    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range3.getVoltage()));
+    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range4.getVoltage()));
+    	SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
     	
     	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
     	SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
