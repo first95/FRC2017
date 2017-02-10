@@ -52,7 +52,7 @@ public class Robot extends IterativeRobot {
    
     Double headingToPres;
     Double[] angleRec;
-    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear;
+    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear, intake, agitate, shoot;
     
     Auto move;
     SendableChooser a, b, c;
@@ -84,6 +84,9 @@ public class Robot extends IterativeRobot {
         compCalReset = new ButtonTracker(Constants.driveStick, 5);
         eatGear = new ButtonTracker(Constants.driveStick, 3);
         poopGear = new ButtonTracker(Constants.driveStick, 4);
+        intake = new ButtonTracker(Constants.weaponStick, 1);
+        agitate = new ButtonTracker(Constants.weaponStick, 2);
+        shoot = new ButtonTracker(Constants.weaponStick, 6);
         range1 = new AnalogInput(0);
         range2 = new AnalogInput(1);
         range3 = new AnalogInput(2);
