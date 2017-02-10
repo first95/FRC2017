@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 package org.usfirst.frc.team95.robot;
 
@@ -309,3 +310,5 @@ public class Robot extends IterativeRobot {
     	poopGear.update();
     }
 }
+=======
+>>>>>>> 8077d1b0438f360dd7a0f1a9233c5212c7cb1b55

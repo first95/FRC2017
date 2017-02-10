@@ -15,7 +15,7 @@ public class FindGearHolder extends Auto
 						new VisionDisplay();
 					}
 				
-				new RotateBy((VisionGatherDistanceAndOther.pix2Deg) * (Math.PI / 180));
+				//new RotateBy((VisionGatherDistanceAndOther.pix2Deg) * (Math.PI / 180));
 
 			}
 
