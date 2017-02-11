@@ -26,7 +26,7 @@ public class DistanceMove extends Auto {
 	@Override
 	public void update() {
 		// System.out.println("Update!");
-		if ((start - RobotMap.left1.getEncPosition()) > distance) {
+		if ((start + RobotMap.left1.getEncPosition()) >= distance) {
 			done = true;
 			stop();
 		}

@@ -50,9 +50,9 @@ public class Robot extends IterativeRobot {
     Timer cycleTime;   //for common periodic 
     double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
    
-    Double headingToPres;
+    Double headingToPres, dist;
     Double[] angleRec;
-    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot;
+    ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot, driveForward;
     
     Auto move;
     SendableChooser a, b, c;
@@ -88,6 +88,7 @@ public class Robot extends IterativeRobot {
         intake = new ButtonTracker(Constants.weaponStick, 1);
         agitate = new ButtonTracker(Constants.weaponStick, 2);
         shoot = new ButtonTracker(Constants.weaponStick, 6);
+        driveForward = new ButtonTracker(Constants.driveStick, 1);
         range1 = new AnalogInput(0);
         range2 = new AnalogInput(1);
         range3 = new AnalogInput(2);
@@ -227,6 +228,16 @@ public class Robot extends IterativeRobot {
     		RobotMap.drive.arcade(Constants.driveStick);
     	}
     	
+    	dist = (double) 0;
+    	while (driveForward.isPressed() && dist <= 5) {
+    		RobotMap.drive.tank(.3, .3);
+    		dist = (double) RobotMap.left1.getEncPosition();
+    	}
+    	
+    	if (driveForward.wasJustReleased()) {
+    		RobotMap.drive.tank(0, 0);
+    	}
+    	
     	//alpha gear code
     	RobotMap.gearMouth.set(eatGear.isPressed());
     	RobotMap.pushFaceOut.set(facePush.isPressed());
@@ -289,6 +300,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range3.getVoltage()));
     	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range4.getVoltage()));
     	SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
+    	
+    	SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
+    	SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
     	
     	SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
     	SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
