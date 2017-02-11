@@ -25,7 +25,6 @@ public class VisualGearLiftFinder {
 		imageSource.grabFrame(curFrame);
 		pipeline.setsource0(curFrame);
 		pipeline.process();
-		
 		Imgproc.drawContours(curFrame, pipeline.filterContoursOutput(), -1, new Scalar(0, 0, 255));
 		Imgproc.circle(curFrame, new Point(10,10), 5, new Scalar(0, 0, 255), 5);
 	}	
@@ -39,6 +38,6 @@ public class VisualGearLiftFinder {
 	}
 	
 	public Mat getAnnotatedFrame() {
-		return curFrame;
+		return curFrame	;
 	}
 }
