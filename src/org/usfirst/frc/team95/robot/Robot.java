@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import org.opencv.core.Mat;
 import org.usfirst.frc.team95.robot.auto.Auto;
+import org.usfirst.frc.team95.robot.auto.DistanceMove;
 import org.usfirst.frc.team95.robot.auto.FindGearHolder;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
@@ -47,7 +48,8 @@ public class Robot extends IterativeRobot
 		Timer cycleTime; // for common periodic
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
 
-		Double headingToPres, dist;
+		Double headingToPres;
+		double dist;
 		Double[] angleRec;
 		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot, driveForward, xBoxControl;
 
@@ -83,7 +85,7 @@ public class Robot extends IterativeRobot
 				compCal1 = new ButtonTracker(Constants.driveStick, 11);
 				compCal2 = new ButtonTracker(Constants.driveStick, 16);
 				compCalReset = new ButtonTracker(Constants.driveStick, 5);
-				xBoxControl = new ButtonTracker(Constants.driveStickX, 1);
+				//xBoxControl = new ButtonTracker(Constants.driveStickX, 1);
 				eatGear = new ButtonTracker(Constants.weaponStick, 5);
 				poopGear = new ButtonTracker(Constants.weaponStick, 4);
 				facePush = new ButtonTracker(Constants.weaponStick, 3);
@@ -125,18 +127,18 @@ public class Robot extends IterativeRobot
 				b = new SendableChooser();
 				c = new SendableChooser();
 				a.addDefault("None", new Nothing());
-				a.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
-				a.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
+				a.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
+				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 				a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 				b.addDefault("None", new Nothing());
-				b.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
-				b.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
+				b.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
+				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 				c.addDefault("None", new Nothing());
-				c.addObject("Go Forward", new TimedMove(0.3, 0.3, 5));
-				c.addObject("Go Backward", new TimedMove(-0.3, -0.3, 5));
+				c.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
+				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
 				c.addObject("Find + Rotate", new FindGearHolder());
@@ -235,21 +237,23 @@ public class Robot extends IterativeRobot
 
 						header.setHeading(headingToPres);
 					}
-				else if (xBoxControl.isPressed()) {
-						RobotMap.drive.arcade(Constants.driveStickX);
-					} else {
+				//else if (xBoxControl.isPressed()) {
+				//		RobotMap.drive.arcade(Constants.driveStickX);
+				/*	}*/ else {
 						RobotMap.drive.arcade(Constants.driveStick);
 					}
 
-				dist = (double) 0;
-		    	while (driveForward.isPressed() && dist <= 5) {
-		    		RobotMap.drive.tank(.3, .3);
-		    		dist = (double) RobotMap.left1.getEncPosition();
+				/*dist = 0;
+		    	while (driveForward.isPressed() && dist <= -5) {
+		    		RobotMap.drive.tank(-.3, -.3);
+		    		dist = (RobotMap.right1.getEncPosition() * Constants.encoderTickPerFoot);
+		    		
+		    		driveForward.update();
 		    	}
 		    	
 		    	if (driveForward.wasJustReleased()) {
 		    		RobotMap.drive.tank(0, 0);
-		    	}
+		    	}*/
 		    	
 				// alpha gear code
 		    	RobotMap.gearMouth.set(eatGear.isPressed());
@@ -387,6 +391,7 @@ public class Robot extends IterativeRobot
 		    	intake.update();
 		    	agitate.update();
 		    	shoot.update();
-		    	xBoxControl.update();
+		    	//driveForward.update();
+		    	//xBoxControl.update();
 			}
 	}
