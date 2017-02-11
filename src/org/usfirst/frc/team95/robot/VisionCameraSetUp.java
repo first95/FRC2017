@@ -1,17 +1,10 @@
 package org.usfirst.frc.team95.robot;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.File;
-
 // Important Imports!
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
-import org.opencv.videoio.VideoWriter;
-import org.opencv.videoio.Videoio;
 
 // This class setups up the frame that displays camera stuff
 public class VisionCameraSetUp
