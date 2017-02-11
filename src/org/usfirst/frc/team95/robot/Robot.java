@@ -91,10 +91,12 @@ public class Robot extends IterativeRobot
 
 				// TODO: this eventually belongs inside an auto move
 				myCam = CameraServer.getInstance().startAutomaticCapture();
+//				myCam.setResolution(1280, 720); // Doesn't seem to work
 				myCam.setResolution(640, 480);
 				CvSink cvSink = CameraServer.getInstance().getVideo();
 				gearLiftFinder = new VisualGearLiftFinder(cvSink);
-				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("TEST", 640, 480);
+				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+//				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 360);
 
 				cycleTime = new Timer();
 				cycleTime.reset();

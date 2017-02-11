@@ -10,7 +10,7 @@ import edu.wpi.cscore.CvSink;
 public class VisualGearLiftFinder {
 	CvSink imageSource = null;
 	VisionMainPipeline pipeline;
-	Mat debugAnnotatedFrame = null;
+	Mat curFrame = new Mat(); // gets annotated after processing
 	double lastDeterminedHeading = 0.0;
 	boolean lastHeadingDeterminationSucceeded = false;
 	
@@ -22,14 +22,12 @@ public class VisualGearLiftFinder {
 	// Take in an image and process it.  Call this before calling 
 	public void computeHeadingToTarget() {
 		Mat input_image = new Mat();
-		imageSource.grabFrame(input_image);
-		VisionCameraSetUp.mat = input_image;
-		pipeline.setsource0(input_image);
-		pipeline.process(); // currently outputs to VisionCameraSetUp.mat
-		debugAnnotatedFrame = input_image;
+		imageSource.grabFrame(curFrame);
+		pipeline.setsource0(curFrame);
+		pipeline.process();
 		
-		Imgproc.drawContours(debugAnnotatedFrame, pipeline.filterContoursOutput(), -1, new Scalar(0, 0, 255));
-		Imgproc.circle(debugAnnotatedFrame, new Point(10,10), 5, new Scalar(0, 0, 255), 5);
+		Imgproc.drawContours(curFrame, pipeline.filterContoursOutput(), -1, new Scalar(0, 0, 255));
+		Imgproc.circle(curFrame, new Point(10,10), 5, new Scalar(0, 0, 255), 5);
 	}	
 	
 	public boolean haveValidHeading() {
@@ -41,6 +39,6 @@ public class VisualGearLiftFinder {
 	}
 	
 	public Mat getAnnotatedFrame() {
-		return debugAnnotatedFrame;
+		return curFrame;
 	}
 }
