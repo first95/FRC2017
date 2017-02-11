@@ -1,5 +1,6 @@
 package org.usfirst.frc.team95.robot.auto;
 
+import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -19,14 +20,14 @@ public class DistanceMove extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 			RobotMap.drive.tank(left, right);
-			start = RobotMap.left1.getEncPosition();
+			distance += (RobotMap.right1.getEncPosition() * Constants.encoderTickPerFoot);
 		}
 	}
 
 	@Override
 	public void update() {
 		// System.out.println("Update!");
-		if ((start + RobotMap.left1.getEncPosition()) >= distance) {
+		if ((RobotMap.right1.getEncPosition() * Constants.encoderTickPerFoot) >= distance) {
 			done = true;
 			stop();
 		}

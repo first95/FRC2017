@@ -8,6 +8,7 @@ public class Constants {
 	public static double joystickDeadbandH = 0.05;
 	public static Joystick driveStick = new Joystick(0);
 	public static Joystick weaponStick = new Joystick(1);
+	public static double encoderTickPerFoot = 967.85;
 //	public static double robotWidth = 25; //THIS NEEDS TO BE SET
 //	public static double wheelDiameter = 6; //THIS NEEDS TO BE SET
 //	public static double timeserRPM = 430.89; //THIS NEEDS TO BE SET
