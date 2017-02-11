@@ -93,6 +93,8 @@ public class Robot extends IterativeRobot
 				myCam = CameraServer.getInstance().startAutomaticCapture();
 //				myCam.setResolution(1280, 720); // Doesn't seem to work
 				myCam.setResolution(640, 480);
+//				myCam.setBrightness(10);
+				myCam.setExposureManual(20);
 				CvSink cvSink = CameraServer.getInstance().getVideo();
 				gearLiftFinder = new VisualGearLiftFinder(cvSink);
 				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);

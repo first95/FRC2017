@@ -196,6 +196,7 @@ public class VisionMainPipeline
 			{
 				final MatOfInt hull = new MatOfInt();
 				output.clear();
+				outputBb.clear();
 				// operation
 				for (int i = 0; i < inputContours.size(); i++)
 					{

@@ -2,6 +2,7 @@ package org.usfirst.frc.team95.robot;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
@@ -26,7 +27,10 @@ public class VisualGearLiftFinder {
 		pipeline.setsource0(curFrame);
 		pipeline.process();
 		Imgproc.drawContours(curFrame, pipeline.filterContoursOutput(), -1, new Scalar(0, 0, 255));
-		Imgproc.circle(curFrame, new Point(10,10), 5, new Scalar(0, 0, 255), 5);
+		for (Rect bb : pipeline.filterContoursOutputBb()) {
+//			Imgproc.circle(curFrame, new Point(bb.x, bb.y), 5, new Scalar(255, 0, 0), 1);			
+			Imgproc.rectangle(curFrame, bb.br(), bb.tl(), new Scalar(255, 0, 0));			
+		}
 	}	
 	
 	public boolean haveValidHeading() {
