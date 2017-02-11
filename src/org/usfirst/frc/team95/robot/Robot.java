@@ -58,9 +58,10 @@ public class Robot extends IterativeRobot
 
 		AnalogInput range1, range2, range3, range4;
 		
-		DigitalOutput rangeFinder;
+		DigitalOutput initiateRangeFinder;
 		
 		VoltageCompensatedShooter shooter;
+		RangeFinder rangeFinder;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -98,7 +99,10 @@ public class Robot extends IterativeRobot
 				range3 = new AnalogInput(2);
 				range4 = new AnalogInput(3);
 				
-				rangeFinder = new DigitalOutput(0);
+				initiateRangeFinder = new DigitalOutput(0);
+				
+				rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]{range1, range2});
+				
 				
 				// Vision Stuff
 				VisionGatherDistanceAndOther.pix2Deg = 0;
@@ -298,7 +302,7 @@ public class Robot extends IterativeRobot
 
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
-				rangeFinder.pulse(.02);
+				// rangeFinder.pulse(.02);
 				
 		    	SmartDashboard.putNumber("X", compass2.getMagX());
 		    	SmartDashboard.putNumber("Y", compass2.getMagY());
@@ -314,11 +318,12 @@ public class Robot extends IterativeRobot
 		    	
 		    	SmartDashboard.putNumber("Heading", compass2.getHeading());
 		    	
-		    	SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
-		    	SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
-		    	SmartDashboard.putNumber("Range3 Finder ft", Constants.RFVoltsToFt(range3.getVoltage()));
-		    	SmartDashboard.putNumber("Range4 Finder ft", Constants.RFVoltsToFt(range4.getVoltage()));
-		    	SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
+		    	SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
+		    	// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
+		    	// SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
+		    	// SmartDashboard.putNumber("Range3 Finder ft", Constants.RFVoltsToFt(range3.getVoltage()));
+		    	// SmartDashboard.putNumber("Range4 Finder ft", Constants.RFVoltsToFt(range4.getVoltage()));
+		    	// SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
 		    	
 		    	SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 		    	SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
