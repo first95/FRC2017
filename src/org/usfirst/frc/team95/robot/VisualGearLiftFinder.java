@@ -26,7 +26,9 @@ public class VisualGearLiftFinder {
 		VisionCameraSetUp.mat = input_image;
 		pipeline.setsource0(input_image);
 		pipeline.process(); // currently outputs to VisionCameraSetUp.mat
-		debugAnnotatedFrame = input_image.clone();
+		debugAnnotatedFrame = input_image;
+		
+		Imgproc.drawContours(debugAnnotatedFrame, pipeline.filterContoursOutput(), -1, new Scalar(0, 0, 255));
 		Imgproc.circle(debugAnnotatedFrame, new Point(10,10), 5, new Scalar(0, 0, 255), 5);
 	}	
 	

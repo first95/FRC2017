@@ -32,6 +32,7 @@ public class VisionMainPipeline
 		private Mat rgbThresholdOutput = new Mat();
 		private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 		private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
+		private ArrayList<Rect> filterContoursBbOutput = new ArrayList<Rect>();
 
 		// Sources
 		private Mat source0;
@@ -86,7 +87,7 @@ public class VisionMainPipeline
 				double filterContoursMinVertices = 0.0;
 				double filterContoursMinRatio = 0.0;
 				double filterContoursMaxRatio = 1000.0;
-				filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
+				filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput, filterContoursBbOutput);
 
 			}
 
@@ -126,9 +127,13 @@ public class VisionMainPipeline
 		 * @return ArrayList<MatOfPoint> output from Filter_Contours.
 		 */
 		public ArrayList<MatOfPoint> filterContoursOutput()
-			{
-				return filterContoursOutput;
-			}
+		{
+			return filterContoursOutput;
+		}
+		public ArrayList<Rect> filterContoursOutputBb()
+		{
+			return filterContoursBbOutput;
+		}
 
 		/**
 		 * Segment an image based on color ranges.
@@ -174,7 +179,7 @@ public class VisionMainPipeline
 		 * Filters out contours that do not meet certain criteria.
 		 * 
 		 * @param inputContours is the input list of contours
-		 * @param output is the the output list of contours
+		 * @param output is the the output list of contour bounding boxes
 		 * @param minArea is the minimum area of a contour that will be kept
 		 * @param minPerimeter is the minimum perimeter of a contour that will be kept
 		 * @param minWidth minimum width of a contour
@@ -187,7 +192,7 @@ public class VisionMainPipeline
 		 * @param minRatio minimum ratio of width to height
 		 * @param maxRatio maximum ratio of width to height
 		 */
-		private void filterContours(List<MatOfPoint> inputContours, double minArea, double minPerimeter, double minWidth, double maxWidth, double minHeight, double maxHeight, double[] solidity, double maxVertexCount, double minVertexCount, double minRatio, double maxRatio, List<MatOfPoint> output)
+		private void filterContours(List<MatOfPoint> inputContours, double minArea, double minPerimeter, double minWidth, double maxWidth, double minHeight, double maxHeight, double[] solidity, double maxVertexCount, double minVertexCount, double minRatio, double maxRatio, List<MatOfPoint> output, List<Rect> outputBb)
 			{
 				final MatOfInt hull = new MatOfInt();
 				output.clear();
@@ -225,11 +230,8 @@ public class VisionMainPipeline
 						if (ratio < minRatio || ratio > maxRatio)
 							continue;
 
-						// Run Stuff to Get Stuff, see the class for more :D
-						new VisionGatherDistanceAndOther(bb);
-						// -------------------------------------------------
-
 						output.add(contour);
+						outputBb.add(bb);
 
 					}
 			}

@@ -60,6 +60,7 @@ public class Robot extends IterativeRobot
 		// TODO: These eventually belong inside an auto move
 		VisualGearLiftFinder gearLiftFinder = null;
 		CvSource smartDashboardVideoOutput = null;
+		UsbCamera myCam = null;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -89,7 +90,8 @@ public class Robot extends IterativeRobot
 				// Vision Stuff
 
 				// TODO: this eventually belongs inside an auto move
-				CameraServer.getInstance().startAutomaticCapture();
+				myCam = CameraServer.getInstance().startAutomaticCapture();
+				myCam.setResolution(640, 480);
 				CvSink cvSink = CameraServer.getInstance().getVideo();
 				gearLiftFinder = new VisualGearLiftFinder(cvSink);
 				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("TEST", 640, 480);
