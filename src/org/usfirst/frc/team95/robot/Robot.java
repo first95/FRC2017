@@ -26,12 +26,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
  */
 public class Robot extends IterativeRobot
 	{
-
 		VisionDisplay test;
 		NetworkTable visionData = NetworkTable.getTable("CameraOutput");
 
@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot
 		ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
 
 		AnalogInput rangeFinder;
+		VoltageCompensatedShooter shooter;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -82,7 +83,8 @@ public class Robot extends IterativeRobot
 				poopGear = new ButtonTracker(Constants.driveStick, 4);
 				xBoxControl = new ButtonTracker(Constants.driveStickX, 1);
 				rangeFinder = new AnalogInput(0);
-
+				shooter = new VoltageCompensatedShooter(6);
+				
 				// Vision Stuff
 				VisionGatherDistanceAndOther.pix2Deg = 0;
 				test = new VisionDisplay();
@@ -230,6 +232,7 @@ public class Robot extends IterativeRobot
 				RobotMap.gearMouth.set(eatGear.isPressed());
 				RobotMap.pushFaceOut.set(poopGear.isPressed());
 				RobotMap.gearPooper.set(poopGear.isPressed());
+				
 			}
 
 		/**
@@ -330,6 +333,6 @@ public class Robot extends IterativeRobot
 				compCalReset.update();
 				eatGear.update();
 				poopGear.update();
-
+				shooter.adjustVoltage();
 			}
 	}
