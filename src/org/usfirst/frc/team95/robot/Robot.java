@@ -56,6 +56,10 @@ public class Robot extends IterativeRobot
 		ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
 
 		AnalogInput rangeFinder;
+		
+		// TODO: These eventually belong inside an auto move
+		VisualGearLiftFinder gearLiftFinder = null;
+		CvSource smartDashboardVideoOutput = null;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -83,14 +87,12 @@ public class Robot extends IterativeRobot
 				rangeFinder = new AnalogInput(0);
 
 				// Vision Stuff
-				VisionGatherDistanceAndOther.pix2Deg = 0;
-				test = new VisionDisplay();
-				
-				//CameraServer.getInstance().startAutomaticCapture();
-				//CvSink cvSink = CameraServer.getInstance().getVideo();
-				//CvSource outputStream = CameraServer.getInstance().putVideo("TEST", 640, 480);
-				
-				//
+
+				// TODO: this eventually belongs inside an auto move
+				CameraServer.getInstance().startAutomaticCapture();
+				CvSink cvSink = CameraServer.getInstance().getVideo();
+				gearLiftFinder = new VisualGearLiftFinder(cvSink);
+				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("TEST", 640, 480);
 
 				cycleTime = new Timer();
 				cycleTime.reset();
@@ -102,9 +104,9 @@ public class Robot extends IterativeRobot
 				angleRec[0] = 0.1;
 
 				for (PollableSubsystem p : updates)
-					{
-						p.init();
-					}
+				{
+					p.init();
+				}
 				a = new SendableChooser();
 				b = new SendableChooser();
 				c = new SendableChooser();
@@ -269,35 +271,39 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
 				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
 
+				// TODO: this eventually belongs inside an auto move
+				gearLiftFinder.computeHeadingToTarget();
+				smartDashboardVideoOutput.putFrame(gearLiftFinder.getAnnotatedFrame());
+				
 				if (compCal1.isPressed())
 					{// && compCal2.Pressedp()) {
 						// auto cal
 						tempy = compass2.getMagX();
 						tempz = compass2.getMagZ();
 						if (compCal1.wasJustPressed())
-							{// && compCal2.justPressedp()) {
-								ymax = tempy;
-								ymin = tempy;
-								zmax = tempz;
-								zmin = tempz;
-							}
+						{// && compCal2.justPressedp()) {
+							ymax = tempy;
+							ymin = tempy;
+							zmax = tempz;
+							zmin = tempz;
+						}
 						if (tempy > ymax)
-							{
-								ymax = tempy;
-							}
+						{
+							ymax = tempy;
+						}
 						else if (tempy < ymin)
-							{
-								ymin = tempy;
-							}
+						{
+							ymin = tempy;
+						}
 
 						if (tempz > zmax)
-							{
-								zmax = tempz;
-							}
+						{
+							zmax = tempz;
+						}
 						else if (tempz < zmin)
-							{
-								zmin = tempz;
-							}
+						{
+							zmin = tempz;
+						}
 
 						alpha = (ymax + ymin) / 2;
 						beta = (zmax + zmin) / 2;
@@ -318,9 +324,6 @@ public class Robot extends IterativeRobot
 						beta = -25;
 						compass.compReset();
 					}
-
-				// Send data from OpenCV cam to process it
-				// VisionCameraSetUp cam = new VisionCameraSetUp(VisionDisplay.camera);
 
 				headPres.update();
 				compCal1.update();
