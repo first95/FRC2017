@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot
 				compass = new CompassReader(variableStore);
 				compass2 = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(compass2);
-				shooter = new VoltageCompensatedShooter(4);
+				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 				
 				headPres = new ButtonTracker(Constants.driveStick, 2);
 				compCal1 = new ButtonTracker(Constants.driveStick, 11);

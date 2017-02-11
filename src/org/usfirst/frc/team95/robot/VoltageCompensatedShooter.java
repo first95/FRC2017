@@ -1,14 +1,18 @@
 package org.usfirst.frc.team95.robot;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class VoltageCompensatedShooter {
 	private final double m_maximumVoltage = 12;
+	private CANTalon m_shooter;
 	private PowerDistributionPanel m_panel;
 	private final double m_voltageLevelToMaintain;
 	private boolean m_on;
 	
-	public VoltageCompensatedShooter(double voltageLevelToMaintain) {
+	public VoltageCompensatedShooter(CANTalon shooter, double voltageLevelToMaintain) {
+		m_shooter = shooter;
 		m_panel = new PowerDistributionPanel();
 		m_voltageLevelToMaintain = voltageLevelToMaintain;
 		turnOff();
@@ -31,11 +35,11 @@ public class VoltageCompensatedShooter {
 		if (m_on)
 		{
 			double currentVoltage = Math.min(m_panel.getVoltage(), m_voltageLevelToMaintain);
-			RobotMap.shooter.set(currentVoltage / m_maximumVoltage);
+			m_shooter.set(currentVoltage / m_maximumVoltage);
 		}
 		else
 		{
-			RobotMap.shooter.set(0);
+			m_shooter.set(0);
 		}
 	}
 	
