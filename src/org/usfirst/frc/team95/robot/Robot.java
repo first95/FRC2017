@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot
 
 		Double headingToPres;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear;
+		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear, xBoxControl;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -80,6 +80,7 @@ public class Robot extends IterativeRobot
 				compCalReset = new ButtonTracker(Constants.driveStick, 5);
 				eatGear = new ButtonTracker(Constants.driveStick, 3);
 				poopGear = new ButtonTracker(Constants.driveStick, 4);
+				xBoxControl = new ButtonTracker(Constants.driveStickX, 1);
 				rangeFinder = new AnalogInput(0);
 
 				// Vision Stuff
@@ -219,8 +220,9 @@ public class Robot extends IterativeRobot
 
 						header.setHeading(headingToPres);
 					}
-				else
-					{
+				else if (xBoxControl.isPressed()) {
+						RobotMap.drive.arcade(Constants.driveStickX);
+					} else {
 						RobotMap.drive.arcade(Constants.driveStick);
 					}
 
