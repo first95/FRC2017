@@ -79,6 +79,8 @@ public class Robot extends IterativeRobot
 				compass = new CompassReader(variableStore);
 				compass2 = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(compass2);
+				shooter = new VoltageCompensatedShooter(4);
+				
 				headPres = new ButtonTracker(Constants.driveStick, 2);
 				compCal1 = new ButtonTracker(Constants.driveStick, 11);
 				compCal2 = new ButtonTracker(Constants.driveStick, 16);
@@ -268,10 +270,10 @@ public class Robot extends IterativeRobot
 		    		RobotMap.agitator.set(0);
 		    	}
 		    	
-		    	if (shoot.isPressed()) {
-		    		RobotMap.shooter.set(.3);
-		    	}else {
-		    		RobotMap.shooter.set(0);
+		    	if (shoot.wasJustPressed()) {
+		    		shooter.turnOn();
+		    	}else if (shoot.wasJustReleased()) {
+		    		shooter.turnOff();
 		    	}
 				
 			}
@@ -388,5 +390,6 @@ public class Robot extends IterativeRobot
 		    	agitate.update();
 		    	shoot.update();
 		    	xBoxControl.update();
+		    	shooter.adjustVoltage();
 			}
 	}
