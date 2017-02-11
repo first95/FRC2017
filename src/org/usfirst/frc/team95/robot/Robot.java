@@ -314,10 +314,10 @@ public class Robot extends IterativeRobot
 		    	
 		    	SmartDashboard.putNumber("Heading", compass2.getHeading());
 		    	
-		    	SmartDashboard.putNumber("Range1 Finder cm", Constants.RFVoltsToCm(range1.getVoltage()));
-		    	SmartDashboard.putNumber("Range2 Finder cm", Constants.RFVoltsToCm(range2.getVoltage()));
-		    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range3.getVoltage()));
-		    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range4.getVoltage()));
+		    	SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
+		    	SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
+		    	SmartDashboard.putNumber("Range3 Finder ft", Constants.RFVoltsToFt(range3.getVoltage()));
+		    	SmartDashboard.putNumber("Range4 Finder ft", Constants.RFVoltsToFt(range4.getVoltage()));
 		    	SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
 		    	
 		    	SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
