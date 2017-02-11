@@ -37,7 +37,11 @@ public class DistanceMove extends Auto {
 			distance += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 		}
 	}
-
+	
+	@Override
+	public void start() {
+	}
+	
 	@Override
 	public void update() {
 		// System.out.println("Update!");

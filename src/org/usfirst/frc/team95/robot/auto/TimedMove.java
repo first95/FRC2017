@@ -24,7 +24,11 @@ public class TimedMove extends Auto {
 			RobotMap.drive.tank(left, right);
 		}
 	}
-
+	
+	@Override
+	public void start() {
+	}
+	
 	@Override
 	public void update() {
 		// System.out.println("Update!");

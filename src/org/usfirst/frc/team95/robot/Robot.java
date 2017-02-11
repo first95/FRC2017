@@ -19,6 +19,7 @@ import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
 import org.usfirst.frc.team95.robot.auto.FindGearHolder;
 import org.usfirst.frc.team95.robot.auto.Nothing;
+import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.TimedMove;
@@ -60,9 +61,12 @@ public class Robot extends IterativeRobot
 
 		AnalogInput range1, range2, range3, range4;
 		
-		DigitalOutput rangeFinder;
+		DigitalOutput initiateRangeFinder;
 		
 		VoltageCompensatedShooter shooter;
+		RangeFinder rangeFinder;
+		
+		RangeBasedGearScorer rangeBasedGearScorer;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -81,6 +85,8 @@ public class Robot extends IterativeRobot
 				compass = new CompassReader(variableStore);
 				compass2 = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(compass2);
+				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
+				
 				headPres = new ButtonTracker(Constants.driveStick, 2);
 				compCal1 = new ButtonTracker(Constants.driveStick, 11);
 				compCal2 = new ButtonTracker(Constants.driveStick, 16);
@@ -98,7 +104,10 @@ public class Robot extends IterativeRobot
 				range3 = new AnalogInput(2);
 				range4 = new AnalogInput(3);
 				
-				rangeFinder = new DigitalOutput(0);
+				initiateRangeFinder = new DigitalOutput(0);
+				
+				rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]{range1, range2});
+				rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
 				
 				// Vision Stuff
 				VisionGatherDistanceAndOther.pix2Deg = 0;
@@ -257,8 +266,14 @@ public class Robot extends IterativeRobot
 		    	
 				// alpha gear code
 		    	RobotMap.gearMouth.set(eatGear.isPressed());
-		    	RobotMap.pushFaceOut.set(facePush.isPressed());
-		    	RobotMap.gearPooper.set(poopGear.isPressed());
+		    	//RobotMap.pushFaceOut.set(facePush.isPressed());
+		    	//RobotMap.gearPooper.set(poopGear.isPressed());
+		    	
+		    	if (facePush.wasJustPressed()) {
+		    		rangeBasedGearScorer.start();
+		    	} else if (facePush.wasJustReleased()) {
+		    		rangeBasedGearScorer.stop();
+		    	}
 		    	
 		    	if (intake.isPressed()) {
 		    		RobotMap.intake.set(.3);
@@ -272,10 +287,10 @@ public class Robot extends IterativeRobot
 		    		RobotMap.agitator.set(0);
 		    	}
 		    	
-		    	if (shoot.isPressed()) {
-		    		RobotMap.shooter.set(.3);
-		    	}else {
-		    		RobotMap.shooter.set(0);
+		    	if (shoot.wasJustPressed()) {
+		    		shooter.turnOn();
+		    	}else if (shoot.wasJustReleased()) {
+		    		shooter.turnOff();
 		    	}
 				
 			}
@@ -300,7 +315,7 @@ public class Robot extends IterativeRobot
 
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
-				rangeFinder.pulse(.02);
+				// rangeFinder.pulse(.02);
 				
 		    	SmartDashboard.putNumber("X", compass2.getMagX());
 		    	SmartDashboard.putNumber("Y", compass2.getMagY());
@@ -316,11 +331,12 @@ public class Robot extends IterativeRobot
 		    	
 		    	SmartDashboard.putNumber("Heading", compass2.getHeading());
 		    	
-		    	SmartDashboard.putNumber("Range1 Finder cm", Constants.RFVoltsToCm(range1.getVoltage()));
-		    	SmartDashboard.putNumber("Range2 Finder cm", Constants.RFVoltsToCm(range2.getVoltage()));
-		    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range3.getVoltage()));
-		    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range4.getVoltage()));
-		    	SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
+		    	SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
+		    	// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
+		    	// SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
+		    	// SmartDashboard.putNumber("Range3 Finder ft", Constants.RFVoltsToFt(range3.getVoltage()));
+		    	// SmartDashboard.putNumber("Range4 Finder ft", Constants.RFVoltsToFt(range4.getVoltage()));
+		    	// SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
 		    	
 		    	SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 		    	SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
@@ -393,5 +409,7 @@ public class Robot extends IterativeRobot
 		    	shoot.update();
 		    	//driveForward.update();
 		    	//xBoxControl.update();
+		    	shooter.adjustVoltage();
+		    	rangeBasedGearScorer.update();
 			}
 	}
