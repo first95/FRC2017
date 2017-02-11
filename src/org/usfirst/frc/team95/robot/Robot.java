@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalOutput;
 
 
 /**
@@ -46,16 +47,19 @@ public class Robot extends IterativeRobot
 		Timer cycleTime; // for common periodic
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
 
-		Double headingToPres;
+		Double headingToPres, dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, poopGear, xBoxControl;
+		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot, driveForward, xBoxControl;
 
 		Auto move;
 		SendableChooser a, b, c;
 		ArrayList<PollableSubsystem> updates = new ArrayList<PollableSubsystem>();
 		ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
 
-		AnalogInput rangeFinder;
+		AnalogInput range1, range2, range3, range4;
+		
+		DigitalOutput rangeFinder;
+		
 		VoltageCompensatedShooter shooter;
 
 		/**
@@ -79,11 +83,20 @@ public class Robot extends IterativeRobot
 				compCal1 = new ButtonTracker(Constants.driveStick, 11);
 				compCal2 = new ButtonTracker(Constants.driveStick, 16);
 				compCalReset = new ButtonTracker(Constants.driveStick, 5);
-				eatGear = new ButtonTracker(Constants.driveStick, 3);
-				poopGear = new ButtonTracker(Constants.driveStick, 4);
 				xBoxControl = new ButtonTracker(Constants.driveStickX, 1);
-				rangeFinder = new AnalogInput(0);
-				shooter = new VoltageCompensatedShooter(6);
+				eatGear = new ButtonTracker(Constants.weaponStick, 5);
+				poopGear = new ButtonTracker(Constants.weaponStick, 4);
+				facePush = new ButtonTracker(Constants.weaponStick, 3);
+				intake = new ButtonTracker(Constants.weaponStick, 1);
+				agitate = new ButtonTracker(Constants.weaponStick, 2);
+				shoot = new ButtonTracker(Constants.weaponStick, 6);
+				driveForward = new ButtonTracker(Constants.driveStick, 1);
+				range1 = new AnalogInput(0);
+				range2 = new AnalogInput(1);
+				range3 = new AnalogInput(2);
+				range4 = new AnalogInput(3);
+				
+				rangeFinder = new DigitalOutput(0);
 				
 				// Vision Stuff
 				VisionGatherDistanceAndOther.pix2Deg = 0;
@@ -228,10 +241,38 @@ public class Robot extends IterativeRobot
 						RobotMap.drive.arcade(Constants.driveStick);
 					}
 
+				dist = (double) 0;
+		    	while (driveForward.isPressed() && dist <= 5) {
+		    		RobotMap.drive.tank(.3, .3);
+		    		dist = (double) RobotMap.left1.getEncPosition();
+		    	}
+		    	
+		    	if (driveForward.wasJustReleased()) {
+		    		RobotMap.drive.tank(0, 0);
+		    	}
+		    	
 				// alpha gear code
-				RobotMap.gearMouth.set(eatGear.isPressed());
-				RobotMap.pushFaceOut.set(poopGear.isPressed());
-				RobotMap.gearPooper.set(poopGear.isPressed());
+		    	RobotMap.gearMouth.set(eatGear.isPressed());
+		    	RobotMap.pushFaceOut.set(facePush.isPressed());
+		    	RobotMap.gearPooper.set(poopGear.isPressed());
+		    	
+		    	if (intake.isPressed()) {
+		    		RobotMap.intake.set(.3);
+		    	}else {
+		    		RobotMap.intake.set(0);
+		    	}
+		    	
+		    	if (agitate.isPressed()) {
+		    		RobotMap.agitator.set(.3);
+		    	}else {
+		    		RobotMap.agitator.set(0);
+		    	}
+		    	
+		    	if (shoot.isPressed()) {
+		    		RobotMap.shooter.set(.3);
+		    	}else {
+		    		RobotMap.shooter.set(0);
+		    	}
 				
 			}
 
@@ -255,21 +296,30 @@ public class Robot extends IterativeRobot
 
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
-				SmartDashboard.putNumber("X", compass2.getMagX());
-				SmartDashboard.putNumber("Y", compass2.getMagY());
-				SmartDashboard.putNumber("Z", compass2.getMagZ());
-				SmartDashboard.putNumber("ATanXY", Math.atan2(compass2.getMagX(), compass2.getMagY()));
-				SmartDashboard.putNumber("ATanZY", Math.atan2(compass2.getMagZ(), compass2.getMagY()));
-				SmartDashboard.putNumber("ATanXZ", Math.atan2(compass2.getMagX(), compass2.getMagZ()));
-
-				SmartDashboard.putNumber("CX", compass.getRawCompX());
-				SmartDashboard.putNumber("CY", compass.getRawCompY());
-				SmartDashboard.putNumber("CZ", compass.getRawCompZ());
-
-				SmartDashboard.putNumber("Heading", compass2.getHeading());
-
-				SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
-				SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
+				rangeFinder.pulse(.02);
+				
+		    	SmartDashboard.putNumber("X", compass2.getMagX());
+		    	SmartDashboard.putNumber("Y", compass2.getMagY());
+		    	SmartDashboard.putNumber("Z", compass2.getMagZ());
+		    	SmartDashboard.putNumber("ATanXY", Math.atan2(compass2.getMagX(), compass2.getMagY()));
+		    	SmartDashboard.putNumber("ATanZY", Math.atan2(compass2.getMagZ(), compass2.getMagY()));
+		    	SmartDashboard.putNumber("ATanXZ", Math.atan2(compass2.getMagX(), compass2.getMagZ()));
+		    	
+		    	SmartDashboard.putNumber("CX", compass.getRawCompX()); 
+		    	SmartDashboard.putNumber("CY", compass.getRawCompY()); 
+		    	SmartDashboard.putNumber("CZ", compass.getRawCompZ()); 
+		    	
+		    	
+		    	SmartDashboard.putNumber("Heading", compass2.getHeading());
+		    	
+		    	SmartDashboard.putNumber("Range1 Finder cm", Constants.RFVoltsToCm(range1.getVoltage()));
+		    	SmartDashboard.putNumber("Range2 Finder cm", Constants.RFVoltsToCm(range2.getVoltage()));
+		    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range3.getVoltage()));
+		    	SmartDashboard.putNumber("Range3 Finder cm", Constants.RFVoltsToCm(range4.getVoltage()));
+		    	SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
+		    	
+		    	SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
+		    	SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
 
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
 				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
@@ -328,11 +378,15 @@ public class Robot extends IterativeRobot
 				// VisionCameraSetUp cam = new VisionCameraSetUp(VisionDisplay.camera);
 
 				headPres.update();
-				compCal1.update();
-				compCal2.update();
-				compCalReset.update();
-				eatGear.update();
-				poopGear.update();
-				shooter.adjustVoltage();
+		    	compCal1.update();
+		    	compCal2.update();
+		    	compCalReset.update();
+		    	eatGear.update();
+		    	poopGear.update();
+		    	facePush.update();
+		    	intake.update();
+		    	agitate.update();
+		    	shoot.update();
+		    	xBoxControl.update();
 			}
 	}
