@@ -52,7 +52,7 @@ public class Robot extends IterativeRobot
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot, driveForward, xBoxControl;
+		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -88,17 +88,15 @@ public class Robot extends IterativeRobot
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 				
 				headPres = new ButtonTracker(Constants.driveStick, 2);
-				compCal1 = new ButtonTracker(Constants.driveStick, 11);
-				compCal2 = new ButtonTracker(Constants.driveStick, 16);
+				compCal1 = new ButtonTracker(Constants.driveStick, 7);
+				compCal2 = new ButtonTracker(Constants.driveStick, 8);
 				compCalReset = new ButtonTracker(Constants.driveStick, 5);
-				//xBoxControl = new ButtonTracker(Constants.driveStickX, 1);
 				eatGear = new ButtonTracker(Constants.weaponStick, 5);
 				poopGear = new ButtonTracker(Constants.weaponStick, 4);
 				facePush = new ButtonTracker(Constants.weaponStick, 3);
 				intake = new ButtonTracker(Constants.weaponStick, 1);
 				agitate = new ButtonTracker(Constants.weaponStick, 2);
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
-				driveForward = new ButtonTracker(Constants.driveStick, 1);
 				range1 = new AnalogInput(0);
 				range2 = new AnalogInput(1);
 				range3 = new AnalogInput(2);
@@ -245,10 +243,7 @@ public class Robot extends IterativeRobot
 							}
 
 						header.setHeading(headingToPres);
-					}
-				//else if (xBoxControl.isPressed()) {
-				//		RobotMap.drive.arcade(Constants.driveStickX);
-				/*	}*/ else {
+					} else {
 						RobotMap.drive.arcade(Constants.driveStick);
 					}
 
@@ -407,8 +402,6 @@ public class Robot extends IterativeRobot
 		    	intake.update();
 		    	agitate.update();
 		    	shoot.update();
-		    	//driveForward.update();
-		    	//xBoxControl.update();
 		    	shooter.adjustVoltage();
 		    	rangeBasedGearScorer.update();
 			}
