@@ -18,6 +18,7 @@ import org.opencv.core.Mat;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.FindGearHolder;
 import org.usfirst.frc.team95.robot.auto.Nothing;
+import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.TimedMove;
@@ -62,6 +63,8 @@ public class Robot extends IterativeRobot
 		
 		VoltageCompensatedShooter shooter;
 		RangeFinder rangeFinder;
+		
+		RangeBasedGearScorer rangeBasedGearScorer;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -102,7 +105,7 @@ public class Robot extends IterativeRobot
 				initiateRangeFinder = new DigitalOutput(0);
 				
 				rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]{range1, range2});
-				
+				rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
 				
 				// Vision Stuff
 				VisionGatherDistanceAndOther.pix2Deg = 0;
@@ -259,8 +262,14 @@ public class Robot extends IterativeRobot
 		    	
 				// alpha gear code
 		    	RobotMap.gearMouth.set(eatGear.isPressed());
-		    	RobotMap.pushFaceOut.set(facePush.isPressed());
-		    	RobotMap.gearPooper.set(poopGear.isPressed());
+		    	//RobotMap.pushFaceOut.set(facePush.isPressed());
+		    	//RobotMap.gearPooper.set(poopGear.isPressed());
+		    	
+		    	if (facePush.wasJustPressed()) {
+		    		rangeBasedGearScorer.start();
+		    	} else if (facePush.wasJustReleased()) {
+		    		rangeBasedGearScorer.stop();
+		    	}
 		    	
 		    	if (intake.isPressed()) {
 		    		RobotMap.intake.set(.3);
@@ -396,5 +405,6 @@ public class Robot extends IterativeRobot
 		    	shoot.update();
 		    	xBoxControl.update();
 		    	shooter.adjustVoltage();
+		    	rangeBasedGearScorer.update();
 			}
 	}

@@ -7,6 +7,9 @@ public abstract class Auto implements PollableSubsystem {
 	// Called once to initialize the auto move
 	public abstract void init();
 
+	// Called to set / reset the move
+	public abstract void start();
+	
 	// Called each iteration
 	public abstract void update();
 
