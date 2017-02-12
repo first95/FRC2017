@@ -47,7 +47,7 @@ public class VisionGatherDistanceAndOther
 				System.out.println("Distance: " + distanceCam2Tar + "in");
 
 				// Draw a circle in the center of the tar
-				Imgproc.circle(VisionCameraSetUp.mat, point, 5, new Scalar(0, 0, 255), 5);
+//				Imgproc.circle(VisionCameraSetUp.mat, point, 5, new Scalar(0, 0, 255), 5);
 				
 			}
 		

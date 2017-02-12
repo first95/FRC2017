@@ -31,10 +31,6 @@ import edu.wpi.first.wpilibj.CameraServer;
  */
 public class Robot extends IterativeRobot
 	{
-
-		VisionDisplay test;
-		NetworkTable visionData = NetworkTable.getTable("CameraOutput");
-
 		Command autonomousCommand;
 		SendableChooser chooser;
 
@@ -251,9 +247,8 @@ public class Robot extends IterativeRobot
 			{
 
 				// Test Stuff For Vision
-				SmartDashboard.putNumber("MatNumCols", VisionCameraSetUp.finalMat.cols());
-				SmartDashboard.putNumber("MatNumRows", VisionCameraSetUp.finalMat.rows());
-				SmartDashboard.putNumber("Degree Offset (X)", VisionGatherDistanceAndOther.pix2Deg);
+			SmartDashboard.putNumber("Degree Offset (X)", gearLiftFinder.getHeadingToTarget());
+			SmartDashboard.putBoolean("We can see the target", gearLiftFinder.haveValidHeading());
 				//
 
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );

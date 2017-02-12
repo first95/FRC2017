@@ -24,13 +24,12 @@ public class VisualGearLiftFinder {
 	public void computeHeadingToTarget() {
 		Mat input_image = new Mat();
 		imageSource.grabFrame(curFrame);
-		pipeline.setsource0(curFrame);
-		pipeline.process();
+		pipeline.process(curFrame);
 		Imgproc.drawContours(curFrame, pipeline.filterContoursOutput(), -1, new Scalar(0, 0, 255));
-		for (Rect bb : pipeline.filterContoursOutputBb()) {
-//			Imgproc.circle(curFrame, new Point(bb.x, bb.y), 5, new Scalar(255, 0, 0), 1);			
-			Imgproc.rectangle(curFrame, bb.br(), bb.tl(), new Scalar(255, 0, 0));			
-		}
+//		for (Rect bb : pipeline.filterContoursOutputBb()) {
+////			Imgproc.circle(curFrame, new Point(bb.x, bb.y), 5, new Scalar(255, 0, 0), 1);			
+//			Imgproc.rectangle(curFrame, bb.br(), bb.tl(), new Scalar(255, 0, 0));			
+//		}
 	}	
 	
 	public boolean haveValidHeading() {
