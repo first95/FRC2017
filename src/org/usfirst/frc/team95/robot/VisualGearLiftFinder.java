@@ -13,6 +13,8 @@ import org.opencv.imgproc.Imgproc;
 import edu.wpi.cscore.CvSink;
 
 public class VisualGearLiftFinder {
+	static final int NUM_BOXES_TO_CONSIDER = 2;
+	
 	CvSink imageSource = null;
 	VisionMainPipeline pipeline;
 	Mat curFrame = new Mat(); // gets annotated after processing
@@ -52,11 +54,20 @@ public class VisualGearLiftFinder {
 			});
 			
 			// Assume the two largest boxes are the ones to use.
-			Rect bb = boxes.get(0);
-			Imgproc.putText(curFrame, "0", bb.tl(), 0, 0.75, new Scalar(255, 255, 255));
-			bb = boxes.get(1);
-			Imgproc.putText(curFrame, "1", bb.tl(), 0, 0.75, new Scalar(255, 255, 255));
-		
+			// Find their boundaries.
+			double left_bound   = curFrame.cols(); // start at the right
+			double right_bound  = 0; // start at the left
+			double top_bound    = curFrame.rows(); // start at the bottom
+			double bottom_bound = 0; // start at the top
+			for(int i = 0; i < 2 && i < NUM_BOXES_TO_CONSIDER; ++i) {
+				Rect bb = boxes.get(i);
+				Imgproc.putText(curFrame, "" + i, bb.tl(), 0, 0.75, new Scalar(255, 255, 255));
+				left_bound    = Math.min(left_bound   , bb.tl().x);
+				right_bound   = Math.max(right_bound  , bb.br().x);
+				top_bound     = Math.min(top_bound    , bb.tl().y);
+				bottom_bound  = Math.max(bottom_bound , bb.br().y);
+			}
+			Imgproc.rectangle(curFrame, new Point(left_bound, top_bound), new Point(right_bound, bottom_bound), new Scalar(255, 255, 255));
 		}
 	}	
 	
