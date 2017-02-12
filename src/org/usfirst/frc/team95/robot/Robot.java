@@ -253,24 +253,24 @@ public class Robot extends IterativeRobot
 
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
-				SmartDashboard.putNumber("X", compass2.getMagX());
-				SmartDashboard.putNumber("Y", compass2.getMagY());
-				SmartDashboard.putNumber("Z", compass2.getMagZ());
-				SmartDashboard.putNumber("ATanXY", Math.atan2(compass2.getMagX(), compass2.getMagY()));
-				SmartDashboard.putNumber("ATanZY", Math.atan2(compass2.getMagZ(), compass2.getMagY()));
-				SmartDashboard.putNumber("ATanXZ", Math.atan2(compass2.getMagX(), compass2.getMagZ()));
-
-				SmartDashboard.putNumber("CX", compass.getRawCompX());
-				SmartDashboard.putNumber("CY", compass.getRawCompY());
-				SmartDashboard.putNumber("CZ", compass.getRawCompZ());
-
-				SmartDashboard.putNumber("Heading", compass2.getHeading());
-
-				SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
-				SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
-
-				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
-				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
+//				SmartDashboard.putNumber("X", compass2.getMagX());
+//				SmartDashboard.putNumber("Y", compass2.getMagY());
+//				SmartDashboard.putNumber("Z", compass2.getMagZ());
+//				SmartDashboard.putNumber("ATanXY", Math.atan2(compass2.getMagX(), compass2.getMagY()));
+//				SmartDashboard.putNumber("ATanZY", Math.atan2(compass2.getMagZ(), compass2.getMagY()));
+//				SmartDashboard.putNumber("ATanXZ", Math.atan2(compass2.getMagX(), compass2.getMagZ()));
+//
+//				SmartDashboard.putNumber("CX", compass.getRawCompX());
+//				SmartDashboard.putNumber("CY", compass.getRawCompY());
+//				SmartDashboard.putNumber("CZ", compass.getRawCompZ());
+//
+//				SmartDashboard.putNumber("Heading", compass2.getHeading());
+//
+//				SmartDashboard.putNumber("Range Finder cm", Constants.RFVoltsToCm(rangeFinder.getVoltage()));
+//				SmartDashboard.putNumber("Range finder Volts", rangeFinder.getVoltage());
+//
+//				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
+//				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
 
 				// TODO: this eventually belongs inside an auto move
 				gearLiftFinder.computeHeadingToTarget();

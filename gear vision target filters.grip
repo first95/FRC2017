@@ -126,10 +126,10 @@
   </settings>
   <codeGenerationSettings>
     <language>Java</language>
-    <className>GripPipeline</className>
+    <className>VisionMainPipeline</className>
     <implementWpilibPipeline>false</implementWpilibPipeline>
     <saveDir>C:\Users\spami\Documents\team95\2017</saveDir>
-    <packageName>test</packageName>
+    <packageName>org.usfirst.frc.team95.robot</packageName>
     <moduleName>grip</moduleName>
   </codeGenerationSettings>
 </grip:Pipeline>
