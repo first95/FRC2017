@@ -24,7 +24,7 @@ public class VisualGearLiftFinder {
 	CvSink imageSource = null;
 	VisionMainPipeline pipeline;
 	Mat curFrame = new Mat(); // gets annotated after processing
-	double lastDeterminedHeading = 0.0;
+	double lastDeterminedHeadingDegrees = 0.0;
 	boolean lastHeadingDeterminationSucceeded = false;
 	
 	public VisualGearLiftFinder(CvSink imageSource) {
@@ -82,7 +82,7 @@ public class VisualGearLiftFinder {
 				double target_offset_from_center = target_center_in_image - (curFrame.cols() / 2.0);
 				Imgproc.line(curFrame, new Point(target_center_in_image, 0), new Point(target_center_in_image, curFrame.rows()), new Scalar(0, 255, 0));
 				SmartDashboard.putNumber("Target center (pixels)", target_offset_from_center);
-				lastDeterminedHeading = target_offset_from_center * DEGREES_PER_PIXEL;
+				lastDeterminedHeadingDegrees = target_offset_from_center * DEGREES_PER_PIXEL;
 				lastHeadingDeterminationSucceeded = true;
 			}
 		}
@@ -92,8 +92,12 @@ public class VisualGearLiftFinder {
 		return lastHeadingDeterminationSucceeded;
 	}
 	
-	public double getHeadingToTarget() {
-		return lastDeterminedHeading;
+	public double getHeadingToTargetDegrees() {
+		return lastDeterminedHeadingDegrees;
+	}
+	
+	public double getHeadingToTargetRadians() {
+		return getHeadingToTargetDegrees() * (Math.PI / 180.0);
 	}
 	
 	public Mat getAnnotatedFrame() {

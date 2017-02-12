@@ -247,7 +247,7 @@ public class Robot extends IterativeRobot
 			{
 
 				// Test Stuff For Vision
-			SmartDashboard.putNumber("Degree Offset (X)", gearLiftFinder.getHeadingToTarget());
+			SmartDashboard.putNumber("Degree Offset (X)", gearLiftFinder.getHeadingToTargetDegrees());
 			SmartDashboard.putBoolean("We can see the target", gearLiftFinder.haveValidHeading());
 				//
 
