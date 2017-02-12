@@ -11,6 +11,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.CvSink;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisualGearLiftFinder {
 	static final int NUM_BOXES_TO_CONSIDER = 2;
@@ -18,7 +19,7 @@ public class VisualGearLiftFinder {
 	// Ideal target is twice as wide as it is tall (10.25" x 5")
 	static final double WIDEST_ASPECT_RATIO = 2.5 / 1.0; 
 	static final double TALLEST_ASPECT_RATIO = 1.5 / 1.0; 
-	static final double DEGREES_PER_PIXEL = (3.0 / 16.0);
+	static final double DEGREES_PER_PIXEL = (-0.075); // Determined from google drive sheet
 	
 	CvSink imageSource = null;
 	VisionMainPipeline pipeline;
@@ -78,9 +79,10 @@ public class VisualGearLiftFinder {
 			if(aspect_ratio > TALLEST_ASPECT_RATIO && aspect_ratio < WIDEST_ASPECT_RATIO) {
 				// Finally, compute the heading
 				double target_center_in_image = (right_bound + left_bound) / 2.0;
+				double target_offset_from_center = target_center_in_image - (curFrame.cols() / 2.0);
 				Imgproc.line(curFrame, new Point(target_center_in_image, 0), new Point(target_center_in_image, curFrame.rows()), new Scalar(0, 255, 0));
-				
-				lastDeterminedHeading = (target_center_in_image - (curFrame.cols() / 2.0))* DEGREES_PER_PIXEL;
+				SmartDashboard.putNumber("Target center (pixels)", target_offset_from_center);
+				lastDeterminedHeading = target_offset_from_center * DEGREES_PER_PIXEL;
 				lastHeadingDeterminationSucceeded = true;
 			}
 		}
