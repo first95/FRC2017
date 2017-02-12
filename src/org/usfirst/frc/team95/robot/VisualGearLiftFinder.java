@@ -14,6 +14,11 @@ import edu.wpi.cscore.CvSink;
 
 public class VisualGearLiftFinder {
 	static final int NUM_BOXES_TO_CONSIDER = 2;
+	// Aspect ratios here are width to height.
+	// Ideal target is twice as wide as it is tall (10.25" x 5")
+	static final double WIDEST_ASPECT_RATIO = 2.5 / 1.0; 
+	static final double TALLEST_ASPECT_RATIO = 1.5 / 1.0; 
+	static final double DEGREES_PER_PIXEL = (3.0 / 16.0);
 	
 	CvSink imageSource = null;
 	VisionMainPipeline pipeline;
@@ -42,7 +47,6 @@ public class VisualGearLiftFinder {
 		
 		// If we only see one box then it's not enough information to see the target
 		if(boxes.size() >= 2) {
-			lastHeadingDeterminationSucceeded = true;
 			// Sort by largest to smallest (in terms of bounding box area)
 			boxes.sort(new Comparator<Rect>() {
 				@Override
@@ -68,6 +72,17 @@ public class VisualGearLiftFinder {
 				bottom_bound  = Math.max(bottom_bound , bb.br().y);
 			}
 			Imgproc.rectangle(curFrame, new Point(left_bound, top_bound), new Point(right_bound, bottom_bound), new Scalar(255, 255, 255));
+			
+			// Confirm that the aspect ratio of the target is what we expect.
+			double aspect_ratio = (right_bound - left_bound) / (bottom_bound - top_bound);
+			if(aspect_ratio > TALLEST_ASPECT_RATIO && aspect_ratio < WIDEST_ASPECT_RATIO) {
+				// Finally, compute the heading
+				double target_center_in_image = (right_bound + left_bound) / 2.0;
+				Imgproc.line(curFrame, new Point(target_center_in_image, 0), new Point(target_center_in_image, curFrame.rows()), new Scalar(0, 255, 0));
+				
+				lastDeterminedHeading = (target_center_in_image - (curFrame.cols() / 2.0))* DEGREES_PER_PIXEL;
+				lastHeadingDeterminationSucceeded = true;
+			}
 		}
 	}	
 	
