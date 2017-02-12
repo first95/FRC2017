@@ -30,7 +30,11 @@ public class RotateBy extends Auto {
 			spinner.setHeading(angle + compass.getHeading());
 		}
 	}
-
+	
+	@Override
+	public void start() {
+	}
+	
 	@Override
 	public void update() {
 		// System.out.println("Time: " + time);

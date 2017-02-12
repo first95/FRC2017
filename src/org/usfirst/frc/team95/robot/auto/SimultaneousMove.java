@@ -15,6 +15,10 @@ public class SimultaneousMove extends Auto {
 	}
 
 	@Override
+	public void start() {
+	}
+	
+	@Override
 	public void update() {
 		for (Auto move : table) {
 			move.update();

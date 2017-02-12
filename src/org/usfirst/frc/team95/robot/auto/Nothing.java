@@ -6,7 +6,11 @@ public class Nothing extends Auto {
 	public void init() {
 		;
 	}
-
+	
+	@Override
+	public void start() {
+	}
+	
 	@Override
 	public void update() {
 		;

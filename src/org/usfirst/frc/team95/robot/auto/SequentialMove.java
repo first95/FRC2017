@@ -26,7 +26,11 @@ public class SequentialMove extends Auto {
 	public void init() {
 		move.init();
 	}
-
+	
+	@Override
+	public void start() {
+	}
+	
 	@Override
 	public void update() {
 		if (move.done()) {

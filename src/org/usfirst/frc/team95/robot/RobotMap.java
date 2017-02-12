@@ -46,12 +46,15 @@ public class RobotMap {
 		winchLeft.set(7);
 		// Inversion does nothing in Follower mode.  We accomplished this by reversing the polarity on the motor wires,
 		// so that setting both motors to "forward" runs the winch without the motors fighting each other.
-		winchLeft.setInverted(true); 
+		winchLeft.setInverted(true); // can't invert followers
 		gearPooper = new Solenoid(2);
 		gearMouth = new Solenoid(1);
 		pushFaceOut = new Solenoid(0);
 		
 		left1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		right1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		
+		left1.setEncPosition(0);
+		right1.setEncPosition(0);
     }
 }
