@@ -30,6 +30,7 @@ public class VisionMainPipeline {
 	private ArrayList<MatOfPoint> findContoursOutput = new ArrayList<MatOfPoint>();
 	private ArrayList<MatOfPoint> convexHullsOutput = new ArrayList<MatOfPoint>();
 	private ArrayList<MatOfPoint> filterContoursOutput = new ArrayList<MatOfPoint>();
+	private ArrayList<Rect> filterContoursBbOutput = new ArrayList<Rect>();
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -68,7 +69,7 @@ public class VisionMainPipeline {
 		double filterContoursMinVertices = 4.0;
 		double filterContoursMinRatio = 0.2;
 		double filterContoursMaxRatio = 0.7;
-		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
+		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput, filterContoursBbOutput);
 
 	}
 
@@ -104,6 +105,9 @@ public class VisionMainPipeline {
 		return filterContoursOutput;
 	}
 
+	public ArrayList<Rect> filterContoursBbOutput() {
+		return filterContoursBbOutput;
+	}
 
 	/**
 	 * Segment an image based on hue, saturation, and luminance ranges.
@@ -186,9 +190,10 @@ public class VisionMainPipeline {
 	private void filterContours(List<MatOfPoint> inputContours, double minArea,
 		double minPerimeter, double minWidth, double maxWidth, double minHeight, double
 		maxHeight, double[] solidity, double maxVertexCount, double minVertexCount, double
-		minRatio, double maxRatio, List<MatOfPoint> output) {
+		minRatio, double maxRatio, List<MatOfPoint> output, List<Rect> outputBb) {
 		final MatOfInt hull = new MatOfInt();
 		output.clear();
+		outputBb.clear();
 		//operation
 		for (int i = 0; i < inputContours.size(); i++) {
 			final MatOfPoint contour = inputContours.get(i);
@@ -212,6 +217,7 @@ public class VisionMainPipeline {
 			final double ratio = bb.width / (double)bb.height;
 			if (ratio < minRatio || ratio > maxRatio) continue;
 			output.add(contour);
+			outputBb.add(bb);
 		}
 	}
 
