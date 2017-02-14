@@ -305,8 +305,12 @@ public class Robot extends IterativeRobot
 			{
 
 				// Test Stuff For Vision
-			SmartDashboard.putNumber("Degree Offset (X)", gearLiftFinder.getHeadingToTargetDegrees());
-			SmartDashboard.putBoolean("We can see the target", gearLiftFinder.haveValidHeading());
+				// TODO: this eventually belongs inside an auto move
+				gearLiftFinder.computeHeadingToTarget();
+				smartDashboardVideoOutput.putFrame(gearLiftFinder.getAnnotatedFrame());
+				
+				SmartDashboard.putNumber("Degree Offset (X)", gearLiftFinder.getHeadingToTargetDegrees());
+				SmartDashboard.putBoolean("We can see the target", gearLiftFinder.haveValidHeading());
 				//
 
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
