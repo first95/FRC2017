@@ -18,8 +18,9 @@ public class VisualGearLiftFinder {
 	// Aspect ratios here are width to height.
 	// Ideal target is twice as wide as it is tall (10.25" x 5")
 	static final double WIDEST_ASPECT_RATIO = 2.5 / 1.0; 
-	static final double TALLEST_ASPECT_RATIO = 1.5 / 1.0; 
+	static final double TALLEST_ASPECT_RATIO = 1.0 / 1.5; 
 	static final double DEGREES_PER_PIXEL = (-0.075); // Determined from google drive sheet
+	static final String REASON = "Reason for not finding gearlift";
 	
 	CvSink imageSource = null;
 	VisionMainPipeline pipeline;
@@ -84,7 +85,12 @@ public class VisualGearLiftFinder {
 				SmartDashboard.putNumber("Target center (pixels)", target_offset_from_center);
 				lastDeterminedHeadingDegrees = target_offset_from_center * DEGREES_PER_PIXEL;
 				lastHeadingDeterminationSucceeded = true;
+				SmartDashboard.putString(REASON, "None.");
+			} else {
+				SmartDashboard.putString(REASON, "Aspect ratio of " + aspect_ratio + " outside limits.");
 			}
+		} else {
+			SmartDashboard.putString(REASON, "Insufficient contours passing filter");
 		}
 	}	
 	
