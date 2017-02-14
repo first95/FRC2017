@@ -56,5 +56,7 @@ public class RobotMap {
 		
 		left1.setEncPosition(0);
 		right1.setEncPosition(0);
+		left1.enableBrakeMode(true);
+		right1.enableBrakeMode(true);
     }
 }

@@ -3,7 +3,6 @@ package org.usfirst.frc.team95.robot.auto;
 import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.Timer;
 
 public class DistanceMove extends Auto {
 	double left, right, distance, ramp, rampRate, minSpeed, speed;
@@ -13,11 +12,7 @@ public class DistanceMove extends Auto {
 		this.left = left;
 		this.right = right;
 		this.distance = distance;
-		if (left > 0) {
-			minSpeed = .15;
-		} else {
-		minSpeed = -.15;
-		}
+		
 	}
 
 	@Override
@@ -25,13 +20,13 @@ public class DistanceMove extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 			if (left > 0) {
-				minSpeed = .15;
+				minSpeed = .1;
 			} else {
-			minSpeed = -.15;
+				minSpeed = -.1;
 			}
 			speed = minSpeed;
-			rampRate = .05;
-			ramp = distance * .05;
+			rampRate = left * .03;
+			ramp = distance * .15;
 			ramp += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 			RobotMap.drive.tank(-minSpeed, -minSpeed);
 			distance += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
@@ -48,15 +43,22 @@ public class DistanceMove extends Auto {
 		if ((RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot) <= ramp) {
 			RobotMap.drive.tank(-speed, -speed);
 			speed += rampRate;
+			if (speed > left) {
+				speed = left;
+			}
 		}else if ((RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot) >= (distance - ramp)){
 			RobotMap.drive.tank(-speed, -speed);
-			speed += rampRate;
+			speed -= rampRate;
+			if (speed < minSpeed) {
+				speed = minSpeed;
+			}
 		} else {
 			speed = left;
 			RobotMap.drive.tank(-speed, -speed);
 		}
 		if ((RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot) >= distance) {
 			done = true;
+			RobotMap.drive.tank(0, 0);
 			stop();
 		}
 	}
