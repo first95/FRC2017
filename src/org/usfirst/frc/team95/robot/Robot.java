@@ -272,6 +272,7 @@ public class Robot extends IterativeRobot
 		    		shooter.turnOff();
 		    	}
 				
+		    	RobotMap.winchRight.set(Constants.weaponStick.getY());
 			}
 
 		/**
