@@ -15,9 +15,10 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import java.util.ArrayList;
 
 import org.opencv.core.Mat;
+import org.usfirst.frc.team95.robot.auto.AtLiftRotate;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
-import org.usfirst.frc.team95.robot.auto.FindGearHolder;
+import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
@@ -62,10 +63,7 @@ public class Robot extends IterativeRobot
 
 		RangeFinder rangeFinder;
 		
-		// TODO: These eventually belong inside an auto move
-		VisualGearLiftFinder gearLiftFinder = null;
-		CvSource smartDashboardVideoOutput = null;
-		UsbCamera myCam = null;
+
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -105,19 +103,6 @@ public class Robot extends IterativeRobot
 				
 				rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]{range1, range2});
 				rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
-				
-				// Vision Stuff
-
-				// TODO: this eventually belongs inside an auto move
-				myCam = CameraServer.getInstance().startAutomaticCapture();
-//				myCam.setResolution(1280, 720); // Doesn't seem to work
-				myCam.setResolution(640, 480);
-//				myCam.setBrightness(10);
-				myCam.setExposureManual(20);
-				CvSink cvSink = CameraServer.getInstance().getVideo();
-				gearLiftFinder = new VisualGearLiftFinder(cvSink);
-				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
-//				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 360);
 
 				cycleTime = new Timer();
 				cycleTime.reset();
@@ -139,7 +124,8 @@ public class Robot extends IterativeRobot
 				a.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
-				a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
+				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced(rangeFinder));
+				a.addObject("AtLiftRotate", new AtLiftRotate(compass2));
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -150,7 +136,6 @@ public class Robot extends IterativeRobot
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
-				c.addObject("Find + Rotate", new FindGearHolder());
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
@@ -304,15 +289,6 @@ public class Robot extends IterativeRobot
 		// This is run in disabled, teleop, and auto periodics.
 		public void commonPeriodic()
 			{
-
-				// Test Stuff For Vision
-				// TODO: this eventually belongs inside an auto move
-				gearLiftFinder.computeHeadingToTarget();
-				smartDashboardVideoOutput.putFrame(gearLiftFinder.getAnnotatedFrame());
-				
-				SmartDashboard.putNumber("Degree Offset (X)", gearLiftFinder.getHeadingToTargetDegrees());
-				SmartDashboard.putBoolean("We can see the target", gearLiftFinder.haveValidHeading());
-				//
 
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
