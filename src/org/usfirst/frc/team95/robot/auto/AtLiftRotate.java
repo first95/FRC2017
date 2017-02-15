@@ -8,7 +8,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class GoToLift extends Auto
+public class AtLiftRotate extends Auto
 	{
 
 		// TODO: These eventually belong inside an auto move
@@ -17,7 +17,7 @@ public class GoToLift extends Auto
 		UsbCamera myCam = null;
 		ADIS16448_IMU compass;
 
-		public GoToLift(ADIS16448_IMU compass2)
+		public AtLiftRotate(ADIS16448_IMU compass2)
 			{
 				compass = compass2;
 			}

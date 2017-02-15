@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import java.util.ArrayList;
 
 import org.opencv.core.Mat;
+import org.usfirst.frc.team95.robot.auto.AtLiftRotate;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
+import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
@@ -122,7 +124,8 @@ public class Robot extends IterativeRobot
 				a.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
-				a.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
+				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced(rangeFinder));
+				a.addObject("AtLiftRotate", new AtLiftRotate(compass2));
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
