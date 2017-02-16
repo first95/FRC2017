@@ -52,7 +52,8 @@ public class Robot extends IterativeRobot
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot;
+		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, 
+		eatGear, facePush, poopGear, intake, agitate, shoot;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -88,6 +89,7 @@ public class Robot extends IterativeRobot
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
 				compCal2 = new ButtonTracker(Constants.driveStick, 8);
 				compCalReset = new ButtonTracker(Constants.driveStick, 5);
+				turbo = new ButtonTracker(Constants.driveStick, 6);
 				eatGear = new ButtonTracker(Constants.weaponStick, 5);
 				poopGear = new ButtonTracker(Constants.weaponStick, 4);
 				facePush = new ButtonTracker(Constants.weaponStick, 3);
@@ -230,8 +232,10 @@ public class Robot extends IterativeRobot
 							}
 
 						header.setHeading(headingToPres);
-					} else {
+					} else if (turbo.isPressed()){
 						RobotMap.drive.arcade(Constants.driveStick);
+					} else {
+						RobotMap.drive.halfArcade(Constants.driveStick);
 					}
 
 				/*dist = 0;
