@@ -2,6 +2,10 @@ package org.usfirst.frc.team95.robot;
 
 import com.ctre.CANTalon;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
@@ -13,6 +17,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class RobotMap {
     public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight, intake, agitator, shooter;
 	public static Drive drive;
+	
+	// Vision Stuff
+	public static VisualGearLiftFinder gearLiftFinder = null;
+	public static UsbCamera myCam = null;
+	
 	// Autonomous moves wishing to control the robot's drive base
 	// should set the driveLock object to "this" (that is, themselves).
 	// They should also check that the driveLock object is null prior to
@@ -21,6 +30,14 @@ public class RobotMap {
 	public static Solenoid gearPooper, gearMouth, pushFaceOut;
     
     public static void init() {
+    	
+    	// Start Vision Processing, and allow us to grab it from anywhere
+    	myCam = CameraServer.getInstance().startAutomaticCapture();
+		myCam.setResolution(640, 480);
+		myCam.setExposureManual(20);
+		CvSink cvSink = CameraServer.getInstance().getVideo();
+		gearLiftFinder = new VisualGearLiftFinder(cvSink);
+    	
 		// drive motors
 		left1 = new CANTalon(1);
 		left2 = new CANTalon(2);

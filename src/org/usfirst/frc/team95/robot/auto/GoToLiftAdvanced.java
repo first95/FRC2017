@@ -13,9 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class GoToLiftAdvanced extends Auto
 	{
 		private RangeFinder rangeFinder1;
-		private VisualGearLiftFinder gearLiftFinder = null;
-		private CvSource smartDashboardVideoOutput = null;
-		private UsbCamera myCam = null;
+
 		private ADIS16448_IMU compass;
 		private static final double MAX_ROTATE_THROTTLE = 0.5;
 		private static final double MAX_DRIVE_THROTTLE = 0.5;
@@ -29,13 +27,6 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void init()
 			{
-
-				myCam = CameraServer.getInstance().startAutomaticCapture();
-				myCam.setResolution(640, 480);
-				myCam.setExposureManual(20);
-				CvSink cvSink = CameraServer.getInstance().getVideo();
-				gearLiftFinder = new VisualGearLiftFinder(cvSink);
-				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
@@ -55,20 +46,21 @@ public class GoToLiftAdvanced extends Auto
 		public void update()
 			{
 
-				gearLiftFinder.computeHeadingToTarget();
-				smartDashboardVideoOutput.putFrame(gearLiftFinder.getAnnotatedFrame());
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
+				
+				
 
-				SmartDashboard.putNumber("Degree Offset (X)", gearLiftFinder.getHeadingToTargetDegrees());
-				SmartDashboard.putBoolean("We can see the target", gearLiftFinder.haveValidHeading());
+				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
 				//
 
-				if (gearLiftFinder.getHeadingToTargetDegrees() > 2)
+				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > 2)
 					{
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE * gearLiftFinder.getHeadingToTargetDegrees()) / 25);
+						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
 					}
-				else if (gearLiftFinder.getHeadingToTargetDegrees() < -2)
+				else if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() < -2)
 					{
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, ((MAX_ROTATE_THROTTLE * gearLiftFinder.getHeadingToTargetDegrees()) / 25) * -1);
+						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, ((MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25) * -1);
 					}
 
 				if (rangeFinder1.getRangeInFeet() <= 1)
