@@ -4,6 +4,7 @@ import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class DistanceMovePID extends Auto {
@@ -11,9 +12,10 @@ public class DistanceMovePID extends Auto {
 	Timer timer = new Timer();
 	boolean done = false;
 
-	public DistanceMovePID(double distance) {
+	public DistanceMovePID(double P, double distance) {
 		this.distanceL = distance;
-		
+		this.distanceR = distance;
+		this.P = P;
 	}
 
 	@Override
@@ -22,7 +24,7 @@ public class DistanceMovePID extends Auto {
 			RobotMap.driveLock = this;
 			distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 			distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
-			P = 1;
+			//P = 1;
 			P /= distanceL;
 			I = 0;
 			D = 0;
@@ -41,42 +43,43 @@ public class DistanceMovePID extends Auto {
 	
 	@Override
 	public void update() {
-		
+		SmartDashboard.putDouble("errorL", errorL);
+		//SmartDashboard.putDouble("errorR", errorR);
 		errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
-		errorR = distanceR - (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
+		//errorR = distanceR - (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 		
 		left = P * errorL;
-		right = P * errorR;
+		//right = P * errorR;
 		
 		newTime = timer.get();
 		sumL += (errorL * (newTime - prevTime));
-		sumR += (errorR * (newTime - prevTime));
+		//sumR += (errorR * (newTime - prevTime));
 		
 		slopeL = ((errorL - prevErrorL) / (newTime - prevTime));
-		slopeR = ((errorR - prevErrorR) / (newTime - prevTime));
+		//slopeR = ((errorR - prevErrorR) / (newTime - prevTime));
 		prevTime = timer.get();
 		
 		left += I * sumL;
-		right += I * sumR;
+		//right += I * sumR;
 		
 		left += D * slopeL;
-		right += D * slopeR;
+		//right += D * slopeR;
 		
 		if (left > 1) {
 			left = 1;
 		} else if (left < -1) {
 			left = -1;
 		}
-		if (right > 1) {
+		/*if (right > 1) {
 			right = 1;
 		} else if (right < -1) {
 			right = -1;
-		}
-		
-		RobotMap.drive.tank(left, right);
+		}*/
+		right = left;
+		RobotMap.drive.tank(-left/3, -right/3);
 		
 		prevErrorL = errorL;
-		prevErrorR = errorR;
+		//prevErrorR = errorR;
 		
 	}
 
