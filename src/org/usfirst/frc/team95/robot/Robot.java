@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, eatGear, facePush, poopGear, intake, agitate, shoot;
+		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, eatGear, facePush, poopGear, intake, agitate, shoot;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -80,6 +80,7 @@ public class Robot extends IterativeRobot
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
 				compCal2 = new ButtonTracker(Constants.driveStick, 8);
 				compCalReset = new ButtonTracker(Constants.driveStick, 5);
+				turbo = new ButtonTracker(Constants.driveStick, 6);
 				eatGear = new ButtonTracker(Constants.weaponStick, 5);
 				poopGear = new ButtonTracker(Constants.weaponStick, 4);
 				facePush = new ButtonTracker(Constants.weaponStick, 3);
@@ -110,7 +111,7 @@ public class Robot extends IterativeRobot
 					{
 						p.init();
 					}
-				
+
 				a = new SendableChooser();
 				b = new SendableChooser();
 				c = new SendableChooser();
@@ -118,11 +119,11 @@ public class Robot extends IterativeRobot
 				a.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
-				
+
 				// Automoves to Test, One Turns, One Moves and Turns
 				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced(rangeFinder));
 				a.addObject("AtLiftRotate", new AtLiftRotate(compass2));
-				
+
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -228,9 +229,12 @@ public class Robot extends IterativeRobot
 
 						header.setHeading(headingToPres);
 					}
-				else
-					{
+				
+				else if (turbo.isPressed()){
 						RobotMap.drive.arcade(Constants.driveStick);
+					} 
+				else {
+						RobotMap.drive.halfArcade(Constants.driveStick);
 					}
 
 				/*

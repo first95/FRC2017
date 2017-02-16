@@ -22,7 +22,31 @@ public class Drive {
 		tank (forward - spin, forward + spin);
 	}
 	
+	public void halfArcade(double forward, double spin) {
+		tank ((forward - spin) / 2, (forward + spin) / 2);
+	}
+	
 	public void arcade(Joystick stick) {
+		double y = stick.getY();
+		double x = stick.getX();
+		
+		if (Math.abs(y) <= Constants.joystickDeadbandV) {
+			y = 0;
+		}
+		
+		if (Math.abs(x) <= Constants.joystickDeadbandH) {
+			x = 0;
+		}
+		
+		// "Exponential" drive, where the movements are more sensitive during slow movement,
+		// permitting easier fine control
+		x = Math.pow(x, 3);
+		y = Math.pow(y, 3);;
+		arcade(y,x);
+		
+	}
+	
+	public void halfArcade(Joystick stick) {
 		double y = stick.getY();
 		double x = stick.getX();
 		
