@@ -229,11 +229,13 @@ public class Robot extends IterativeRobot
 
 						header.setHeading(headingToPres);
 					}
-				
-				else if (turbo.isPressed()){
+
+				else if (turbo.isPressed())
+					{
 						RobotMap.drive.arcade(Constants.driveStick);
-					} 
-				else {
+					}
+				else
+					{
 						RobotMap.drive.halfArcade(Constants.driveStick);
 					}
 
@@ -297,6 +299,8 @@ public class Robot extends IterativeRobot
 				// Show the edited video output from the camera
 				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 				smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+
+				SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
 
 				// rangeFinder.pulse(.02);
 

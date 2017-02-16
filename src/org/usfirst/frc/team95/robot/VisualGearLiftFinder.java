@@ -25,6 +25,8 @@ public class VisualGearLiftFinder {
 	double lastDeterminedHeadingDegrees = 0.0;
 	boolean lastHeadingDeterminationSucceeded = false;
 	
+	double heightOfObjectInPixels = 0.0;
+	
 	public VisualGearLiftFinder(CvSink imageSource) {
 		this.imageSource = imageSource;
 		pipeline = new VisionMainPipeline();
@@ -42,6 +44,8 @@ public class VisualGearLiftFinder {
 		Imgproc.drawContours(curFrame, pipeline.filterContoursOutput(), -1, new Scalar(0, 0, 255));
 		for (Rect bb : boxes) {
 			Imgproc.rectangle(curFrame, bb.br(), bb.tl(), new Scalar(128, 255, 128));
+			
+			heightOfObjectInPixels = bb.height;
 		}
 		
 		// If we only see one box then it's not enough information to see the target
@@ -101,6 +105,10 @@ public class VisualGearLiftFinder {
 	
 	public double getHeadingToTargetRadians() {
 		return getHeadingToTargetDegrees() * (Math.PI / 180.0);
+	}
+	
+	public double getHightOfObjectInPixels(){
+		return heightOfObjectInPixels;
 	}
 	
 	public Mat getAnnotatedFrame() {
