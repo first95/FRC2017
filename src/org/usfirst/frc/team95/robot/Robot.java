@@ -64,9 +64,10 @@ public class Robot extends IterativeRobot
 		public void robotInit()
 			{
 				
-				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+				
 				
 				RobotMap.init();
+				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
@@ -299,6 +300,7 @@ public class Robot extends IterativeRobot
 				RobotMap.gearLiftFinder.computeHeadingToTarget();
 				smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 				SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+				SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
 
 				// rangeFinder.pulse(.02);
 
