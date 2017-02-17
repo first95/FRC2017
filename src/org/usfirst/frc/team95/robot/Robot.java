@@ -378,7 +378,7 @@ public class Robot extends IterativeRobot
 						compass.compReset();
 					}
 
-				//System.out.println("P" + P);
+				System.out.println("P= " + P);
 				if (incPID.wasJustPressed()) {
 					P += .1;
 				}
