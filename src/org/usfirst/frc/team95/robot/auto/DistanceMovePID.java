@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class DistanceMovePID extends Auto {
-	double left, right, distanceL, errorL, prevErrorL, sumL, slopeL, P, I, D, distanceR, errorR, prevErrorR, sumR, slopeR, prevTime, newTime;
+	double left, right, distanceL, errorL, prevErrorL, sumL, slopeL, P, I, D, distanceR, errorR, 
+	prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeed;
 	Timer timer = new Timer();
 	boolean done = false;
 
@@ -22,18 +23,19 @@ public class DistanceMovePID extends Auto {
 	public void init() {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
-			distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
-			distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
-			//P = 1;
-			P /= distanceL;
-			I = 0;
-			D = 0;
-			sumL = 0;
-			sumR = 0;
-			prevTime = 0;
-			
-			timer.start();
 		}
+		System.out.println("in Init");
+		//P = 1;
+		I = 0;
+		D = 0;
+		sumL = 0;
+		sumR = 0;
+		prevTime = 0;
+		prevSpeed = 0;
+		distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
+		distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
+		P /= distanceL;
+		timer.start();
 	}
 	
 	@Override
@@ -43,6 +45,7 @@ public class DistanceMovePID extends Auto {
 	
 	@Override
 	public void update() {
+		System.out.println("in update");
 		SmartDashboard.putDouble("errorL", errorL);
 		//SmartDashboard.putDouble("errorR", errorR);
 		errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
@@ -65,22 +68,26 @@ public class DistanceMovePID extends Auto {
 		left += D * slopeL;
 		//right += D * slopeR;
 		
-		if (left > 1) {
-			left = 1;
-		} else if (left < -1) {
-			left = -1;
+		if (left > .2) {
+			left = .2;
+		} else if (left < -.2) {
+			left = -.2;
 		}
 		/*if (right > 1) {
 			right = 1;
 		} else if (right < -1) {
 			right = -1;
 		}*/
+		
+		if (left > (prevSpeed + .025)) {
+			left = prevSpeed +.025;
+		}
 		right = left;
-		RobotMap.drive.tank(-left/3, -right/3);
+		RobotMap.drive.tank(-left, -right);
 		
 		prevErrorL = errorL;
 		//prevErrorR = errorR;
-		
+		prevSpeed = left;
 	}
 
 	@Override

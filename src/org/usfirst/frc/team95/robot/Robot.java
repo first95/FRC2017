@@ -100,7 +100,7 @@ public class Robot extends IterativeRobot
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
 				incPID = new ButtonTracker(Constants.testStick, 5);
 				decPID = new ButtonTracker(Constants.testStick, 6);
-				P = (double) 1;
+				P = .3;
 				
 				range1 = new AnalogInput(0);
 				range2 = new AnalogInput(1);
@@ -382,7 +382,7 @@ public class Robot extends IterativeRobot
 						compass.compReset();
 					}
 
-				System.out.println("P" + P);
+				//System.out.println("P" + P);
 				if (incPID.wasJustPressed()) {
 					P += .1;
 				}
