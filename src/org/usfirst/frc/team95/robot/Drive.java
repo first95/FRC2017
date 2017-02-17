@@ -62,7 +62,7 @@ public class Drive {
 		// permitting easier fine control
 		x = Math.pow(x, 3);
 		y = Math.pow(y, 3);;
-		arcade(y,x);
+		halfArcade(y,x);
 		
 	}
 }

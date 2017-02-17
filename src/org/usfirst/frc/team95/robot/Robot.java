@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import org.usfirst.frc.team95.robot.auto.AtLiftRotate;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
+import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
 import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
@@ -42,10 +43,12 @@ public class Robot extends IterativeRobot
 		AnalogInput range1, range2, range3, range4;
 		DigitalOutput initiateRangeFinder;
 
-		Double headingToPres;
+		Double headingToPres, P;
 		double dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, eatGear, facePush, poopGear, intake, agitate, shoot;
+		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, 
+		eatGear, facePush, poopGear, intake, agitate, shoot,
+		incPID, decPID;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -82,12 +85,16 @@ public class Robot extends IterativeRobot
 				compCal2 = new ButtonTracker(Constants.driveStick, 8);
 				compCalReset = new ButtonTracker(Constants.driveStick, 5);
 				turbo = new ButtonTracker(Constants.driveStick, 6);
-				eatGear = new ButtonTracker(Constants.weaponStick, 5);
-				poopGear = new ButtonTracker(Constants.weaponStick, 4);
-				facePush = new ButtonTracker(Constants.weaponStick, 3);
-				intake = new ButtonTracker(Constants.weaponStick, 1);
-				agitate = new ButtonTracker(Constants.weaponStick, 2);
+				eatGear = new ButtonTracker(Constants.weaponStick, 1);
+				poopGear = new ButtonTracker(Constants.weaponStick, 2);
+				facePush = new ButtonTracker(Constants.weaponStick, 5);
+				intake = new ButtonTracker(Constants.weaponStick, 3);
+				agitate = new ButtonTracker(Constants.weaponStick, 4);
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
+				incPID = new ButtonTracker(Constants.testStick, 5);
+				decPID = new ButtonTracker(Constants.testStick, 6);
+				P = .3;
+				
 				range1 = new AnalogInput(0);
 				range2 = new AnalogInput(1);
 				range3 = new AnalogInput(2);
@@ -117,7 +124,7 @@ public class Robot extends IterativeRobot
 				b = new SendableChooser();
 				c = new SendableChooser();
 				a.addDefault("None", new Nothing());
-				a.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
+				a.addObject("Go Forward", new DistanceMovePID(P, 5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 
@@ -126,7 +133,7 @@ public class Robot extends IterativeRobot
 				a.addObject("AtLiftRotate", new AtLiftRotate(compass2));
 
 				b.addDefault("None", new Nothing());
-				b.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
+				b.addObject("Go Forward", new DistanceMove(0.1, 0, 5));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
@@ -371,17 +378,27 @@ public class Robot extends IterativeRobot
 						compass.compReset();
 					}
 
+				//System.out.println("P" + P);
+				if (incPID.wasJustPressed()) {
+					P += .1;
+				}
+				if (decPID.wasJustPressed()) {
+					P -= .1;
+				}
 				headPres.update();
-				compCal1.update();
-				compCal2.update();
-				compCalReset.update();
-				eatGear.update();
-				poopGear.update();
-				facePush.update();
-				intake.update();
-				agitate.update();
-				shoot.update();
-				shooter.adjustVoltage();
-				rangeBasedGearScorer.update();
+		    	compCal1.update();
+		    	compCal2.update();
+		    	compCalReset.update();
+		    	turbo.update();
+		    	eatGear.update();
+		    	poopGear.update();
+		    	facePush.update();
+		    	intake.update();
+		    	agitate.update();
+		    	shoot.update();
+		    	incPID.update();
+		    	decPID.update();
+		    	shooter.adjustVoltage();
+		    	rangeBasedGearScorer.update();
 			}
 	}
