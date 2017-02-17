@@ -4,51 +4,47 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class SequentialMove extends Auto {
-	Auto move;
-	Iterator<Auto> table;
+	Auto[] moves;
+	int moveNum = 0;
 
 	boolean done = false;
 
 	public SequentialMove(Auto[] moves) {
-		ArrayList<Auto> a = new ArrayList<Auto>();
-		for (Auto x : moves) {
-			a.add(x);
-		}
-		table = a.iterator();
-		move = table.next();
-	}
-
-	public SequentialMove(Iterator<Auto> moves) {
-		this.table = moves;
+		this.moves = moves.clone();
 	}
 
 	@Override
 	public void init() {
-		move.init();
+		for(Auto move:moves) {
+			move.init();
+		}
 	}
 	
 	@Override
 	public void start() {
+		moveNum = 0;
+		done = false;
+		moves[0].start();
 	}
 	
 	@Override
 	public void update() {
-		if (move.done()) {
-			move.stop();
-			if (table.hasNext()) {
-				move = table.next();
-				move.init();
+		
+		if (moves[moveNum].done()) {
+			moves[moveNum].stop();
+			if (moveNum < moves.length - 1) {
+				moveNum++;
+				moves[moveNum].init();
 			} else {
 				done = true;
 			}
 		}
-		move.update();
+		moves[moveNum].update();
 	}
 
 	@Override
 	public void stop() {
-		move.stop();
-
+		moves[moveNum].stop();
 	}
 
 	@Override

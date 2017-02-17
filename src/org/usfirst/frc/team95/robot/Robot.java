@@ -30,7 +30,6 @@ public class Robot extends IterativeRobot
 
 		CvSource smartDashboardVideoOutput = null;
 
-		Command autonomousCommand;
 		SendableChooser chooser;
 
 		GyroReader gyro;
@@ -51,7 +50,6 @@ public class Robot extends IterativeRobot
 		Auto move;
 		SendableChooser a, b, c;
 		ArrayList<PollableSubsystem> updates = new ArrayList<PollableSubsystem>();
-		ArrayList<Auto> runningAutonomousMoves = new ArrayList<Auto>();
 		RangeBasedGearScorer rangeBasedGearScorer;
 		VoltageCompensatedShooter shooter;
 
@@ -179,6 +177,7 @@ public class Robot extends IterativeRobot
 				move = new SequentialMove(m);
 				// move = new TimedStraightMove(0.3, 10);
 				move.init();
+				move.start();
 			}
 
 		/**
@@ -187,17 +186,7 @@ public class Robot extends IterativeRobot
 		public void autonomousPeriodic()
 			{
 				commonPeriodic();
-				for (Auto x : runningAutonomousMoves)
-					{
-						// System.out.println("Running " + x.getClass().getName());
-						x.update();
-						if (x.done())
-							{
-								x.stop();
-								runningAutonomousMoves.remove(x);
-							}
-					}
-
+				
 				// System.out.println("Auto Periodic");
 				move.update();
 
@@ -210,8 +199,8 @@ public class Robot extends IterativeRobot
 				// teleop starts running. If you want the autonomous to
 				// continue until interrupted by another command, remove
 				// this line or comment it out.
-				if (autonomousCommand != null)
-					autonomousCommand.cancel();
+				if (move != null)
+					move.stop();
 			}
 
 		/**
