@@ -3,11 +3,6 @@ package org.usfirst.frc.team95.robot.auto;
 import org.usfirst.frc.team95.robot.ADIS16448_IMU;
 import org.usfirst.frc.team95.robot.RangeFinder;
 import org.usfirst.frc.team95.robot.RobotMap;
-import org.usfirst.frc.team95.robot.VisualGearLiftFinder;
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GoToLiftAdvanced extends Auto
@@ -46,7 +41,7 @@ public class GoToLiftAdvanced extends Auto
 		public void update()
 			{
 
-				RobotMap.gearLiftFinder.computeHeadingToTarget();
+				
 				
 				
 

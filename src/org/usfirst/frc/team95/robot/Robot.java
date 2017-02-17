@@ -62,6 +62,9 @@ public class Robot extends IterativeRobot
 		 */
 		public void robotInit()
 			{
+				
+				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+				
 				RobotMap.init();
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
@@ -297,9 +300,8 @@ public class Robot extends IterativeRobot
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
 				// Show the edited video output from the camera
-				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
 				smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-
 				SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
 
 				// rangeFinder.pulse(.02);

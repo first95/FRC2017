@@ -36,7 +36,7 @@ public class AtLiftRotate extends Auto
 		public void update()
 			{
 
-				RobotMap.gearLiftFinder.computeHeadingToTarget();
+				
 
 				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
