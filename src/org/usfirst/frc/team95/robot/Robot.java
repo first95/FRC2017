@@ -1,6 +1,5 @@
 package org.usfirst.frc.team95.robot;
 
-import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,7 +18,6 @@ import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalOutput;
 
 /**
@@ -60,7 +58,7 @@ public class Robot extends IterativeRobot
 			{
 
 				RobotMap.init();
-				
+
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
@@ -295,7 +293,8 @@ public class Robot extends IterativeRobot
 				RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 				SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
 				SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-
+				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
 				// rangeFinder.pulse(.02);
 
 				SmartDashboard.putNumber("X", compass2.getMagX());
@@ -384,12 +383,14 @@ public class Robot extends IterativeRobot
 					{
 						P -= .1;
 					}
-				if (incPID.wasJustPressed()) {
-					P += .1;
-				}
-				if (decPID.wasJustPressed()) {
-					P -= .1;
-				}
+				if (incPID.wasJustPressed())
+					{
+						P += .1;
+					}
+				if (decPID.wasJustPressed())
+					{
+						P -= .1;
+					}
 				headPres.update();
 				compCal1.update();
 				compCal2.update();
