@@ -18,10 +18,10 @@ public class VisualGearLiftFinder
 		static final double WIDEST_ASPECT_RATIO = 2.5 / 1.0;
 		static final double TALLEST_ASPECT_RATIO = 1.0 / 1.5;
 		static final double DEGREES_PER_PIXEL = (-0.075); // Determined from google drive sheet
-		
+
 		// This was only from one measurement and is off by a bit, will fix later
 		static final double FOCAL_LENGTH = 3300.00;
-		
+
 		static final String REASON = "Reason for not finding gearlift";
 
 		CvSink imageSource = null;

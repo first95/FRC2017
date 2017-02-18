@@ -34,9 +34,9 @@ public class RobotMap
 				
 				
 				// Start Vision Processing, and allow us to grab it from anywhere
-				myCam = CameraServer.getInstance().startAutomaticCapture();
+				myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", 0);
 				myCam.setResolution(640, 480);
-				myCam.setExposureManual(20);
+				myCam.setExposureManual(35);
 				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 				CvSink cvSink = CameraServer.getInstance().getVideo();
 				gearLiftFinder = new VisualGearLiftFinder(cvSink);
