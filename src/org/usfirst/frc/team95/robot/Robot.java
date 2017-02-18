@@ -289,13 +289,14 @@ public class Robot extends IterativeRobot
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
 				// Show the edited video output from the camera
-
-				RobotMap.gearLiftFinder.computeHeadingToTarget();
-				RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-				SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-				SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+				if (RobotMap.gearLiftFinder != null) {
+					RobotMap.gearLiftFinder.computeHeadingToTarget();
+					RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+					SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+					SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
+					SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+					SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+				}
 				// rangeFinder.pulse(.02);
 
 				SmartDashboard.putNumber("X", compass2.getMagX());
