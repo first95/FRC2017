@@ -2,15 +2,19 @@ package org.usfirst.frc.team95.robot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class VisualGearLiftFinder
+public class VisualGearLiftFinder extends Thread
 	{
 		static final int NUM_BOXES_TO_CONSIDER = 2;
 		// Aspect ratios here are width to height.
@@ -26,24 +30,36 @@ public class VisualGearLiftFinder
 
 		CvSink imageSource = null;
 		VisionMainPipeline pipeline;
+
+		private Lock frameLock;
+		Mat outputFrame;
 		Mat curFrame = new Mat(); // gets annotated after processing
 		double lastDeterminedHeadingDegrees = 0.0;
 		boolean lastHeadingDeterminationSucceeded = false;
 
 		double heightOfObjectInPixels = 0.0;
 		double distanceFromCamToTarget = 0.0;
+		
 
 		public VisualGearLiftFinder(CvSink imageSource)
 			{
 				this.imageSource = imageSource;
+				frameLock = new ReentrantLock();
 				pipeline = new VisionMainPipeline();
+				start();
 			}
 
-		// Take in an image and process it. Call this before calling
-		public void computeHeadingToTarget()
+		public void run()
+		{
+			while(true)
 			{
-				Mat input_image = new Mat();
-
+				computeHeadingToTarget();
+			}
+		}
+		
+		// Take in an image and process it. Call this before calling
+		private void computeHeadingToTarget()
+			{
 				imageSource.grabFrame(curFrame);
 				pipeline.process(curFrame);
 				lastHeadingDeterminationSucceeded = false;
@@ -113,6 +129,9 @@ public class VisualGearLiftFinder
 					{
 						SmartDashboard.putString(REASON, "Insufficient contours passing filter");
 					}
+				frameLock.lock();
+				outputFrame = curFrame;
+				frameLock.unlock();
 			}
 
 		public boolean haveValidHeading()
@@ -142,6 +161,10 @@ public class VisualGearLiftFinder
 
 		public Mat getAnnotatedFrame()
 			{
-				return curFrame;
+				Mat returnFrame;
+				frameLock.lock();
+				returnFrame = outputFrame;
+				frameLock.unlock();
+				return returnFrame;
 			}
 	}
