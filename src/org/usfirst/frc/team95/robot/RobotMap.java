@@ -31,10 +31,7 @@ public class RobotMap
 		public static void init()
 			{
 
-				if (myCam.isConnected())
-					{
-						myCam.free();
-					}
+				
 				
 				// Start Vision Processing, and allow us to grab it from anywhere
 				myCam = CameraServer.getInstance().startAutomaticCapture();
