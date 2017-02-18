@@ -14,6 +14,7 @@ import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
+import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -127,12 +128,13 @@ public class Robot extends IterativeRobot
 				// Automoves to Test, One Turns, One Moves and Turns
 				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 				a.addObject("AtLiftRotate", new AtLiftRotate(compass2));
-
+				a.addObject("Score Gear", new ScoreGear());
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 5));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
+				b.addObject("Score Gear", new ScoreGear());
 				c.addDefault("None", new Nothing());
 				c.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
