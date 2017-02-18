@@ -38,10 +38,11 @@ public class RobotMap
 					myCam.setExposureManual(35);
 					smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 					CvSink cvSink = CameraServer.getInstance().getVideo();
+					
 					gearLiftFinder = new VisualGearLiftFinder(cvSink);
 					
-					if (!myCam.isConnected()) {
-						gearLiftFinder = null;
+					if (myCam.isConnected()) {
+						gearLiftFinder.start();
 					}
 				// drive motors
 				left1 = new CANTalon(1);
