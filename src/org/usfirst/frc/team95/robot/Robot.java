@@ -285,7 +285,7 @@ public class Robot extends IterativeRobot
 		// This is run in disabled, teleop, and auto periodics.
 		public void commonPeriodic()
 			{
-
+				
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
 				// Show the edited video output from the camera
