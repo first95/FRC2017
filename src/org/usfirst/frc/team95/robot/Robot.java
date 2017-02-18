@@ -38,7 +38,7 @@ public class Robot extends IterativeRobot
 		AnalogInput range1, range2, range3, range4;
 		DigitalOutput initiateRangeFinder;
 
-		Double headingToPres, P;
+		Double headingToPres;
 		double dist;
 		Double[] angleRec;
 		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, eatGear, facePush, poopGear, intake, agitate, shoot, incPID, decPID;
@@ -83,9 +83,6 @@ public class Robot extends IterativeRobot
 				intake = new ButtonTracker(Constants.weaponStick, 3);
 				agitate = new ButtonTracker(Constants.weaponStick, 4);
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
-				incPID = new ButtonTracker(Constants.testStick, 5);
-				decPID = new ButtonTracker(Constants.testStick, 6);
-				P = .3;
 
 				range1 = new AnalogInput(0);
 				range2 = new AnalogInput(1);
@@ -116,7 +113,7 @@ public class Robot extends IterativeRobot
 				b = new SendableChooser();
 				c = new SendableChooser();
 				a.addDefault("None", new Nothing());
-				a.addObject("Go Forward", new DistanceMovePID(P, 5));
+				a.addObject("Go Forward", new DistanceMovePID(5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 
@@ -309,7 +306,6 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CZ", compass.getRawCompZ());
 
 				SmartDashboard.putNumber("Heading", compass2.getHeading());
-				SmartDashboard.putNumber("P", P);
 
 				SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
 				// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
@@ -366,31 +362,7 @@ public class Robot extends IterativeRobot
 						// lasts until code is rebooted rewriting code will be needed
 						compass.compCal(alpha, beta);
 					}
-				// resets compass to original calibration
-				if (compCalReset.isPressed())
-					{
-						alpha = -164;
-						beta = -25;
-						compass.compReset();
-					}
 
-				// System.out.println("P" + P);
-				if (incPID.wasJustPressed())
-					{
-						P += .1;
-					}
-				if (decPID.wasJustPressed())
-					{
-						P -= .1;
-					}
-				if (incPID.wasJustPressed())
-					{
-						P += .1;
-					}
-				if (decPID.wasJustPressed())
-					{
-						P -= .1;
-					}
 				headPres.update();
 				compCal1.update();
 				compCal2.update();
@@ -402,8 +374,6 @@ public class Robot extends IterativeRobot
 				intake.update();
 				agitate.update();
 				shoot.update();
-				incPID.update();
-				decPID.update();
 				shooter.adjustVoltage();
 				rangeBasedGearScorer.update();
 			}

@@ -10,13 +10,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DistanceMovePID extends Auto {
 	double left, right, distanceL, errorL, prevErrorL, sumL, slopeL, P, I, D, distanceR, errorR, 
 	prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeed;
-	Timer timer = new Timer();
+	//Timer timer = new Timer();
 	boolean done = false;
 
-	public DistanceMovePID(double P, double distance) {
+	public DistanceMovePID(double distance) {
 		this.distanceL = distance;
 		this.distanceR = distance;
-		this.P = P;
 	}
 
 	@Override
@@ -25,18 +24,18 @@ public class DistanceMovePID extends Auto {
 			RobotMap.driveLock = this;
 		}
 		//System.out.println("in Init");
-		//P = 1;
-		I = 0;
+		P = .175;
+		/*//I = 0;
 		D = 0;
 		sumL = 0;
 		sumR = 0;
 		prevTime = 0;
-		prevSpeed = 0;
+		prevSpeed = 0;*/
 		distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
-		distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
+		//distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 		//P = P / distanceL;
-		timer.reset();
-		timer.start();
+//		timer.reset();
+//		timer.start();
 	}
 	
 	@Override
@@ -55,19 +54,19 @@ public class DistanceMovePID extends Auto {
 		left = P * errorL;
 		//right = P * errorR;
 		
-		newTime = timer.get();
-		sumL += (errorL * (newTime - prevTime));
-		//sumR += (errorR * (newTime - prevTime));
-		
-		slopeL = ((errorL - prevErrorL) / (newTime - prevTime));
-		//slopeR = ((errorR - prevErrorR) / (newTime - prevTime));
-		prevTime = timer.get();
-		
-		left += I * sumL;
-		//right += I * sumR;
-		
-		left += D * slopeL;
-		//right += D * slopeR;
+//		newTime = timer.get();
+//		sumL += (errorL * (newTime - prevTime));
+//		//sumR += (errorR * (newTime - prevTime));
+//		
+//		slopeL = ((errorL - prevErrorL) / (newTime - prevTime));
+//		//slopeR = ((errorR - prevErrorR) / (newTime - prevTime));
+//		prevTime = timer.get();
+//		
+//		left += I * sumL;
+//		//right += I * sumR;
+//		
+//		left += D * slopeL;
+//		//right += D * slopeR;
 		
 		if (left > .4) {
 			left = .4;
@@ -86,8 +85,8 @@ public class DistanceMovePID extends Auto {
 		right = left;
 		RobotMap.drive.tank(-left, -right);
 		
-		prevErrorL = errorL;
-		//prevErrorR = errorR;
+//		prevErrorL = errorL;
+//		//prevErrorR = errorR;
 		prevSpeed = left;
 	}
 
