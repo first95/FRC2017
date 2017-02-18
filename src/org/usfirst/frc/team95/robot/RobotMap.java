@@ -32,9 +32,8 @@ public class RobotMap
 			{
 
 				// Start Vision Processing, and allow us to grab it from anywhere
-				myCam = new UsbCamera("Hephaestus", 0);
+				myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
 				if (myCam.isConnected() && myCam.isValid()) {
-					CameraServer.getInstance().startAutomaticCapture(myCam);
 					myCam.setResolution(640, 480);
 					myCam.setExposureManual(35);
 					smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
