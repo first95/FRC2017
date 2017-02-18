@@ -34,7 +34,8 @@ public class DistanceMovePID extends Auto {
 		prevSpeed = 0;
 		distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 		distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
-		P /= distanceL;
+		//P = P / distanceL;
+		timer.reset();
 		timer.start();
 	}
 	
@@ -68,10 +69,10 @@ public class DistanceMovePID extends Auto {
 		left += D * slopeL;
 		//right += D * slopeR;
 		
-		if (left > .3) {
-			left = .3;
-		} else if (left < -.3) {
-			left = -.3;
+		if (left > .4) {
+			left = .4;
+		} else if (left < -.4) {
+			left = -.4;
 		}
 		/*if (right > 1) {
 			right = 1;
@@ -79,8 +80,8 @@ public class DistanceMovePID extends Auto {
 			right = -1;
 		}*/
 		
-		if (left > (prevSpeed + .025)) {
-			left = prevSpeed +.025;
+		if (left > (prevSpeed + .08)) {
+			left = prevSpeed +.08;
 		}
 		right = left;
 		RobotMap.drive.tank(-left, -right);
