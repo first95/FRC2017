@@ -310,6 +310,7 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CZ", compass.getRawCompZ());
 
 				SmartDashboard.putNumber("Heading", compass2.getHeading());
+				SmartDashboard.putNumber("P", P);
 
 				SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
 				// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
@@ -383,6 +384,12 @@ public class Robot extends IterativeRobot
 					{
 						P -= .1;
 					}
+				if (incPID.wasJustPressed()) {
+					P += .1;
+				}
+				if (decPID.wasJustPressed()) {
+					P -= .1;
+				}
 				headPres.update();
 				compCal1.update();
 				compCal2.update();

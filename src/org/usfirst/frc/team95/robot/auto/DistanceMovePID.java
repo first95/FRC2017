@@ -24,7 +24,7 @@ public class DistanceMovePID extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 		}
-		System.out.println("in Init");
+		//System.out.println("in Init");
 		//P = 1;
 		I = 0;
 		D = 0;
@@ -34,7 +34,8 @@ public class DistanceMovePID extends Auto {
 		prevSpeed = 0;
 		distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 		distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
-		P /= distanceL;
+		//P = P / distanceL;
+		timer.reset();
 		timer.start();
 	}
 	
@@ -45,7 +46,7 @@ public class DistanceMovePID extends Auto {
 	
 	@Override
 	public void update() {
-		System.out.println("in update");
+		//System.out.println("in update");
 		SmartDashboard.putDouble("errorL", errorL);
 		//SmartDashboard.putDouble("errorR", errorR);
 		errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
@@ -68,10 +69,10 @@ public class DistanceMovePID extends Auto {
 		left += D * slopeL;
 		//right += D * slopeR;
 		
-		if (left > .2) {
-			left = .2;
-		} else if (left < -.2) {
-			left = -.2;
+		if (left > .4) {
+			left = .4;
+		} else if (left < -.4) {
+			left = -.4;
 		}
 		/*if (right > 1) {
 			right = 1;
@@ -79,8 +80,8 @@ public class DistanceMovePID extends Auto {
 			right = -1;
 		}*/
 		
-		if (left > (prevSpeed + .025)) {
-			left = prevSpeed +.025;
+		if (left > (prevSpeed + .08)) {
+			left = prevSpeed +.08;
 		}
 		right = left;
 		RobotMap.drive.tank(-left, -right);
