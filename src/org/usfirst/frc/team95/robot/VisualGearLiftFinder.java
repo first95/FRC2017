@@ -46,6 +46,7 @@ public class VisualGearLiftFinder extends Thread
 				this.imageSource = imageSource;
 				frameLock = new ReentrantLock();
 				pipeline = new VisionMainPipeline();
+				computeHeadingToTarget();
 				start();
 			}
 
