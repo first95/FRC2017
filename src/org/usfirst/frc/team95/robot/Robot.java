@@ -4,7 +4,6 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import java.util.ArrayList;
@@ -29,8 +28,6 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 public class Robot extends IterativeRobot
 	{
 
-		CvSource smartDashboardVideoOutput = null;
-
 		SendableChooser chooser;
 
 		GyroReader gyro;
@@ -46,9 +43,7 @@ public class Robot extends IterativeRobot
 		Double headingToPres, P;
 		double dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, 
-		eatGear, facePush, poopGear, intake, agitate, shoot,
-		incPID, decPID;
+		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, eatGear, facePush, poopGear, intake, agitate, shoot, incPID, decPID;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -63,11 +58,9 @@ public class Robot extends IterativeRobot
 		 */
 		public void robotInit()
 			{
-				
-				
-				
+
 				RobotMap.init();
-				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+				
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
@@ -95,7 +88,7 @@ public class Robot extends IterativeRobot
 				incPID = new ButtonTracker(Constants.testStick, 5);
 				decPID = new ButtonTracker(Constants.testStick, 6);
 				P = .3;
-				
+
 				range1 = new AnalogInput(0);
 				range2 = new AnalogInput(1);
 				range3 = new AnalogInput(2);
@@ -130,7 +123,7 @@ public class Robot extends IterativeRobot
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
 
 				// Automoves to Test, One Turns, One Moves and Turns
-				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced(rangeFinder));
+				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 				a.addObject("AtLiftRotate", new AtLiftRotate(compass2));
 
 				b.addDefault("None", new Nothing());
@@ -194,7 +187,7 @@ public class Robot extends IterativeRobot
 		public void autonomousPeriodic()
 			{
 				commonPeriodic();
-				
+
 				// System.out.println("Auto Periodic");
 				move.update();
 
@@ -297,8 +290,9 @@ public class Robot extends IterativeRobot
 				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
 
 				// Show the edited video output from the camera
+
 				RobotMap.gearLiftFinder.computeHeadingToTarget();
-				smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+				RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 				SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
 				SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
 
@@ -380,27 +374,29 @@ public class Robot extends IterativeRobot
 						compass.compReset();
 					}
 
-				//System.out.println("P" + P);
-				if (incPID.wasJustPressed()) {
-					P += .1;
-				}
-				if (decPID.wasJustPressed()) {
-					P -= .1;
-				}
+				// System.out.println("P" + P);
+				if (incPID.wasJustPressed())
+					{
+						P += .1;
+					}
+				if (decPID.wasJustPressed())
+					{
+						P -= .1;
+					}
 				headPres.update();
-		    	compCal1.update();
-		    	compCal2.update();
-		    	compCalReset.update();
-		    	turbo.update();
-		    	eatGear.update();
-		    	poopGear.update();
-		    	facePush.update();
-		    	intake.update();
-		    	agitate.update();
-		    	shoot.update();
-		    	incPID.update();
-		    	decPID.update();
-		    	shooter.adjustVoltage();
-		    	rangeBasedGearScorer.update();
+				compCal1.update();
+				compCal2.update();
+				compCalReset.update();
+				turbo.update();
+				eatGear.update();
+				poopGear.update();
+				facePush.update();
+				intake.update();
+				agitate.update();
+				shoot.update();
+				incPID.update();
+				decPID.update();
+				shooter.adjustVoltage();
+				rangeBasedGearScorer.update();
 			}
 	}

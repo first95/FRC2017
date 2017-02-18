@@ -1,27 +1,31 @@
 package org.usfirst.frc.team95.robot.auto;
 
-import org.usfirst.frc.team95.robot.ADIS16448_IMU;
-import org.usfirst.frc.team95.robot.RangeFinder;
 import org.usfirst.frc.team95.robot.RobotMap;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GoToLiftAdvanced extends Auto
 	{
-		private RangeFinder rangeFinder1;
 
-		private ADIS16448_IMU compass;
-		private static final double MAX_ROTATE_THROTTLE = 0.5;
-		private static final double MAX_DRIVE_THROTTLE = 0.5;
-		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = 0.1;
+		Timer t = new Timer();
 
-		public GoToLiftAdvanced(RangeFinder rangeFinder)
+		private static final double MAX_ROTATE_THROTTLE = -0.1;
+		private static final double MAX_ROTATE_THROTTLE2 = 0.1;
+		private static final double MAX_DRIVE_THROTTLE = -0.1;
+		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.1;
+
+		public GoToLiftAdvanced()
 			{
-				rangeFinder1 = rangeFinder;
+
 			}
 
 		@Override
 		public void init()
 			{
+
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
+
+				System.out.println("TEST");
 
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
@@ -41,9 +45,9 @@ public class GoToLiftAdvanced extends Auto
 		public void update()
 			{
 
-				
-				
-				
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
+
+				System.out.println("TEST");
 
 				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
@@ -51,15 +55,31 @@ public class GoToLiftAdvanced extends Auto
 
 				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > 2)
 					{
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
+						RobotMap.drive.arcade((MAX_DRIVE_THROTTLE_WHILE_TURNING), (MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
 					}
 				else if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() < -2)
 					{
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, ((MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25) * -1);
+						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE2 * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
+					}
+				else
+					{
+						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
 					}
 
-				if (rangeFinder1.getRangeInFeet() <= 1)
+				if ((RobotMap.gearLiftFinder.getDistanceFromCamToTarget() <= 13) || (RobotMap.gearLiftFinder.getDistanceFromCamToTarget() >= 100))
 					{
+
+						t.reset();
+						t.start();
+						RobotMap.drive.arcade(0, 0);
+
+						while (t.get() < 500)
+							{
+								RobotMap.gearPooper.set(true);
+								t.stop();
+							}
+
+						System.out.println("TESTER2");
 						stop();
 					}
 
@@ -69,12 +89,15 @@ public class GoToLiftAdvanced extends Auto
 		public void stop()
 			{
 				RobotMap.drive.arcade(0, 0);
+				RobotMap.gearPooper.set(false);
+
+				RobotMap.driveLock = null;
 			}
 
 		@Override
 		public boolean done()
 			{
-				return rangeFinder1.getRangeInFeet() <= 1;
+				return RobotMap.gearLiftFinder.getDistanceFromCamToTarget() <= 13;
 			}
 
 	}
