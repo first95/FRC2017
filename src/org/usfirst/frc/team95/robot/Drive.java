@@ -26,9 +26,14 @@ public class Drive {
 		tank ((forward - spin) / 2, (forward + spin) / 2);
 	}
 	
-	public void arcade(Joystick stick) {
+	public void arcade(Joystick stick, boolean twostick) {
 		double y = stick.getY();
-		double x = stick.getX();
+		double x;
+		if (twostick) {
+			x = stick.getRawAxis(4);
+		} else {
+			x = stick.getX();
+		}
 		
 		if (Math.abs(y) <= Constants.joystickDeadbandV) {
 			y = 0;
@@ -46,10 +51,14 @@ public class Drive {
 		
 	}
 	
-	public void halfArcade(Joystick stick) {
+	public void halfArcade(Joystick stick, boolean twostick) {
 		double y = stick.getY();
-		double x = stick.getX();
-		
+		double x;
+		if (twostick) {
+			x = stick.getRawAxis(4);
+		} else {
+			x = stick.getX();
+		}
 		if (Math.abs(y) <= Constants.joystickDeadbandV) {
 			y = 0;
 		}

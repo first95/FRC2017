@@ -41,7 +41,10 @@ public class Robot extends IterativeRobot
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCalReset, turbo, eatGear, facePush, poopGear, intake, agitate, shoot, incPID, decPID;
+		boolean twoStickMode;
+		ButtonTracker headPres, compCal1, compCalReset, turbo, changeDriveMode, 
+		eatGear, facePush, poopGear, intake, agitate, shoot, 
+		incPID, decPID;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -71,9 +74,11 @@ public class Robot extends IterativeRobot
 				compass2 = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(compass2);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
-
+				
+				twoStickMode = false;
 				//drive buttons
-				headPres = new ButtonTracker(Constants.driveStick, 1);
+				changeDriveMode = new ButtonTracker(Constants.driveStick, 1);
+				headPres = new ButtonTracker(Constants.driveStick, 2);
 				turbo = new ButtonTracker(Constants.driveStick, 6);
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
 				compCalReset = new ButtonTracker(Constants.driveStick, 8);
@@ -208,7 +213,10 @@ public class Robot extends IterativeRobot
 			{
 				commonPeriodic();
 				Scheduler.getInstance().run();
-
+				
+				if (changeDriveMode.wasJustPressed()) {
+					twoStickMode = !twoStickMode;
+				}
 				// drive
 				if (Constants.driveStick.getRawButton(2))
 					{
@@ -222,11 +230,11 @@ public class Robot extends IterativeRobot
 
 				else if (turbo.isPressed())
 					{
-						RobotMap.drive.arcade(Constants.driveStick);
+						RobotMap.drive.arcade(Constants.driveStick, twoStickMode);
 					}
 				else
 					{
-						RobotMap.drive.halfArcade(Constants.driveStick);
+						RobotMap.drive.halfArcade(Constants.driveStick, twoStickMode);
 					}
 
 				/*
