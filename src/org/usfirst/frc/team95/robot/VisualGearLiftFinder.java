@@ -32,7 +32,7 @@ public class VisualGearLiftFinder extends Thread
 		VisionMainPipeline pipeline;
 
 		private Lock frameLock;
-		Mat outputFrame;
+		Mat outputFrame = new Mat();
 		Mat curFrame = new Mat(); // gets annotated after processing
 		double lastDeterminedHeadingDegrees = 0.0;
 		boolean lastHeadingDeterminationSucceeded = false;
@@ -46,19 +46,19 @@ public class VisualGearLiftFinder extends Thread
 				this.imageSource = imageSource;
 				frameLock = new ReentrantLock();
 				pipeline = new VisionMainPipeline();
-				start();
+				computeHeadingToTarget();
 			}
 
 		public void run()
 		{
-			while(true)
+			while(!Thread.interrupted())
 			{
 				computeHeadingToTarget();
 			}
 		}
 		
 		// Take in an image and process it. Call this before calling
-		private void computeHeadingToTarget()
+		public void computeHeadingToTarget()
 			{
 				imageSource.grabFrame(curFrame);
 				pipeline.process(curFrame);
@@ -165,6 +165,6 @@ public class VisualGearLiftFinder extends Thread
 				frameLock.lock();
 				returnFrame = outputFrame;
 				frameLock.unlock();
-				return returnFrame;
+				return outputFrame;
 			}
 	}
