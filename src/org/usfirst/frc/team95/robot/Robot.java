@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		ButtonTracker headPres, compCal1, compCal2, compCalReset, turbo, eatGear, facePush, poopGear, intake, agitate, shoot, incPID, decPID;
+		ButtonTracker headPres, compCal1, compCalReset, turbo, eatGear, facePush, poopGear, intake, agitate, shoot, incPID, decPID;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -74,16 +74,18 @@ public class Robot extends IterativeRobot
 				header = new HeadingPreservation(compass2);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
-				headPres = new ButtonTracker(Constants.driveStick, 2);
-				compCal1 = new ButtonTracker(Constants.driveStick, 7);
-				compCal2 = new ButtonTracker(Constants.driveStick, 8);
-				compCalReset = new ButtonTracker(Constants.driveStick, 5);
+				//drive buttons
+				headPres = new ButtonTracker(Constants.driveStick, 1);
 				turbo = new ButtonTracker(Constants.driveStick, 6);
+				compCal1 = new ButtonTracker(Constants.driveStick, 7);
+				compCalReset = new ButtonTracker(Constants.driveStick, 8);
+				
+				//weapon buttons
 				eatGear = new ButtonTracker(Constants.weaponStick, 1);
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
-				facePush = new ButtonTracker(Constants.weaponStick, 5);
 				intake = new ButtonTracker(Constants.weaponStick, 3);
 				agitate = new ButtonTracker(Constants.weaponStick, 4);
+				facePush = new ButtonTracker(Constants.weaponStick, 5);
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
 
 				range1 = new AnalogInput(0);
@@ -242,15 +244,16 @@ public class Robot extends IterativeRobot
 				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
 				 */
 
-				if (intake.isPressed())
+				/*if (intake.isPressed())
 					{
 						RobotMap.intake.set(.3);
 					}
 				else
 					{
 						RobotMap.intake.set(0);
-					}
-
+					}*/
+				RobotMap.intake.set(Constants.weaponStick.getRawAxis(2));
+				
 				if (agitate.isPressed())
 					{
 						RobotMap.agitator.set(.3);
@@ -260,15 +263,16 @@ public class Robot extends IterativeRobot
 						RobotMap.agitator.set(0);
 					}
 
-				if (shoot.wasJustPressed())
+				/*if (shoot.wasJustPressed())
 					{
 						shooter.turnOn();
 					}
 				else if (shoot.wasJustReleased())
 					{
 						shooter.turnOff();
-					}
-
+					}*/
+				RobotMap.shooter.set(Constants.weaponStick.getRawAxis(3));
+				
 				RobotMap.winchRight.set(Constants.weaponStick.getY());
 			}
 
@@ -373,7 +377,6 @@ public class Robot extends IterativeRobot
 				
 				headPres.update();
 				compCal1.update();
-				compCal2.update();
 				compCalReset.update();
 				turbo.update();
 				eatGear.update();
