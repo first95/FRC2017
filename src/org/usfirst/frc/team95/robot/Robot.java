@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot
 		GyroReader gyro;
 		VariableStore variableStore;
 		CompassReader compass;
-		ADIS16448_IMU compass2;
+		ADIS16448_IMU poseidon;
 		HeadingPreservation header;
 		Timer cycleTime; // for common periodic
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot
 		Double[] angleRec;
 		boolean twoStickMode;
 		ButtonTracker headPres, compCal1, compCalReset, turbo, changeDriveMode, 
-		eatGear, facePush, poopGear, intake, agitate, shoot, 
+		tipHat, facePush, poopGear, intake, agitate, shoot, 
 		incPID, decPID;
 
 		Auto move;
@@ -71,8 +71,8 @@ public class Robot extends IterativeRobot
 				gyro = new GyroReader();
 				variableStore = new VariableStore();
 				compass = new CompassReader(variableStore);
-				compass2 = new ADIS16448_IMU(variableStore);
-				header = new HeadingPreservation(compass2);
+				poseidon = new ADIS16448_IMU(variableStore);
+				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 				
 				twoStickMode = false;
@@ -84,7 +84,7 @@ public class Robot extends IterativeRobot
 				compCalReset = new ButtonTracker(Constants.driveStick, 8);
 				
 				//weapon buttons
-				eatGear = new ButtonTracker(Constants.weaponStick, 1);
+				tipHat = new ButtonTracker(Constants.weaponStick, 1);
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
 				intake = new ButtonTracker(Constants.weaponStick, 3);
 				agitate = new ButtonTracker(Constants.weaponStick, 4);
@@ -118,23 +118,23 @@ public class Robot extends IterativeRobot
 				a.addDefault("None", new Nothing());
 				a.addObject("Go Forward", new DistanceMovePID(5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
-				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
+				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
 
 				// Automoves to Test, One Turns, One Moves and Turns
 				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
-				a.addObject("AtLiftRotate", new AtLiftRotate(compass2));
+				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
 				a.addObject("Score Gear", new ScoreGear());
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 5));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
-				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
-				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
+				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
+				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, poseidon));
 				b.addObject("Score Gear", new ScoreGear());
 				c.addDefault("None", new Nothing());
 				c.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
-				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, compass2));
-				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, compass2));
+				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
+				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, poseidon));
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
@@ -239,12 +239,12 @@ public class Robot extends IterativeRobot
 				 */
 
 				// alpha gear code
-				if(eatGear.isPressed()) {
-					RobotMap.gearMouth.set(true);
+				if(tipHat.isPressed()) {
+					RobotMap.hatTip.set(true);
 					RobotMap.pushFaceOut.set(false);
 					RobotMap.gearPooper.set(false);
 				} else {
-					RobotMap.gearMouth.set(false);
+					RobotMap.hatTip.set(false);
 					RobotMap.pushFaceOut.set(facePush.isPressed());
 					RobotMap.gearPooper.set(poopGear.isPressed());
 				}
@@ -312,18 +312,18 @@ public class Robot extends IterativeRobot
 				}
 				// rangeFinder.pulse(.02);
 
-				SmartDashboard.putNumber("X", compass2.getMagX());
-				SmartDashboard.putNumber("Y", compass2.getMagY());
-				SmartDashboard.putNumber("Z", compass2.getMagZ());
-				SmartDashboard.putNumber("ATanXY", Math.atan2(compass2.getMagX(), compass2.getMagY()));
-				SmartDashboard.putNumber("ATanZY", Math.atan2(compass2.getMagZ(), compass2.getMagY()));
-				SmartDashboard.putNumber("ATanXZ", Math.atan2(compass2.getMagX(), compass2.getMagZ()));
+				SmartDashboard.putNumber("X", poseidon.getMagX());
+				SmartDashboard.putNumber("Y", poseidon.getMagY());
+				SmartDashboard.putNumber("Z", poseidon.getMagZ());
+				SmartDashboard.putNumber("ATanXY", Math.atan2(poseidon.getMagX(), poseidon.getMagY()));
+				SmartDashboard.putNumber("ATanZY", Math.atan2(poseidon.getMagZ(), poseidon.getMagY()));
+				SmartDashboard.putNumber("ATanXZ", Math.atan2(poseidon.getMagX(), poseidon.getMagZ()));
 
 				SmartDashboard.putNumber("CX", compass.getRawCompX());
 				SmartDashboard.putNumber("CY", compass.getRawCompY());
 				SmartDashboard.putNumber("CZ", compass.getRawCompZ());
 
-				SmartDashboard.putNumber("Heading", compass2.getHeading());
+				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 
 				SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
 				// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
@@ -341,8 +341,8 @@ public class Robot extends IterativeRobot
 				if (compCal1.isPressed())
 					{// && compCal2.Pressedp()) {
 						// auto cal
-						tempy = compass2.getMagX();
-						tempz = compass2.getMagZ();
+						tempy = poseidon.getMagX();
+						tempz = poseidon.getMagZ();
 						if (compCal1.wasJustPressed())
 							{// && compCal2.justPressedp()) {
 								ymax = tempy;
@@ -385,7 +385,7 @@ public class Robot extends IterativeRobot
 				compCal1.update();
 				compCalReset.update();
 				turbo.update();
-				eatGear.update();
+				tipHat.update();
 				poopGear.update();
 				facePush.update();
 				intake.update();
