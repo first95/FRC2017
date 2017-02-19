@@ -26,7 +26,7 @@ public class GoToLiftAdvanced extends Auto
 		public void init()
 			{
 
-				
+			done = false;
 
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{

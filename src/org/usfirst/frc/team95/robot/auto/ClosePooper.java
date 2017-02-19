@@ -7,7 +7,7 @@ public class ClosePooper extends Auto {
 	boolean done = false;
 	
 	public void init() {
-		
+		done = false;
 
 	}
 

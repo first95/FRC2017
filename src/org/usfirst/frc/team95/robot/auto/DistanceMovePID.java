@@ -23,6 +23,7 @@ public class DistanceMovePID extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 		}
+		done = false;
 		//System.out.println("in Init");
 		P = .35;//.175
 		/*//I = 0;

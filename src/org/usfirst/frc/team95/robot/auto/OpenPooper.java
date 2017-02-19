@@ -13,7 +13,7 @@ public class OpenPooper extends Auto{
 		this.time = time;
 	}
 	public void init() {
-		
+		done = false;
 	}
 
 	public void start() {

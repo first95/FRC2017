@@ -17,7 +17,7 @@ public class TimedMove extends Auto {
 
 	@Override
 	public void init() {
-		
+		done = false;
 	}
 	
 	@Override
