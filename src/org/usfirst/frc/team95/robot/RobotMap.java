@@ -26,7 +26,7 @@ public class RobotMap
 		// They should also check that the driveLock object is null prior to
 		// controlling the drive motors.
 		public static Object driveLock = null;
-		public static Solenoid gearPooper, gearMouth, pushFaceOut;
+		public static Solenoid gearPooper, hatTip, pushFaceOut;
 
 		public static void init()
 			{
@@ -67,7 +67,7 @@ public class RobotMap
 				// so that setting both motors to "forward" runs the winch without the motors fighting each other.
 				winchLeft.setInverted(true); // can't invert followers
 				gearPooper = new Solenoid(2);
-				gearMouth = new Solenoid(1);
+				hatTip = new Solenoid(1);
 				pushFaceOut = new Solenoid(0);
 
 				left1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);

@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot
 		Double[] angleRec;
 		boolean twoStickMode;
 		ButtonTracker headPres, compCal1, compCalReset, turbo, changeDriveMode, 
-		eatGear, facePush, poopGear, intake, agitate, shoot, 
+		tipHat, facePush, poopGear, intake, agitate, shoot, 
 		incPID, decPID;
 
 		Auto move;
@@ -85,7 +85,7 @@ public class Robot extends IterativeRobot
 				compCalReset = new ButtonTracker(Constants.driveStick, 8);
 				
 				//weapon buttons
-				eatGear = new ButtonTracker(Constants.weaponStick, 1);
+				tipHat = new ButtonTracker(Constants.weaponStick, 1);
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
 				intake = new ButtonTracker(Constants.weaponStick, 3);
 				agitate = new ButtonTracker(Constants.weaponStick, 4);
@@ -244,12 +244,12 @@ public class Robot extends IterativeRobot
 				 */
 
 				// alpha gear code
-				if(eatGear.isPressed()) {
-					RobotMap.gearMouth.set(true);
+				if(tipHat.isPressed()) {
+					RobotMap.hatTip.set(true);
 					RobotMap.pushFaceOut.set(false);
 					RobotMap.gearPooper.set(false);
 				} else {
-					RobotMap.gearMouth.set(false);
+					RobotMap.hatTip.set(false);
 					RobotMap.pushFaceOut.set(facePush.isPressed());
 					RobotMap.gearPooper.set(poopGear.isPressed());
 				}
@@ -390,7 +390,7 @@ public class Robot extends IterativeRobot
 				compCal1.update();
 				compCalReset.update();
 				turbo.update();
-				eatGear.update();
+				tipHat.update();
 				poopGear.update();
 				facePush.update();
 				intake.update();
