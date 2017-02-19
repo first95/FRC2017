@@ -130,7 +130,7 @@ public class VisualGearLiftFinder extends Thread
 						SmartDashboard.putString(REASON, "Insufficient contours passing filter");
 					}
 				frameLock.lock();
-				outputFrame = curFrame;
+				curFrame.copyTo(outputFrame);
 				frameLock.unlock();
 			}
 
