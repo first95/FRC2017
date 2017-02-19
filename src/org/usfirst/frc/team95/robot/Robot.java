@@ -49,7 +49,6 @@ public class Robot extends IterativeRobot
 
 		Auto move;
 		SendableChooser a, b, c;
-		ArrayList<PollableSubsystem> updates = new ArrayList<PollableSubsystem>();
 		RangeBasedGearScorer rangeBasedGearScorer;
 		VoltageCompensatedShooter shooter;
 
@@ -112,10 +111,6 @@ public class Robot extends IterativeRobot
 				angleRec[1] = 0.1;
 				angleRec[0] = 0.1;
 
-				for (PollableSubsystem p : updates)
-					{
-						p.init();
-					}
 
 				a = new SendableChooser();
 				b = new SendableChooser();
