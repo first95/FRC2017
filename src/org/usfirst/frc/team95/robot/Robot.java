@@ -301,7 +301,7 @@ public class Robot extends IterativeRobot
 				// Show the edited video output from the camera
 			
 				if (RobotMap.gearLiftFinder != null) {
-					//RobotMap.gearLiftFinder.computeHeadingToTarget();
+					RobotMap.gearLiftFinder.computeHeadingToTarget();
 					RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 					// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
 					SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
