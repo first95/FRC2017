@@ -17,16 +17,17 @@ public class TimedMove extends Auto {
 
 	@Override
 	public void init() {
+		
+	}
+	
+	@Override
+	public void start() {
 		timer.reset();
 		timer.start();
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 			RobotMap.drive.tank(left, right);
 		}
-	}
-	
-	@Override
-	public void start() {
 	}
 	
 	@Override

@@ -130,7 +130,7 @@ public class Robot extends IterativeRobot
 				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
 				a.addObject("Score Gear", new ScoreGear());
 				b.addDefault("None", new Nothing());
-				b.addObject("Go Forward", new DistanceMove(0.1, 0, 5));
+				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
 				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, poseidon));
