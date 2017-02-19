@@ -12,8 +12,8 @@ public class HeadingPreservation {
 		m_compass = compass;
 	}*/
 	
-	public HeadingPreservation(ADIS16448_IMU compass2) {
-		m_compass = compass2;
+	public HeadingPreservation(ADIS16448_IMU poseidon) {
+		m_compass = poseidon;
 	}
 	
 	public void setHeading(double angle) {

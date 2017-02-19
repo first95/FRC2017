@@ -48,8 +48,8 @@ public class RobotMap
 				right1 = new CANTalon(4);
 				right2 = new CANTalon(5);
 				right3 = new CANTalon(6);
-				winchRight = new CANTalon(7);
-				winchLeft = new CANTalon(8);
+				winchLeft = new CANTalon(7);
+				winchRight = new CANTalon(8);
 				intake = new CANTalon(9);
 				agitator = new CANTalon(10);
 				shooter = new CANTalon(11);
