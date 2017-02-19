@@ -17,19 +17,16 @@ public class OpenPooper extends Auto{
 	}
 
 	public void start() {
-		
 		timer.reset();
 		timer.start();
+		RobotMap.gearPooper.set(true);
 		
 	}
 
 	public void update() {
-		
-		while (timer.get() < time) {
-			RobotMap.gearPooper.set(true);
+		if (timer.get() > time) {
+			done = true;
 		}
-		
-		done = true;
 	}
 
 	public void stop() {

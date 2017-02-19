@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class GoToLiftAdvanced extends Auto
 	{
 
-		Timer t = new Timer();
-
+		boolean done = false;
+		
 		private static final double MAX_DEAD_BAND = 0.5;
 		private static final double MIN_DEAD_BAND = 0.5;
 		
@@ -68,17 +68,9 @@ public class GoToLiftAdvanced extends Auto
 				if ((RobotMap.gearLiftFinder.haveValidHeading() == false))
 					{
 
-						t.reset();
-						t.start();
 						RobotMap.drive.arcade(0, 0);
-
-						while (t.get() < 500)
-							{
-								RobotMap.gearPooper.set(true);
-								t.stop();
-							}
-
-						stop();
+						
+						done = true;
 					}
 
 			}
@@ -95,7 +87,7 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public boolean done()
 			{
-				return RobotMap.gearLiftFinder.getDistanceFromCamToTarget() <= 13;
+				return done;
 			}
 
 	}
