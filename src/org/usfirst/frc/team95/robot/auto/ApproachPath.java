@@ -29,6 +29,7 @@ public class ApproachPath extends Auto {
 		roboToNorth = north - heading;
 		roboToPeg = RobotMap.gearLiftFinder.getHeadingToTargetDegrees() * (Math.PI/180);
 		idealToNorth = idealHeading - north;
+		idealToRobo = roboToNorth + idealToNorth - roboToPeg;
 	}
 
 	@Override
