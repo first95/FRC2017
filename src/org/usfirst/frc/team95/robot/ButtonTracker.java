@@ -52,7 +52,7 @@ public class ButtonTracker implements PollableSubsystem {
 	}
 
 	public boolean isPressed() {
-		return mNow;
+		return mJoystick.getRawButton(mChannel);
 	}
 
 	public boolean wasJustPressed() {
