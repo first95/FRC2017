@@ -244,9 +244,15 @@ public class Robot extends IterativeRobot
 				 */
 
 				// alpha gear code
-				RobotMap.gearMouth.set(eatGear.isPressed());
-				RobotMap.pushFaceOut.set(facePush.isPressed());
-				RobotMap.gearPooper.set(poopGear.isPressed());
+				if(eatGear.isPressed()) {
+					RobotMap.gearMouth.set(true);
+					RobotMap.pushFaceOut.set(false);
+					RobotMap.gearPooper.set(false);
+				} else {
+					RobotMap.gearMouth.set(false);
+					RobotMap.pushFaceOut.set(facePush.isPressed());
+					RobotMap.gearPooper.set(poopGear.isPressed());
+				}
 
 				/*
 				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
