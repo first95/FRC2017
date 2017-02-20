@@ -36,7 +36,7 @@ public class RobotMap
 				
 				myCam.setResolution(640, 480);
 				myCam.setExposureManual(35);
-				myCam.setFPS(30);
+				//myCam.setFPS(30);
 				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 				CvSink cvSink = CameraServer.getInstance().getVideo();
 				gearLiftFinder = new VisualGearLiftFinder(cvSink);
