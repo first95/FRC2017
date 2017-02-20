@@ -264,7 +264,7 @@ public class Robot extends IterativeRobot
 					{
 						RobotMap.intake.set(0);
 					}*/
-				RobotMap.intake.set(Constants.weaponStick.getRawAxis(2));
+				RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
 
 				
 				RobotMap.brakes.set(brakes.isPressed());
@@ -273,20 +273,20 @@ public class Robot extends IterativeRobot
 				booperTimer.start();
 				if (agitate.isPressed())
 					{
-						RobotMap.agitator.set(.7);
-						if (booperTimer.get() < .25) {
+						//RobotMap.agitator.set(.3);
+//						if (booperTimer.get() < .25) {
 							RobotMap.andyBooper9000.set(true);
-						} else if (booperTimer.get() >= .25 && booperTimer.get() < .5){
-							RobotMap.andyBooper9000.set(false);
-							booperTimer.reset();
-						}
+//						} else if (booperTimer.get() >= .25 && booperTimer.get() < .5){
+//							RobotMap.andyBooper9000.set(false);
+//							booperTimer.reset();
+//						}
 					}
 				else
 					{
-						RobotMap.agitator.set(0);
+						//RobotMap.agitator.set(0);
 						RobotMap.andyBooper9000.set(false);				
-						booperTimer.stop();
-						booperTimer.reset();
+//						booperTimer.stop();
+//						booperTimer.reset();
 					}
 
 				/*if (shoot.wasJustPressed())
@@ -297,9 +297,14 @@ public class Robot extends IterativeRobot
 					{
 						shooter.turnOff();
 					}*/
-				RobotMap.shooter.set(Constants.weaponStick.getRawAxis(3));
+				RobotMap.shooter.set(-Constants.weaponStick.getRawAxis(3));
 				
-				RobotMap.winchRight.set(Constants.weaponStick.getY());
+				if (Math.abs(Constants.weaponStick.getY()) > Constants.joystickDeadbandV) {
+				  RobotMap.winchRight.set(Constants.weaponStick.getY());
+				 }
+				 
+				
+				//RobotMap.winchRight.set(Constants.weaponStick.getY());//add deadbanding
 				//RobotMap.winchLeft.set(-Constants.weaponStick.getY());
 			}
 
