@@ -49,7 +49,8 @@ public class VisualGearLiftFinder
 	public void computeHeadingToTarget()
 	{
 		if(imageSource.isValid()) {
-			imageSource.grabFrame(curFrame);
+//			imageSource.grabFrame(curFrame);
+			imageSource.grabFrameNoTimeout (curFrame);
 			if (!curFrame.empty()) {
 				pipeline.process(curFrame);
 				lastHeadingDeterminationSucceeded = false;
