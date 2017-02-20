@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode;
-		ButtonTracker headPres, compCal1, compCalReset, turbo, changeDriveMode, 
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, 
 		tipHat, facePush, poopGear, intake, agitate, shoot, 
 		incPID, decPID;
 
@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot
 				//drive buttons
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 1);
 				headPres = new ButtonTracker(Constants.driveStick, 2);
-				turbo = new ButtonTracker(Constants.driveStick, 6);
+				slowMo = new ButtonTracker(Constants.driveStick, 6);
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
 				compCalReset = new ButtonTracker(Constants.driveStick, 8);
 				
@@ -225,13 +225,13 @@ public class Robot extends IterativeRobot
 						header.setHeading(headingToPres);
 					}
 
-				else if (turbo.isPressed())
+				else if (slowMo.isPressed())
 					{
-						RobotMap.drive.arcade(Constants.driveStick, twoStickMode);
+						RobotMap.drive.halfArcade(Constants.driveStick, twoStickMode);
 					}
 				else
 					{
-						RobotMap.drive.halfArcade(Constants.driveStick, twoStickMode);
+						RobotMap.drive.arcade(Constants.driveStick, twoStickMode);
 					}
 
 				/*
@@ -384,7 +384,7 @@ public class Robot extends IterativeRobot
 				headPres.update();
 				compCal1.update();
 				compCalReset.update();
-				turbo.update();
+				slowMo.update();
 				tipHat.update();
 				poopGear.update();
 				facePush.update();
