@@ -27,7 +27,7 @@ public class ApproachPath extends Auto {
 	public void update() {
 		heading = compass.getHeading();
 		roboToNorth = north - heading;
-		roboToPeg = RobotMap.gearLiftFinder.getHeadingToTargetDegrees() * (Math.PI/180);
+		//roboToPeg = RobotMap.gearLiftFinder.getHeadingToTargetDegrees() * (Math.PI/180);
 		idealToNorth = idealHeading - north;
 		idealToRobo = roboToNorth + idealToNorth - roboToPeg;
 	}

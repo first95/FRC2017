@@ -37,19 +37,19 @@ public class AtLiftRotate extends Auto
 			{
 
 				
-
-				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-				//
-
-				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > 2 || RobotMap.gearLiftFinder.getHeadingToTargetDegrees() < -2)
-					{
-						RotateBy rb = new RotateBy(RobotMap.gearLiftFinder.getHeadingToTargetRadians(), compass);
-					}
-				else
-					{
-						stop();
-					}
+//
+//				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+//				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+//				//
+//
+//				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > 2 || RobotMap.gearLiftFinder.getHeadingToTargetDegrees() < -2)
+//					{
+//						RotateBy rb = new RotateBy(RobotMap.gearLiftFinder.getHeadingToTargetRadians(), compass);
+//					}
+//				else
+//					{
+//						stop();
+//					}
 
 			}
 

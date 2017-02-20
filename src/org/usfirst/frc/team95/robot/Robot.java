@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot
 		CompassReader compass;
 		ADIS16448_IMU poseidon;
 		HeadingPreservation header;
-		Timer cycleTime; // for common periodic
+		Timer cycleTime, booperTimer; // for common periodic
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
 		AnalogInput range1, range2, range3, range4;
 		DigitalOutput initiateRangeFinder;
@@ -43,7 +43,7 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, 
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, 
 		tipHat, facePush, poopGear, intake, agitate, shoot, 
 		incPID, decPID;
 
@@ -77,8 +77,9 @@ public class Robot extends IterativeRobot
 				
 				twoStickMode = false;
 				//drive buttons
-				changeDriveMode = new ButtonTracker(Constants.driveStick, 1);
+				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				headPres = new ButtonTracker(Constants.driveStick, 2);
+				brakes = new ButtonTracker(Constants.driveStick, 1);
 				slowMo = new ButtonTracker(Constants.driveStick, 6);
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
 				compCalReset = new ButtonTracker(Constants.driveStick, 8);
@@ -91,20 +92,22 @@ public class Robot extends IterativeRobot
 				facePush = new ButtonTracker(Constants.weaponStick, 5);
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
 
-				range1 = new AnalogInput(0);
-				range2 = new AnalogInput(1);
-				range3 = new AnalogInput(2);
-				range4 = new AnalogInput(3);
+//				range1 = new AnalogInput(0);
+//				range2 = new AnalogInput(1);
+//				range3 = new AnalogInput(2);
+//				range4 = new AnalogInput(3);
+//
+//				initiateRangeFinder = new DigitalOutput(0);
 
-				initiateRangeFinder = new DigitalOutput(0);
-
-				rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
-					{ range1, range2 });
-				rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
+//				rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
+//					{ range1, range2 });
+//				rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
 
 				cycleTime = new Timer();
 				cycleTime.reset();
 				cycleTime.start();
+				booperTimer = new Timer();
+				booperTimer.reset();
 				angleRec = new Double[4];
 				angleRec[3] = 0.1;
 				angleRec[2] = 0.1;
@@ -262,14 +265,28 @@ public class Robot extends IterativeRobot
 						RobotMap.intake.set(0);
 					}*/
 				RobotMap.intake.set(Constants.weaponStick.getRawAxis(2));
+
 				
+				RobotMap.brakes.set(brakes.isPressed());
+				
+				
+				booperTimer.start();
 				if (agitate.isPressed())
 					{
-						RobotMap.agitator.set(.3);
+						RobotMap.agitator.set(.7);
+						if (booperTimer.get() < .25) {
+							RobotMap.andyBooper9000.set(true);
+						} else if (booperTimer.get() >= .25 && booperTimer.get() < .5){
+							RobotMap.andyBooper9000.set(false);
+							booperTimer.reset();
+						}
 					}
 				else
 					{
 						RobotMap.agitator.set(0);
+						RobotMap.andyBooper9000.set(false);				
+						booperTimer.stop();
+						booperTimer.reset();
 					}
 
 				/*if (shoot.wasJustPressed())
@@ -283,6 +300,7 @@ public class Robot extends IterativeRobot
 				RobotMap.shooter.set(Constants.weaponStick.getRawAxis(3));
 				
 				RobotMap.winchRight.set(Constants.weaponStick.getY());
+				//RobotMap.winchLeft.set(-Constants.weaponStick.getY());
 			}
 
 		/**
@@ -301,15 +319,15 @@ public class Robot extends IterativeRobot
 
 				// Show the edited video output from the camera
 			
-				if (RobotMap.gearLiftFinder != null) {
-					RobotMap.gearLiftFinder.computeHeadingToTarget();
-					RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-					// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
-					SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-					SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-					SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-					SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-				}
+//				if (RobotMap.gearLiftFinder != null) {
+//					RobotMap.gearLiftFinder.computeHeadingToTarget();
+//					RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+//					// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
+//					SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+//					SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
+//					SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+//					SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+//				}
 				// rangeFinder.pulse(.02);
 
 				SmartDashboard.putNumber("X", poseidon.getMagX());
@@ -325,7 +343,7 @@ public class Robot extends IterativeRobot
 
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 
-				SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
+				//SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
 				// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
 				// SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
 				// SmartDashboard.putNumber("Range3 Finder ft", Constants.RFVoltsToFt(range3.getVoltage()));
@@ -382,6 +400,7 @@ public class Robot extends IterativeRobot
 					}
 
 				headPres.update();
+				brakes.update();
 				compCal1.update();
 				compCalReset.update();
 				slowMo.update();
@@ -392,6 +411,6 @@ public class Robot extends IterativeRobot
 				agitate.update();
 				shoot.update();
 				shooter.adjustVoltage();
-				rangeBasedGearScorer.update();
+				//rangeBasedGearScorer.update();
 			}
 	}

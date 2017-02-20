@@ -47,31 +47,31 @@ public class GoToLiftAdvanced extends Auto
 			{
 
 				
-
-				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-				//
-
-				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > MAX_DEAD_BAND)
-					{
-						RobotMap.drive.arcade((MAX_DRIVE_THROTTLE_WHILE_TURNING), (MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
-					}
-				else if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() < MIN_DEAD_BAND)
-					{
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE_INVERTED * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
-					}
-				else
-					{
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
-					}
-
-				if ((RobotMap.gearLiftFinder.haveValidHeading() == false))
-					{
-
-						RobotMap.drive.arcade(0, 0);
-						
-						done = true;
-					}
+//
+//				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+//				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+//				//
+//
+//				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > MAX_DEAD_BAND)
+//					{
+//						RobotMap.drive.arcade((MAX_DRIVE_THROTTLE_WHILE_TURNING), (MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
+//					}
+//				else if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() < MIN_DEAD_BAND)
+//					{
+//						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE_INVERTED * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
+//					}
+//				else
+//					{
+//						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
+//					}
+//
+//				if ((RobotMap.gearLiftFinder.haveValidHeading() == false))
+//					{
+//
+//						RobotMap.drive.arcade(0, 0);
+//						
+//						done = true;
+//					}
 
 			}
 
