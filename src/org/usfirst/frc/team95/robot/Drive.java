@@ -46,7 +46,7 @@ public class Drive {
 		// "Exponential" drive, where the movements are more sensitive during slow movement,
 		// permitting easier fine control
 		x = Math.pow(x, 3);
-		y = Math.pow(y, 3);;
+		y = Math.pow(y, 3);
 		arcade(y,x);
 		
 	}
@@ -70,7 +70,7 @@ public class Drive {
 		// "Exponential" drive, where the movements are more sensitive during slow movement,
 		// permitting easier fine control
 		x = Math.pow(x, 3);
-		y = Math.pow(y, 3);;
+		y = Math.pow(y, 3);
 		halfArcade(y,x);
 		
 	}
