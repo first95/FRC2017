@@ -278,7 +278,7 @@ public class Robot extends IterativeRobot
 					{
 						
 						
-						//RobotMap.agitator.set(.3);
+						RobotMap.agitator.set(.6);
 						
 						if (booperTimer.get() >= .25){
 							boop = !boop;
@@ -305,10 +305,13 @@ public class Robot extends IterativeRobot
 					{
 						shooter.turnOff();
 					}*/
-				RobotMap.shooter.set(-Constants.weaponStick.getRawAxis(3));
 				
-				if (Math.abs(Constants.weaponStick.getY()) > Constants.joystickDeadbandV) {
-				  RobotMap.winchRight.set(Constants.weaponStick.getY());
+				if (Constants.weaponStick.getRawAxis(3) > .1 ) {
+					RobotMap.shooter.set(-.75);
+				}
+				
+				if (Math.abs(Constants.weaponStick.getY()) > .8) {
+				  //RobotMap.winchRight.set(Constants.weaponStick.getY());
 				 }
 				 
 				
