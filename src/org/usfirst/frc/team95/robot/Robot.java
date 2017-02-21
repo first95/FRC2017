@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import java.util.ArrayList;
 import org.usfirst.frc.team95.robot.auto.AtLiftRotate;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
@@ -43,9 +42,7 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, 
-		tipHat, facePush, poopGear, intake, agitate, shoot, 
-		incPID, decPID;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, intake, agitate, shoot, incPID, decPID, alignToGearLiftAndDrive;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -61,49 +58,51 @@ public class Robot extends IterativeRobot
 			{
 
 				RobotMap.init();
-				
+
 				boop = false;
-				
+
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
 				SmartDashboard.putData("Auto mode", chooser);
 				// ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
 				// Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
-				//gyro = new GyroReader();
+				// gyro = new GyroReader();
 				variableStore = new VariableStore();
-				//compass = new CompassReader(variableStore);
+				// compass = new CompassReader(variableStore);
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 				
 				twoStickMode = true;
 				//drive buttons
+
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				headPres = new ButtonTracker(Constants.driveStick, 2);
 				brakes = new ButtonTracker(Constants.driveStick, 1);
 				slowMo = new ButtonTracker(Constants.driveStick, 6);
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
 				compCalReset = new ButtonTracker(Constants.driveStick, 8);
-				
-				//weapon buttons
+
+				// weapon buttons
 				tipHat = new ButtonTracker(Constants.weaponStick, 1);
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
 				intake = new ButtonTracker(Constants.weaponStick, 3);
 				agitate = new ButtonTracker(Constants.weaponStick, 4);
 				facePush = new ButtonTracker(Constants.weaponStick, 5);
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
+				alignToGearLiftAndDrive = new ButtonTracker(Constants.weaponStick, 7);
 
-//				range1 = new AnalogInput(0);
-//				range2 = new AnalogInput(1);
-//				range3 = new AnalogInput(2);
-//				range4 = new AnalogInput(3);
-//
-//				initiateRangeFinder = new DigitalOutput(0);
+				// range1 = new AnalogInput(0);
+				// range2 = new AnalogInput(1);
+				// range3 = new AnalogInput(2);
+				// range4 = new AnalogInput(3);
+				//
+				// initiateRangeFinder = new DigitalOutput(0);
 
-//				rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
-//					{ range1, range2 });
-//				rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
+				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
+				// { range1, range2 });
+				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
 
 				booperTimer = new Timer();
 				booperTimer.reset();
@@ -113,7 +112,6 @@ public class Robot extends IterativeRobot
 				angleRec[2] = 0.1;
 				angleRec[1] = 0.1;
 				angleRec[0] = 0.1;
-
 
 				a = new SendableChooser();
 				b = new SendableChooser();
@@ -213,10 +211,20 @@ public class Robot extends IterativeRobot
 			{
 				commonPeriodic();
 				Scheduler.getInstance().run();
-				
-				if (changeDriveMode.wasJustPressed()) {
-					twoStickMode = !twoStickMode;
-				}
+
+				if (changeDriveMode.wasJustPressed())
+					{
+						if (twoStickMode != true)
+							{
+								twoStickMode = true;
+							}
+						else if (twoStickMode = true)
+							{
+								twoStickMode = false;
+							}
+
+					}
+
 				// drive
 				if (Constants.driveStick.getRawButton(2))
 					{
@@ -227,7 +235,6 @@ public class Robot extends IterativeRobot
 
 						header.setHeading(headingToPres);
 					}
-
 				else if (slowMo.isPressed())
 					{
 						RobotMap.drive.halfArcade(Constants.driveStick, twoStickMode);
@@ -242,47 +249,42 @@ public class Robot extends IterativeRobot
 				 */
 
 				// alpha gear code
-				if(tipHat.isPressed()) {
-					RobotMap.hatTip.set(true);
-					RobotMap.pushFaceOut.set(false);
-					RobotMap.gearPooper.set(false);
-				} else {
-					RobotMap.hatTip.set(false);
-					RobotMap.pushFaceOut.set(facePush.isPressed());
-					RobotMap.gearPooper.set(poopGear.isPressed());
-				}
+				if (tipHat.isPressed())
+					{
+						RobotMap.hatTip.set(true);
+						RobotMap.pushFaceOut.set(false);
+						RobotMap.gearPooper.set(false);
+					}
+				else
+					{
+						RobotMap.hatTip.set(false);
+						RobotMap.pushFaceOut.set(facePush.isPressed());
+						RobotMap.gearPooper.set(poopGear.isPressed());
+					}
 
 				/*
 				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
 				 */
 
-				/*if (intake.isPressed())
-					{
-						RobotMap.intake.set(.3);
-					}
-				else
-					{
-						RobotMap.intake.set(0);
-					}*/
+				/*
+				 * if (intake.isPressed()) { RobotMap.intake.set(.3); } else { RobotMap.intake.set(0); }
+				 */
+
 				RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
 
-				
 				RobotMap.brakes.set(brakes.isPressed());
-				
-				
-				
+
 				if (agitate.isPressed())
 					{
-						
-						
+
 						RobotMap.agitator.set(.6);
-						
-						if (booperTimer.get() >= .25){
-							boop = !boop;
-							booperTimer.reset();
-						}
-						
-						
+
+						if (booperTimer.get() >= .25)
+							{
+								boop = !boop;
+								booperTimer.reset();
+							}
+
 					}
 				else
 					{
@@ -290,28 +292,32 @@ public class Robot extends IterativeRobot
 						boop = false;
 						booperTimer.reset();
 					}
-				
-				RobotMap.andyBooper9000.set(boop);	
-				
-				/*if (shoot.wasJustPressed())
+
+				if (alignToGearLiftAndDrive.isPressed())
 					{
-						shooter.turnOn();
+						new GoToLiftAdvanced();
 					}
-				else if (shoot.wasJustReleased())
+
+				RobotMap.andyBooper9000.set(boop);
+
+				/*
+				 * if (shoot.wasJustPressed()) { shooter.turnOn(); } else if (shoot.wasJustReleased()) { shooter.turnOff(); }
+				 */
+
+				if (Constants.weaponStick.getRawAxis(3) > .1)
 					{
-						shooter.turnOff();
-					}*/
-				
-				if (Constants.weaponStick.getRawAxis(3) > .1 ) {
-					RobotMap.shooter.set(-.5);
-				}
-				
-				if (Math.abs(Constants.weaponStick.getY()) > .12) {
-				  RobotMap.winchRight.set(Constants.weaponStick.getY());
-				} else {
-					 RobotMap.winchRight.set(0);
-				}
-				 
+						RobotMap.shooter.set(-.5);
+					}
+
+				if (Math.abs(Constants.weaponStick.getY()) > .12)
+					{
+						RobotMap.winchRight.set(Constants.weaponStick.getY());
+					}
+				else
+					{
+						RobotMap.winchRight.set(0);
+					}
+
 			}
 
 		/**
@@ -325,24 +331,23 @@ public class Robot extends IterativeRobot
 		// This is run in disabled, teleop, and auto periodics.
 		public void commonPeriodic()
 			{
-				
+
 				// Show the edited video output from the camera
-				
-				if (RobotMap.gearLiftFinder != null) {
-					RobotMap.gearLiftFinder.computeHeadingToTarget();
-					RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-					// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
-					SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-					SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-					SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-					SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-				}
+
+				if (RobotMap.gearLiftFinder != null)
+					{
+						// RobotMap.gearLiftFinder.computeHeadingToTarget();
+						// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+						// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
+						// SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+						// SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
+						// SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+						// SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+					}
 				// rangeFinder.pulse(.02);
 
-				
-
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
-				//SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
+				// SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
 				// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
 				// SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
 				// SmartDashboard.putNumber("Range3 Finder ft", Constants.RFVoltsToFt(range3.getVoltage()));
@@ -410,6 +415,6 @@ public class Robot extends IterativeRobot
 				agitate.update();
 				shoot.update();
 				shooter.adjustVoltage();
-				//rangeBasedGearScorer.update();
+				// rangeBasedGearScorer.update();
 			}
 	}
