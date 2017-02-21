@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		boolean twoStickMode;
+		boolean twoStickMode, boop;
 		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, 
 		tipHat, facePush, poopGear, intake, agitate, shoot, 
 		incPID, decPID;
@@ -61,7 +61,9 @@ public class Robot extends IterativeRobot
 			{
 
 				RobotMap.init();
-
+				
+				boop = false;
+				
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
@@ -108,6 +110,7 @@ public class Robot extends IterativeRobot
 				cycleTime.start();
 				booperTimer = new Timer();
 				booperTimer.reset();
+				booperTimer.start();
 				angleRec = new Double[4];
 				angleRec[3] = 0.1;
 				angleRec[2] = 0.1;
@@ -270,25 +273,30 @@ public class Robot extends IterativeRobot
 				RobotMap.brakes.set(brakes.isPressed());
 				
 				
-				booperTimer.start();
+				
 				if (agitate.isPressed())
 					{
+						
+						
 						//RobotMap.agitator.set(.3);
-//						if (booperTimer.get() < .25) {
-							RobotMap.andyBooper9000.set(true);
-//						} else if (booperTimer.get() >= .25 && booperTimer.get() < .5){
-//							RobotMap.andyBooper9000.set(false);
-//							booperTimer.reset();
-//						}
+						
+						if (booperTimer.get() >= .25){
+							boop = !boop;
+							booperTimer.reset();
+						}
+						
+						
+						System.out.println(booperTimer.get());
 					}
 				else
 					{
-						//RobotMap.agitator.set(0);
-						RobotMap.andyBooper9000.set(false);				
-//						booperTimer.stop();
-//						booperTimer.reset();
+						RobotMap.agitator.set(0);
+						boop = false;
+						booperTimer.reset();
 					}
-
+				
+				RobotMap.andyBooper9000.set(boop);	
+				
 				/*if (shoot.wasJustPressed())
 					{
 						shooter.turnOn();

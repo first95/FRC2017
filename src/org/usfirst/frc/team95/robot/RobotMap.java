@@ -70,8 +70,8 @@ public class RobotMap
 				gearPooper = new Solenoid(2);
 				hatTip = new Solenoid(1);
 				pushFaceOut = new Solenoid(0);
-				andyBooper9000 = new Solenoid(3);
-				brakes = new Solenoid(4);
+				andyBooper9000 = new Solenoid(4);
+				brakes = new Solenoid(3);
 
 				left1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 				right1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
