@@ -17,9 +17,9 @@ public class RobotMap
 		public static Drive drive;
 
 		// Vision Stuff
-//		public static VisualGearLiftFinder gearLiftFinder = null;
-//		public static UsbCamera myCam = null;
-//		public static CvSource smartDashboardVideoOutput = null;
+		public static VisualGearLiftFinder gearLiftFinder = null;
+		public static UsbCamera myCam = null;
+		public static CvSource smartDashboardVideoOutput = null;
 
 		// Autonomous moves wishing to control the robot's drive base
 		// should set the driveLock object to "this" (that is, themselves).
@@ -32,14 +32,14 @@ public class RobotMap
 			{
 
 				// Start Vision Processing, and allow us to grab it from anywhere
-//				myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
-//				
-//				myCam.setResolution(640, 480);
-//				myCam.setExposureManual(35);
-//				//myCam.setFPS(30);
-//				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
-//				CvSink cvSink = CameraServer.getInstance().getVideo();
-//				gearLiftFinder = new VisualGearLiftFinder(cvSink);
+				myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
+				
+				myCam.setResolution(640, 480);
+				myCam.setExposureManual(35);
+				//myCam.setFPS(30);
+				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+				CvSink cvSink = CameraServer.getInstance().getVideo();
+				gearLiftFinder = new VisualGearLiftFinder(cvSink);
 
 				// drive motors
 				left1 = new CANTalon(1);

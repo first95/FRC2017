@@ -34,7 +34,7 @@ public class Robot extends IterativeRobot
 		CompassReader compass;
 		ADIS16448_IMU poseidon;
 		HeadingPreservation header;
-		Timer cycleTime, booperTimer; // for common periodic
+		Timer booperTimer;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
 		AnalogInput range1, range2, range3, range4;
 		DigitalOutput initiateRangeFinder;
@@ -70,9 +70,9 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putData("Auto mode", chooser);
 				// ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
 				// Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
-				gyro = new GyroReader();
+				//gyro = new GyroReader();
 				variableStore = new VariableStore();
-				compass = new CompassReader(variableStore);
+				//compass = new CompassReader(variableStore);
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
@@ -105,9 +105,6 @@ public class Robot extends IterativeRobot
 //					{ range1, range2 });
 //				rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
 
-				cycleTime = new Timer();
-				cycleTime.reset();
-				cycleTime.start();
 				booperTimer = new Timer();
 				booperTimer.reset();
 				booperTimer.start();
@@ -286,7 +283,6 @@ public class Robot extends IterativeRobot
 						}
 						
 						
-						System.out.println(booperTimer.get());
 					}
 				else
 					{
@@ -307,10 +303,10 @@ public class Robot extends IterativeRobot
 					}*/
 				
 				if (Constants.weaponStick.getRawAxis(3) > .1 ) {
-					RobotMap.shooter.set(-.75);
+					RobotMap.shooter.set(-.5);
 				}
 				
-				if (Math.abs(Constants.weaponStick.getY()) > Constants.joystickDeadbandV) {
+				if (Math.abs(Constants.weaponStick.getY()) > .12) {
 				  RobotMap.winchRight.set(Constants.weaponStick.getY());
 				} else {
 					 RobotMap.winchRight.set(0);
@@ -331,31 +327,21 @@ public class Robot extends IterativeRobot
 			{
 				
 				// Show the edited video output from the camera
-			
-//				if (RobotMap.gearLiftFinder != null) {
-//					RobotMap.gearLiftFinder.computeHeadingToTarget();
-//					RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-//					// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
-//					SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-//					SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-//					SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-//					SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-//				}
+				
+				if (RobotMap.gearLiftFinder != null) {
+					RobotMap.gearLiftFinder.computeHeadingToTarget();
+					RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+					// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
+					SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+					SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
+					SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+					SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+				}
 				// rangeFinder.pulse(.02);
 
-				SmartDashboard.putNumber("X", poseidon.getMagX());
-				SmartDashboard.putNumber("Y", poseidon.getMagY());
-				SmartDashboard.putNumber("Z", poseidon.getMagZ());
-				SmartDashboard.putNumber("ATanXY", Math.atan2(poseidon.getMagX(), poseidon.getMagY()));
-				SmartDashboard.putNumber("ATanZY", Math.atan2(poseidon.getMagZ(), poseidon.getMagY()));
-				SmartDashboard.putNumber("ATanXZ", Math.atan2(poseidon.getMagX(), poseidon.getMagZ()));
-
-				SmartDashboard.putNumber("CX", compass.getRawCompX());
-				SmartDashboard.putNumber("CY", compass.getRawCompY());
-				SmartDashboard.putNumber("CZ", compass.getRawCompZ());
+				
 
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
-
 				//SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
 				// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
 				// SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
