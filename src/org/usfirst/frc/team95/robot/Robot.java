@@ -310,13 +310,12 @@ public class Robot extends IterativeRobot
 					RobotMap.shooter.set(-.75);
 				}
 				
-				if (Math.abs(Constants.weaponStick.getY()) > .8) {
-				  //RobotMap.winchRight.set(Constants.weaponStick.getY());
-				 }
+				if (Math.abs(Constants.weaponStick.getY()) > Constants.joystickDeadbandV) {
+				  RobotMap.winchRight.set(Constants.weaponStick.getY());
+				} else {
+					 RobotMap.winchRight.set(0);
+				}
 				 
-				
-				//RobotMap.winchRight.set(Constants.weaponStick.getY());//add deadbanding
-				//RobotMap.winchLeft.set(-Constants.weaponStick.getY());
 			}
 
 		/**
@@ -331,8 +330,6 @@ public class Robot extends IterativeRobot
 		public void commonPeriodic()
 			{
 				
-				// System.out.println(compass2.getMagX() + ", " + compass2.getMagY() + ", " + compass2.getMagZ());// + ", " + gyro.getXAng() + ", " + gyro.getYAng() + ", " + gyro.getZAng() + ", " + compass.getHeading() + ", " + cycleTime.get() + ", " );
-
 				// Show the edited video output from the camera
 			
 //				if (RobotMap.gearLiftFinder != null) {
