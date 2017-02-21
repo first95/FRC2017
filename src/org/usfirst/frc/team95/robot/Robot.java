@@ -77,7 +77,7 @@ public class Robot extends IterativeRobot
 				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 				
-				twoStickMode = false;
+				twoStickMode = true;
 				//drive buttons
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				headPres = new ButtonTracker(Constants.driveStick, 2);
