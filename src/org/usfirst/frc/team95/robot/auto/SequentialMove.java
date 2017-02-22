@@ -12,6 +12,14 @@ public class SequentialMove extends Auto {
 	public SequentialMove(Auto[] moves) {
 		this.moves = moves.clone();
 	}
+	
+	protected SequentialMove() {
+		this.moves = null;
+	}
+	
+	protected void SetMoves(Auto[] moves) {
+		this.moves = moves.clone();
+	}
 
 	@Override
 	public void init() {

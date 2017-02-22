@@ -12,9 +12,9 @@ public class RotateBy extends Auto {
 	ADIS16448_IMU compass;
 	boolean done = false;
 
-	public RotateBy(double angle, ADIS16448_IMU compass2) {
+	public RotateBy(double angle, ADIS16448_IMU poseidon) {
 		this.angle = angle;
-		compass = compass2;
+		compass = poseidon;
 		spinner = new HeadingPreservation(compass);
 		
 		// System.out.println(time);
