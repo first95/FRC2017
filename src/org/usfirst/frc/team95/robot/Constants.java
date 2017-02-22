@@ -9,7 +9,6 @@ public class Constants {
 	public static Joystick driveStick = new Joystick(0);
 	public static Joystick weaponStick = new Joystick(1);
 	public static double poseidonNorthVal = 2.751;
-//	public static Joystick testStick = new Joystick(2);
 	public static double encoderTickPerFoot = 1002;
 	public static double robotWidth = 34.7;
 	public static double visionLength = 3;

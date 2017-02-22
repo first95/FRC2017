@@ -7,7 +7,7 @@ public class ScoreFromStart extends SequentialMove{
 	double dist1, dist2, rotate;
 	
 	//0 is far left
-	ScoreFromStart(boolean redSide, int position, ADIS16448_IMU poseidon) {
+	public ScoreFromStart(boolean redSide, int position, ADIS16448_IMU poseidon) {
 		if (redSide) {
 			if (position == 0) {
 				dist1 = (88.44 - (Constants.robotWidth/2)) / 12;
