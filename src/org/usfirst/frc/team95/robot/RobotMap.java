@@ -1,5 +1,9 @@
 package org.usfirst.frc.team95.robot;
 
+import java.sql.Time;
+
+import org.omg.CORBA.SystemException;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.cscore.CvSink;
@@ -7,6 +11,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides flexibility changing wiring, makes checking the wiring easier and significantly reduces the number of magic numbers floating around.
@@ -20,6 +25,8 @@ public class RobotMap
 		public static VisualGearLiftFinder gearLiftFinder = null;
 		public static UsbCamera myCam = null;
 		public static CvSource smartDashboardVideoOutput = null;
+		public static CvSink cvSink = null;
+		public static boolean visionProcessingActive = false;
 
 		// Autonomous moves wishing to control the robot's drive base
 		// should set the driveLock object to "this" (that is, themselves).
@@ -31,15 +38,27 @@ public class RobotMap
 		public static void init()
 			{
 
+				Timer times = new Timer();
+
 				// Start Vision Processing, and allow us to grab it from anywhere
-				//myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
-				
-				//myCam.setResolution(640, 480);
-				//myCam.setExposureManual(35);
-				//myCam.setFPS(30);
-				//smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
-				//CvSink cvSink = CameraServer.getInstance().getVideo();
-				//gearLiftFinder = new VisualGearLiftFinder(cvSink);
+				// times.reset();
+				// times.start();
+
+				// while (times.get() < 1)
+				// {
+				myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
+				// }
+
+				// times.stop();
+
+				// if (myCam.isConnected())
+				// {
+				myCam.setResolution(640, 480);
+				myCam.setExposureManual(35);
+				myCam.setFPS(30);
+				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+				cvSink = CameraServer.getInstance().getVideo();
+				// }
 
 				// drive motors
 				left1 = new CANTalon(1);
@@ -66,7 +85,7 @@ public class RobotMap
 				winchLeft.set(8);
 				// Inversion does nothing in Follower mode. We accomplished this by reversing the polarity on the motor wires,
 				// so that setting both motors to "forward" runs the winch without the motors fighting each other.
-				//winchLeft.setInverted(true); // can't invert followers
+				// winchLeft.setInverted(true); // can't invert followers
 				gearPooper = new Solenoid(2);
 				hatTip = new Solenoid(1);
 				pushFaceOut = new Solenoid(0);
@@ -80,5 +99,19 @@ public class RobotMap
 				right1.setEncPosition(0);
 				left1.enableBrakeMode(true);
 				right1.enableBrakeMode(true);
+
+			}
+
+		public static void visionProcessingInit()
+			{
+
+				visionProcessingActive = true;
+				gearLiftFinder = new VisualGearLiftFinder(cvSink);
+
+			}
+
+		public static void stopVisionProcessing()
+			{
+				visionProcessingActive = false;
 			}
 	}

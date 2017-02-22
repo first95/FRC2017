@@ -26,6 +26,9 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 public class Robot extends IterativeRobot
 	{
 
+		boolean teststart = true;
+		GoToLiftAdvanced moveIt = new GoToLiftAdvanced();
+
 		SendableChooser chooser;
 
 		GyroReader gyro;
@@ -74,7 +77,7 @@ public class Robot extends IterativeRobot
 				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
-				twoStickMode = false;
+				twoStickMode = true;
 				// drive buttons
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				headPres = new ButtonTracker(Constants.driveStick, 2);
@@ -211,19 +214,6 @@ public class Robot extends IterativeRobot
 				commonPeriodic();
 				Scheduler.getInstance().run();
 
-				if (changeDriveMode.wasJustPressed())
-					{
-						if (twoStickMode != true)
-							{
-								twoStickMode = true;
-							}
-						else if (twoStickMode = true)
-							{
-								twoStickMode = false;
-							}
-
-					}
-
 				// drive
 				if (Constants.driveStick.getRawButton(2))
 					{
@@ -294,7 +284,27 @@ public class Robot extends IterativeRobot
 
 				if (alignToGearLiftAndDrive.isPressed())
 					{
-						new GoToLiftAdvanced();
+
+						if (teststart)
+							{
+								moveIt.init();
+								teststart = false;
+							}
+						else
+							{
+								moveIt.update();
+							}
+					}
+				else
+					{
+
+						if (!teststart)
+							{
+								moveIt.stop();
+							}
+
+						teststart = true;
+
 					}
 
 				RobotMap.andyBooper9000.set(boop);
@@ -333,15 +343,21 @@ public class Robot extends IterativeRobot
 
 				// Show the edited video output from the camera
 
-				if (RobotMap.gearLiftFinder != null)
+				if (RobotMap.visionProcessingActive)
 					{
-						// RobotMap.gearLiftFinder.computeHeadingToTarget();
-						// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-						// Note: The following items are not locked and may give you incorrect values. Further re-entrancy is required.
-						// SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-						// SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-						// SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-						// SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+						RobotMap.gearLiftFinder.computeHeadingToTarget();
+						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+						SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+						SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
+						SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+						SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+					}
+				else
+					{
+						SmartDashboard.putString("Hight Of Object In Pixels", "Processing Not Active");
+						SmartDashboard.putString("Distance From Cam To Target IN INCHES", "Processing Not Active");
+						SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
+						SmartDashboard.putString("We can see the target", "Processing Not Active");
 					}
 				// rangeFinder.pulse(.02);
 

@@ -17,15 +17,12 @@ public class GoToLiftAdvanced extends Auto
 		private static final double MAX_DRIVE_THROTTLE = -0.1;
 		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.1;
 
-		public GoToLiftAdvanced()
-			{
-
-			}
-
 		@Override
 		public void init()
 			{
 
+			RobotMap.visionProcessingInit();
+				
 			done = false;
 
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
@@ -79,14 +76,15 @@ public class GoToLiftAdvanced extends Auto
 		public void stop()
 			{
 				RobotMap.drive.arcade(0, 0);
-				RobotMap.gearPooper.set(false);
-
 				RobotMap.driveLock = null;
+				
+				done();
 			}
 
 		@Override
 		public boolean done()
 			{
+				RobotMap.stopVisionProcessing();
 				return done;
 			}
 
