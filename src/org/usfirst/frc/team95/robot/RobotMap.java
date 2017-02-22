@@ -94,6 +94,7 @@ public class RobotMap
 
 				left1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 				right1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+				winchRight.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
 				left1.setEncPosition(0);
 				right1.setEncPosition(0);
