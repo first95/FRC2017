@@ -10,12 +10,9 @@ public class Constants {
 	public static Joystick weaponStick = new Joystick(1);
 	public static double poseidonNorthVal = 2.751;
 //	public static Joystick testStick = new Joystick(2);
-	//public static Joystick driveStickX = new Joystick(2);
 	public static double encoderTickPerFoot = 1002;
-//	public static double robotWidth = 25; //THIS NEEDS TO BE SET, these may not be needed
-//	public static double wheelDiameter = 6; //THIS NEEDS TO BE SET
-//	public static double timeserRPM = 430.89; //THIS NEEDS TO BE SET
-//	public static double autonomousRotateSpeed = .3; //THIS NEEDS TO BE SET
+	public static double robotWidth = 34.7;
+	public static double visionLength = 3;
 	public static double RFVoltsToFt(double voltage) {
 		
 		double distance;
