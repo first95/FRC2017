@@ -15,6 +15,7 @@ import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
+import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -76,9 +77,10 @@ public class Robot extends IterativeRobot
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
-
+				
 				twoStickMode = true;
-				// drive buttons
+				//drive buttons
+				
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				headPres = new ButtonTracker(Constants.driveStick, 2);
 				brakes = new ButtonTracker(Constants.driveStick, 1);
@@ -122,8 +124,14 @@ public class Robot extends IterativeRobot
 				a.addObject("Go Forward", new DistanceMovePID(5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
-
+				
 				// Automoves to Test, One Turns, One Moves and Turns
+				a.addObject("red left", new ScoreFromStart(true, 0, poseidon));
+				a.addObject("red mid", new ScoreFromStart(true, 1, poseidon));
+				a.addObject("red right", new ScoreFromStart(true, 2, poseidon));
+				a.addObject("blue left", new ScoreFromStart(false, 0, poseidon));
+				a.addObject("blue mid", new ScoreFromStart(false, 1, poseidon));
+				a.addObject("blue right", new ScoreFromStart(false, 2, poseidon));
 				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
 				a.addObject("Score Gear", new ScoreGear());
