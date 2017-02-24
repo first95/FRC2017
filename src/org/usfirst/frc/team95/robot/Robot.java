@@ -40,8 +40,6 @@ public class Robot extends IterativeRobot
 		HeadingPreservation header;
 		Timer booperTimer;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
-		AnalogInput range1, range2, range3, range4;
-		DigitalOutput initiateRangeFinder;
 
 		Double headingToPres;
 		double dist;
@@ -53,8 +51,7 @@ public class Robot extends IterativeRobot
 		SendableChooser a, b, c;
 		RangeBasedGearScorer rangeBasedGearScorer;
 		VoltageCompensatedShooter shooter;
-
-		RangeFinder rangeFinder;
+		
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -83,7 +80,6 @@ public class Robot extends IterativeRobot
 				// drive buttons
 
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
-				headPres = new ButtonTracker(Constants.driveStick, 2);
 				brakes = new ButtonTracker(Constants.driveStick, 1);
 				slowMo = new ButtonTracker(Constants.driveStick, 6);
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
@@ -112,11 +108,7 @@ public class Robot extends IterativeRobot
 				booperTimer = new Timer();
 				booperTimer.reset();
 				booperTimer.start();
-				angleRec = new Double[4];
-				angleRec[3] = 0.1;
-				angleRec[2] = 0.1;
-				angleRec[1] = 0.1;
-				angleRec[0] = 0.1;
+				
 
 				a = new SendableChooser();
 				b = new SendableChooser();
@@ -224,16 +216,7 @@ public class Robot extends IterativeRobot
 				Scheduler.getInstance().run();
 
 				// drive
-				if (Constants.driveStick.getRawButton(2))
-					{
-						if (headPres.wasJustPressed())
-							{
-								headingToPres = compass.getHeading();
-							}
-
-						header.setHeading(headingToPres);
-					}
-				else if (slowMo.isPressed())
+				if (slowMo.isPressed())
 					{
 						RobotMap.drive.halfArcade(Constants.driveStick, twoStickMode);
 					}
@@ -242,11 +225,8 @@ public class Robot extends IterativeRobot
 						RobotMap.drive.arcade(Constants.driveStick, twoStickMode);
 					}
 
-				/*
-				 * dist = 0; while (driveForward.isPressed() && dist <= -5) { RobotMap.drive.tank(-.3, -.3); dist = (RobotMap.right1.getEncPosition() * Constants.encoderTickPerFoot); driveForward.update(); } if (driveForward.wasJustReleased()) { RobotMap.drive.tank(0, 0); }
-				 */
-
-				// alpha gear code
+				
+				
 				if (tipHat.isPressed())
 					{
 						RobotMap.hatTip.set(true);
@@ -262,10 +242,6 @@ public class Robot extends IterativeRobot
 
 				/*
 				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
-				 */
-
-				/*
-				 * if (intake.isPressed()) { RobotMap.intake.set(.3); } else { RobotMap.intake.set(0); }
 				 */
 
 				RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
@@ -291,7 +267,7 @@ public class Robot extends IterativeRobot
 						booperTimer.reset();
 					}
 
-				// This runs the gotoLiftAdvanced automove when 7 on the weapon stick is pressed
+				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
 				// It only runs when the button is held down
 				if (alignToGearLiftAndDrive.isPressed())
 					{
@@ -366,15 +342,9 @@ public class Robot extends IterativeRobot
 						SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
 						SmartDashboard.putString("We can see the target", "Processing Not Active");
 					}
-				// rangeFinder.pulse(.02);
 
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
-				// SmartDashboard.putNumber("RangeFinder ft", Constants.RFVoltsToFt(rangeFinder.getRangeInFeet()));
-				// SmartDashboard.putNumber("Range1 Finder ft", Constants.RFVoltsToFt(range1.getVoltage()));
-				// SmartDashboard.putNumber("Range2 Finder ft", Constants.RFVoltsToFt(range2.getVoltage()));
-				// SmartDashboard.putNumber("Range3 Finder ft", Constants.RFVoltsToFt(range3.getVoltage()));
-				// SmartDashboard.putNumber("Range4 Finder ft", Constants.RFVoltsToFt(range4.getVoltage()));
-				// SmartDashboard.putNumber("Range finder Volts", range1.getVoltage());
+				
 
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
