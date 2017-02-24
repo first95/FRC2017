@@ -27,8 +27,9 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 public class Robot extends IterativeRobot
 	{
 
-		boolean teststart = true;
-		GoToLiftAdvanced moveIt = new GoToLiftAdvanced();
+		// This boolean and moveIt are used to run an automove on the press of a button
+		boolean runOnceTest = true;
+		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
 
 		SendableChooser chooser;
 
@@ -77,10 +78,10 @@ public class Robot extends IterativeRobot
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
-				
+
 				twoStickMode = true;
-				//drive buttons
-				
+				// drive buttons
+
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				headPres = new ButtonTracker(Constants.driveStick, 2);
 				brakes = new ButtonTracker(Constants.driveStick, 1);
@@ -124,7 +125,7 @@ public class Robot extends IterativeRobot
 				a.addObject("Go Forward", new DistanceMovePID(5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
-				
+
 				// Automoves to Test, One Turns, One Moves and Turns
 				a.addObject("red left", new ScoreFromStart(true, 0, poseidon));
 				a.addObject("red mid", new ScoreFromStart(true, 1, poseidon));
@@ -290,29 +291,28 @@ public class Robot extends IterativeRobot
 						booperTimer.reset();
 					}
 
+				// This runs the gotoLiftAdvanced automove when 7 on the weapon stick is pressed
+				// It only runs when the button is held down
 				if (alignToGearLiftAndDrive.isPressed())
 					{
-
-						if (teststart)
+						if (runOnceTest)
 							{
-								moveIt.init();
-								teststart = false;
+								moveItToLift.init();
+								runOnceTest = false;
 							}
 						else
 							{
-								moveIt.update();
+								moveItToLift.update();
 							}
 					}
 				else
 					{
-
-						if (!teststart)
+						if (!runOnceTest)
 							{
-								moveIt.stop();
+								moveItToLift.stop();
 							}
 
-						teststart = true;
-
+						runOnceTest = true;
 					}
 
 				RobotMap.andyBooper9000.set(boop);
@@ -350,8 +350,7 @@ public class Robot extends IterativeRobot
 			{
 
 				// Show the edited video output from the camera
-
-				if (RobotMap.visionProcessingActive)
+				if (!RobotMap.visionProcessingActive)
 					{
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
 						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());

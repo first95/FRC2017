@@ -8,10 +8,10 @@ public class GoToLiftAdvanced extends Auto
 	{
 
 		boolean done = false;
-		
+
 		private static final double MAX_DEAD_BAND = 0.5;
 		private static final double MIN_DEAD_BAND = 0.5;
-		
+
 		private static final double MAX_ROTATE_THROTTLE = -0.1;
 		private static final double MAX_ROTATE_THROTTLE_INVERTED = -0.1;
 		private static final double MAX_DRIVE_THROTTLE = -0.1;
@@ -20,34 +20,30 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void init()
 			{
+				RobotMap.visionProcessingInit();
 
-			RobotMap.visionProcessingInit();
-				
-			done = false;
+				done = false;
 
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
 						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
 					}
-
 			}
 
 		@Override
 		public void start()
 			{
-
+				// Not Being Used For This Automove
 			}
 
 		@Override
 		public void update()
 			{
 
-				
-
-				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-				//
+				// Should be printed by SmartDashboard
+				// SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+				// SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
 
 				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > MAX_DEAD_BAND)
 					{
@@ -64,10 +60,10 @@ public class GoToLiftAdvanced extends Auto
 
 				if ((RobotMap.gearLiftFinder.haveValidHeading() == false))
 					{
-
 						RobotMap.drive.arcade(0, 0);
-						
+
 						done = true;
+						stop();					
 					}
 
 			}
@@ -77,7 +73,7 @@ public class GoToLiftAdvanced extends Auto
 			{
 				RobotMap.drive.arcade(0, 0);
 				RobotMap.driveLock = null;
-				
+
 				done();
 			}
 
