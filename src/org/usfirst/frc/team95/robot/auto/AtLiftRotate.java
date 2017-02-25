@@ -60,9 +60,15 @@ public class AtLiftRotate extends Auto
 			}
 
 		@Override
-		public boolean done()
+		public boolean isDone()
 			{
 				return false;
 			}
+
+		@Override
+		public boolean succeeded() {
+			// TODO Auto-generated method stub
+			return true;
+		}
 
 	}

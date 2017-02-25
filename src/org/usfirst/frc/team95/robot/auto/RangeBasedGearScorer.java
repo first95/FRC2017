@@ -73,7 +73,13 @@ public class RangeBasedGearScorer extends Auto {
 	}
 
 	@Override
-	public boolean done() {
+	public boolean isDone() {
 		return m_state == State.IDLE;
+	}
+
+	@Override
+	public boolean succeeded() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

@@ -22,7 +22,12 @@ public class Nothing extends Auto {
 	}
 
 	@Override
-	public boolean done() {
+	public boolean isDone() {
+		return true;
+	}
+
+	@Override
+	public boolean succeeded() {
 		return true;
 	}
 

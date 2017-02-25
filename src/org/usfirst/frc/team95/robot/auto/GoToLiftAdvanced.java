@@ -8,7 +8,9 @@ public class GoToLiftAdvanced extends Auto
 	{
 
 		boolean done = false;
+		boolean succeeded = false;
 
+		double lastError;
 		private static final double MAX_DEAD_BAND = 0.5;
 		private static final double MIN_DEAD_BAND = 0.5;
 
@@ -30,6 +32,7 @@ public class GoToLiftAdvanced extends Auto
 				RobotMap.visionProcessingInit();
 		
 				done = false;
+				succeeded = false;
 		
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
@@ -41,7 +44,7 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void update()
 			{
-				System.out.println("vision update");
+				//System.out.println("vision update");
 				RobotMap.gearLiftFinder.computeHeadingToTarget();
 				
 				// Should be printed by SmartDashboard
@@ -64,11 +67,14 @@ public class GoToLiftAdvanced extends Auto
 				if ((RobotMap.gearLiftFinder.haveValidHeading() == false))
 					{
 						RobotMap.drive.arcade(0, 0);
-
+						
 						done = true;
+						if (lastError < 5) {
+							succeeded = true;
+						}
 						stop();					
 					}
-
+				lastError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
 			}
 
 		@Override
@@ -81,9 +87,14 @@ public class GoToLiftAdvanced extends Auto
 			}
 
 		@Override
-		public boolean done()
+		public boolean isDone()
 			{
 				return done;
 			}
+
+		@Override
+		public boolean succeeded() {
+			return succeeded;
+		}
 
 	}

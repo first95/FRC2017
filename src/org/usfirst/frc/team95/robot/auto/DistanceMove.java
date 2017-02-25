@@ -72,8 +72,13 @@ public class DistanceMove extends Auto {
 	}
 
 	@Override
-	public boolean done() {
+	public boolean isDone() {
 		return done;
+	}
+
+	@Override
+	public boolean succeeded() {
+		return true;
 	}
 
 }

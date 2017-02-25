@@ -48,7 +48,7 @@ public class RotateBy extends Auto {
 				spinner.setHeading(angle + compass.getHeading());
 			}
 		}
-		System.out.println("rotate update");
+		//System.out.println("rotate update");
 	}
 
 	@Override
@@ -60,12 +60,18 @@ public class RotateBy extends Auto {
 	}
 
 	@Override
-	public boolean done() {
+	public boolean isDone() {
 		return done;
 	}
 
 	double sign(double a) {
 		return a < 0 ? -1 : 1;
+	}
+
+	@Override
+	public boolean succeeded() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

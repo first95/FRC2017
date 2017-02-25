@@ -23,8 +23,14 @@ public class ClosePooper extends Auto {
 
 	}
 
-	public boolean done() {
+	public boolean isDone() {
 		return done;
+	}
+
+	@Override
+	public boolean succeeded() {
+		
+		return true;
 	}
 
 }

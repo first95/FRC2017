@@ -50,7 +50,7 @@ public class DistanceMovePID extends Auto {
 	@Override
 	public void update() {
 		//System.out.println("in update");
-		System.out.println("dist update");
+		//System.out.println("dist update");
 		SmartDashboard.putDouble("errorL", errorL);
 		//SmartDashboard.putDouble("errorR", errorR);
 		errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
@@ -109,8 +109,13 @@ public class DistanceMovePID extends Auto {
 	}
 
 	@Override
-	public boolean done() {
+	public boolean isDone() {
 		return done;
+	}
+
+	@Override
+	public boolean succeeded() {
+		return true;
 	}
 
 }

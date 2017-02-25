@@ -17,6 +17,9 @@ public abstract class Auto implements PollableSubsystem {
 	public abstract void stop();
 
 	// Make this return false until the auto move has completed its tasks
-	public abstract boolean done();
+	public abstract boolean isDone();
+	
+	//
+	public abstract boolean succeeded();
 
 }

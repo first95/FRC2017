@@ -33,8 +33,13 @@ public class OpenPooper extends Auto{
 		
 	}
 
-	public boolean done() {
+	public boolean isDone() {
 		return done;
+	}
+	@Override
+	public boolean succeeded() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

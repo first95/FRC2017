@@ -8,6 +8,7 @@ public class SequentialMove extends Auto {
 	int moveNum = 0;
 
 	boolean done = false;
+	boolean succeeded = false;
 
 	public SequentialMove(Auto[] moves) {
 		this.moves = moves.clone();
@@ -38,16 +39,17 @@ public class SequentialMove extends Auto {
 	@Override
 	public void update() {
 		
-		if (moves[moveNum].done()) {
+		if (moves[moveNum].isDone()) {
 			moves[moveNum].stop();
-			if (moveNum < moves.length - 1) {
+			if ((moveNum < moves.length - 1) && moves[moveNum].succeeded()) {
 				moveNum++;
 				moves[moveNum].start();
 			} else {
 				done = true;
 			}
+		}else {
+			moves[moveNum].update();
 		}
-		moves[moveNum].update();
 	}
 
 	@Override
@@ -56,8 +58,13 @@ public class SequentialMove extends Auto {
 	}
 
 	@Override
-	public boolean done() {
+	public boolean isDone() {
 		return done;
+	}
+
+	@Override
+	public boolean succeeded() {
+		return succeeded;
 	}
 
 }

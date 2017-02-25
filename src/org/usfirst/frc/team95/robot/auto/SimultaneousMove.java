@@ -34,12 +34,17 @@ public class SimultaneousMove extends Auto {
 	}
 
 	@Override
-	public boolean done() {
+	public boolean isDone() {
 		boolean acc = true;
 		for (Auto move : table) {
-			acc = acc && move.done();
+			acc = acc && move.isDone();
 		}
 		return acc;
+	}
+
+	@Override
+	public boolean succeeded() {
+		return true;
 	}
 
 }
