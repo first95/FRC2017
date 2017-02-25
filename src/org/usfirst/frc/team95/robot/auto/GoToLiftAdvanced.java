@@ -40,7 +40,8 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void update()
 			{
-
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
+				
 				// Should be printed by SmartDashboard
 				 SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 				 SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
@@ -73,14 +74,13 @@ public class GoToLiftAdvanced extends Auto
 			{
 				RobotMap.drive.arcade(0, 0);
 				RobotMap.driveLock = null;
+				RobotMap.stopVisionProcessing();
 
-				done();
 			}
 
 		@Override
 		public boolean done()
 			{
-				RobotMap.stopVisionProcessing();
 				return done;
 			}
 
