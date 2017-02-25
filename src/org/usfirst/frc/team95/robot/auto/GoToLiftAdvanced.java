@@ -14,8 +14,7 @@ public class GoToLiftAdvanced extends Auto
 		private static final double MAX_DEAD_BAND = 0.5;
 		private static final double MIN_DEAD_BAND = 0.5;
 
-		private static final double MAX_ROTATE_THROTTLE = -0.1;
-		private static final double MAX_ROTATE_THROTTLE_INVERTED = -0.1;
+		private static final double MAX_ROTATE_THROTTLE = -0.2;
 		private static final double MAX_DRIVE_THROTTLE = -0.1;
 		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.1;
 
@@ -50,21 +49,19 @@ public class GoToLiftAdvanced extends Auto
 				// Should be printed by SmartDashboard
 				 SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 				 SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+				 
+				 double headingError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
 
-				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > MAX_DEAD_BAND)
+				if (headingError > MAX_DEAD_BAND || headingError < MIN_DEAD_BAND)
 					{
-						RobotMap.drive.arcade((MAX_DRIVE_THROTTLE_WHILE_TURNING), (MAX_ROTATE_THROTTLE * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
-					}
-				else if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() < MIN_DEAD_BAND)
-					{
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE_INVERTED * RobotMap.gearLiftFinder.getHeadingToTargetDegrees()) / 25);
+						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE * headingError) / 25);
 					}
 				else
 					{
 						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
 					}
 
-				if ((RobotMap.gearLiftFinder.haveValidHeading() == false))
+				if (!(RobotMap.gearLiftFinder.haveValidHeading()))
 					{
 						RobotMap.drive.arcade(0, 0);
 						
