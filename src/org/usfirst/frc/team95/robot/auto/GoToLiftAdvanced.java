@@ -12,9 +12,9 @@ public class GoToLiftAdvanced extends Auto
 		private static final double MAX_DEAD_BAND = 0.5;
 		private static final double MIN_DEAD_BAND = 0.5;
 
-		private static final double MAX_ROTATE_THROTTLE = -0.3;
+		private static final double MAX_ROTATE_THROTTLE = -0.2;
 		private static final double MAX_DRIVE_THROTTLE = -0.1;
-		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.01;
+		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.1;
 
 		@Override
 		public void init()
