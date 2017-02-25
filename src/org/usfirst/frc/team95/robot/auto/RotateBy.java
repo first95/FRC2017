@@ -36,7 +36,9 @@ public class RotateBy extends Auto {
 		System.out.println("rotate start");
 		compValToHead = compass.getHeading() + angle;
 		if (compValToHead > Math.PI) {
-			compValToHead = -(compValToHead % Math.PI);
+			compValToHead = (compValToHead -( Math.PI * 2));
+		}else if (compValToHead < -Math.PI) {
+			compValToHead = (compValToHead -( -Math.PI * 2));
 		}
 	}
 	

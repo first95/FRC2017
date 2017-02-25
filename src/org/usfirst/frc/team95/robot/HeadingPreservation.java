@@ -21,7 +21,9 @@ public class HeadingPreservation {
 		forward = 0;
 		spin = angle - currentHeading;
 		if (spin > Math.PI) {
-			spin = ((Math.PI) - Math.abs(spin)) * (spin / Math.abs(spin));
+			spin = (spin -( Math.PI * 2));
+		}else if (spin < -Math.PI) {
+			spin = (spin -( -Math.PI * 2));
 		}
 		spin *= (.3);
 		SmartDashboard.putNumber("Spin", spin);
