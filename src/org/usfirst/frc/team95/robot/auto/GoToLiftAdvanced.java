@@ -39,6 +39,7 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void update()
 			{
+				System.out.println("update");
 				RobotMap.gearLiftFinder.computeHeadingToTarget();
 				
 				// Should be printed by SmartDashboard
