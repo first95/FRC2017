@@ -42,8 +42,8 @@ public class GoToLiftAdvanced extends Auto
 			{
 
 				// Should be printed by SmartDashboard
-				// SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				// SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+				 SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+				 SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
 
 				if (RobotMap.gearLiftFinder.getHeadingToTargetDegrees() > MAX_DEAD_BAND)
 					{

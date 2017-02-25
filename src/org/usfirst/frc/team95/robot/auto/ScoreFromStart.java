@@ -10,11 +10,11 @@ public class ScoreFromStart extends SequentialMove{
 	public ScoreFromStart(boolean redSide, int position, ADIS16448_IMU poseidon) {
 		if (redSide) {
 			if (position == 0) {
-				dist1 = (81.177 - (Constants.robotWidth/2) / 12);
-				dist2 = (84.84 - (Constants.robotWidth/2) / 12) - 3;
+				dist1 = ((81.177 - (Constants.robotWidth/2)) / 12);
+				dist2 = ((84.84 - (Constants.robotWidth/2)) / 12) - 3;
 				rotate = 60 *(Math.PI / 180);//sign might be wrong
 			}else if (position == 1) {
-				dist1 = (110.517 - (Constants.robotWidth/2) / 12) - 3;
+				dist1 = ((110.517 - (Constants.robotWidth/2)) / 12) - 3;
 				dist2 = 0;
 				rotate = 0;
 			}else if (position == 2) {
@@ -27,12 +27,12 @@ public class ScoreFromStart extends SequentialMove{
 			dist2 = ((82.56 - (Constants.robotWidth/2)) / 12) - 3;
 			rotate = -60 *(Math.PI / 180);//sign might be wrong
 		}else if (position == 1) {
-			dist1 = (110.517 - (Constants.robotWidth/2) / 12) - 3;
+			dist1 = ((110.517 - (Constants.robotWidth/2)) / 12) - 3;
 			dist2 = 0;
 			rotate = 0;
 		}else if (position == 2) {
-			dist1 = (81.177 - (Constants.robotWidth/2) / 12);
-			dist2 = (84.84 - (Constants.robotWidth/2) / 12) - 3;
+			dist1 = ((81.177 - (Constants.robotWidth/2)) / 12);
+			dist2 = ((84.84 - (Constants.robotWidth/2)) / 12) - 3;
 			rotate = 60 *(Math.PI / 180);//sign might be wrong
 		}
 		
