@@ -105,7 +105,7 @@ public class RobotMap
 
 		public static void visionProcessingInit()
 			{
-				if (visionCameraOn)
+				if (!visionCameraOn)
 					{
 						System.out.println("Canno't Process, Vision Camera Off");
 					}
