@@ -2,6 +2,7 @@ package org.usfirst.frc.team95.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -38,13 +39,14 @@ public class Robot extends IterativeRobot
 		CompassReader compass;
 		ADIS16448_IMU poseidon;
 		HeadingPreservation header;
-		Timer booperTimer;
+		PowerDistributionPanel panel;
+		Timer booperTimer, agitatorTimer;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
 
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		boolean twoStickMode, boop;
+		boolean twoStickMode, boop, agit;
 		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, intake, agitate, shoot, incPID, decPID, alignToGearLiftAndDrive;
 
 		Auto move;
@@ -62,23 +64,21 @@ public class Robot extends IterativeRobot
 				RobotMap.init();
 
 				boop = false;
+				agit = false;
 
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
 				SmartDashboard.putData("Auto mode", chooser);
-				// ADXL345_I2C Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
-				// Giro = new ADXL345_I2C(I2C.Port.kOnboard, ADXL345_I2C.Range.k2G);
-				// gyro = new GyroReader();
 				variableStore = new VariableStore();
-				// compass = new CompassReader(variableStore);
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
 				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
-
+				
+				panel = new PowerDistributionPanel();
 				twoStickMode = true;
+				
 				// drive buttons
-
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				brakes = new ButtonTracker(Constants.driveStick, 1);
 				slowMo = new ButtonTracker(Constants.driveStick, 6);
@@ -94,13 +94,7 @@ public class Robot extends IterativeRobot
 				shoot = new ButtonTracker(Constants.weaponStick, 6);
 				alignToGearLiftAndDrive = new ButtonTracker(Constants.weaponStick, 7);
 
-				// range1 = new AnalogInput(0);
-				// range2 = new AnalogInput(1);
-				// range3 = new AnalogInput(2);
-				// range4 = new AnalogInput(3);
-				//
-				// initiateRangeFinder = new DigitalOutput(0);
-
+				
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
@@ -108,6 +102,9 @@ public class Robot extends IterativeRobot
 				booperTimer = new Timer();
 				booperTimer.reset();
 				booperTimer.start();
+				agitatorTimer = new Timer();
+				agitatorTimer.reset();
+				agitatorTimer.start();
 				
 
 				a = new SendableChooser();
@@ -251,22 +248,34 @@ public class Robot extends IterativeRobot
 				if (agitate.isPressed())
 					{
 
-						RobotMap.agitator.set(.6);
-
 						if (booperTimer.get() >= .25)
 							{
 								boop = !boop;
 								booperTimer.reset();
 							}
-
+						if (agitatorTimer.get() >= .5)
+						{
+							agit = !agit;
+							agitatorTimer.reset();
+						}
 					}
 				else
 					{
-						RobotMap.agitator.set(0);
 						boop = false;
+						agit = false;
 						booperTimer.reset();
+						agitatorTimer.reset();
 					}
 
+				RobotMap.andyBooper9000.set(boop);
+				
+				if (agit) {
+					RobotMap.agitator.set(.6);
+				}else {
+					RobotMap.agitator.set(0);
+				}
+		
+				
 				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
 				// It only runs when the button is held down
 				if (alignToGearLiftAndDrive.isPressed())
@@ -291,18 +300,23 @@ public class Robot extends IterativeRobot
 						runOnceTest = true;
 					}
 
-				RobotMap.andyBooper9000.set(boop);
 
 				/*
 				 * if (shoot.wasJustPressed()) { shooter.turnOn(); } else if (shoot.wasJustReleased()) { shooter.turnOff(); }
 				 */
-
+				
 				if (Constants.weaponStick.getRawAxis(3) > .1)
 					{
-						RobotMap.shooter.set(-.5);
+						RobotMap.shooter.set(-.95 * (11 / panel.getVoltage()));
+//					shooter.turnOn(); 
+//					} else if (shoot.wasJustReleased()) { 
+//						shooter.turnOff(); 
+					}else {
+						RobotMap.shooter.set(0);
 					}
+				
 
-				if (Math.abs(Constants.weaponStick.getY()) > .12)
+				if (Math.abs(Constants.weaponStick.getY()) > .1)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
 					}
@@ -326,22 +340,22 @@ public class Robot extends IterativeRobot
 			{
 
 				// Show the edited video output from the camera
-				if (!RobotMap.visionProcessingActive)
-					{
-						RobotMap.gearLiftFinder.computeHeadingToTarget();
-						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-						SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-						SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-						SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-						SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-					}
-				else
-					{
-						SmartDashboard.putString("Hight Of Object In Pixels", "Processing Not Active");
-						SmartDashboard.putString("Distance From Cam To Target IN INCHES", "Processing Not Active");
-						SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
-						SmartDashboard.putString("We can see the target", "Processing Not Active");
-					}
+//				if (!RobotMap.visionProcessingActive)
+//					{
+//						RobotMap.gearLiftFinder.computeHeadingToTarget();
+//						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+//						SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+//						SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
+//						SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+//						SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+//					}
+//				else
+//					{
+//						SmartDashboard.putString("Hight Of Object In Pixels", "Processing Not Active");
+//						SmartDashboard.putString("Distance From Cam To Target IN INCHES", "Processing Not Active");
+//						SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
+//						SmartDashboard.putString("We can see the target", "Processing Not Active");
+//					}
 
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 				
@@ -395,7 +409,6 @@ public class Robot extends IterativeRobot
 						compass.compCal(alpha, beta);
 					}
 
-				headPres.update();
 				brakes.update();
 				compCal1.update();
 				compCalReset.update();

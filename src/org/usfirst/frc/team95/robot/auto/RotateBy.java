@@ -24,22 +24,19 @@ public class RotateBy extends Auto {
 
 	@Override
 	public void init() {
-		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
-			RobotMap.driveLock = this;
-			//RobotMap.drive.tank(Constants.autonomousRotateSpeed * -sign(distance), 0);
-			spinner.setHeading(angle + compass.getHeading());
-		}
+		
 	}
 	
 	@Override
 	public void start() {
+		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
+		RobotMap.driveLock = this;
+		spinner.setHeading(angle + compass.getHeading());
+		}
 	}
 	
 	@Override
 	public void update() {
-		// System.out.println("Time: " + time);
-		// System.out.println("Angle: " + angle);
-		// System.out.println("Distance: " + distance);
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
 			if (compass.getHeading() == angle) {
