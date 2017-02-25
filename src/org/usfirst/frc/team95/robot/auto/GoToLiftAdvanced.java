@@ -40,7 +40,7 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void update()
 			{
-
+				System.out.println("update");
 				// Should be printed by SmartDashboard
 				 SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 				 SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
