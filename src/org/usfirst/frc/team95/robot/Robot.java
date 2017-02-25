@@ -36,7 +36,6 @@ public class Robot extends IterativeRobot
 
 		GyroReader gyro;
 		VariableStore variableStore;
-		CompassReader compass;
 		ADIS16448_IMU poseidon;
 		HeadingPreservation header;
 		PowerDistributionPanel panel;
@@ -60,7 +59,9 @@ public class Robot extends IterativeRobot
 		 */
 		public void robotInit()
 			{
-
+				alpha = 0;
+				beta = 0;
+				
 				RobotMap.init();
 
 				boop = false;
@@ -406,7 +407,7 @@ public class Robot extends IterativeRobot
 						// System.out.println("beta" + beta);
 						// overides alpha and beta in compreader.
 						// lasts until code is rebooted rewriting code will be needed
-						compass.compCal(alpha, beta);
+						poseidon.compCal(alpha, beta);
 					}
 
 				brakes.update();

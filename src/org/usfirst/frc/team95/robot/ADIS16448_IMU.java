@@ -1040,6 +1040,14 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
 	  angle = Math.atan2(x, z);
 	  return angle;
   }
+  
+  public void compCal(double newAlpha, double newBeta) {
+		alpha = newAlpha;
+		beta = newBeta;
+		m_variables.StoreValue(compassAlphaVariableName, newAlpha);
+		m_variables.StoreValue(compassBetaVariableName, newBeta);
+		
+	}
 
   public synchronized double getPitch() {
     return m_pitch;
