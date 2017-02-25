@@ -7,7 +7,7 @@ import org.usfirst.frc.team95.robot.RobotMap;
 import org.usfirst.frc.team95.robot.VariableStore;
 
 public class RotateBy extends Auto {
-	double angle, distance, time;
+	double angle, distance, compValToHead;
 	HeadingPreservation spinner;
 	ADIS16448_IMU compass;
 	boolean done = false;
@@ -32,23 +32,27 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 		RobotMap.driveLock = this;
 		}
-		spinner.setHeading(angle + compass.getHeading());
+		spinner.setHeading(compValToHead);
 		System.out.println("rotate start");
+		compValToHead = compass.getHeading() + angle;
+		if (compValToHead > Math.PI) {
+			compValToHead = -(compValToHead % Math.PI);
+		}
 	}
 	
 	@Override
 	public void update() {
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
-			if ((compass.getHeading() - angle) < (Math.PI / 18)) {
+			if ((compValToHead) < (Math.PI / 18)) {
 				done = true;
 				RobotMap.driveLock = null;
 				RobotMap.drive.tank(0, 0);
 			} else {
-				spinner.setHeading(angle + compass.getHeading());
+				spinner.setHeading(compValToHead);
 			}
 		}
-		//System.out.println("rotate update");
+		System.out.println("rotate update");
 	}
 
 	@Override

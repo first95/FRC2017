@@ -18,12 +18,12 @@ public class HeadingPreservation {
 	
 	public void setHeading(double angle) {
 		currentHeading = m_compass.getHeading();
-		forward = Constants.driveStick.getY();
+		forward = 0;
 		spin = angle - currentHeading;
 		if (spin > Math.PI) {
 			spin = ((Math.PI) - Math.abs(spin)) * (spin / Math.abs(spin));
 		}
-		spin *= (.85);
+		spin *= (.3);
 		SmartDashboard.putNumber("Spin", spin);
 		SmartDashboard.putNumber("Angle pres", angle);
 		RobotMap.drive.arcade(forward, -spin);
