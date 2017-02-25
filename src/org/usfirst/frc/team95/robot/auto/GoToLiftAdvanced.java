@@ -20,11 +20,13 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void init()
 			{
+			System.out.println("vision init");
 			}
 
 		@Override
 		public void start()
 			{
+				System.out.println("vision start");
 				RobotMap.visionProcessingInit();
 		
 				done = false;
@@ -39,7 +41,7 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void update()
 			{
-				System.out.println("update");
+				System.out.println("vision update");
 				RobotMap.gearLiftFinder.computeHeadingToTarget();
 				
 				// Should be printed by SmartDashboard
@@ -75,7 +77,7 @@ public class GoToLiftAdvanced extends Auto
 				RobotMap.drive.arcade(0, 0);
 				RobotMap.driveLock = null;
 				RobotMap.stopVisionProcessing();
-
+				System.out.println("vision stop");
 			}
 
 		@Override

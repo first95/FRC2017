@@ -24,22 +24,23 @@ public class RotateBy extends Auto {
 
 	@Override
 	public void init() {
-		
+		System.out.println("rotate init");
 	}
 	
 	@Override
 	public void start() {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 		RobotMap.driveLock = this;
-		spinner.setHeading(angle + compass.getHeading());
 		}
+		spinner.setHeading(angle + compass.getHeading());
+		System.out.println("rotate start");
 	}
 	
 	@Override
 	public void update() {
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
-			if (compass.getHeading() == angle) {
+			if ((compass.getHeading() - angle) < (Math.PI / 18)) {
 				done = true;
 				RobotMap.driveLock = null;
 				RobotMap.drive.tank(0, 0);
@@ -47,7 +48,7 @@ public class RotateBy extends Auto {
 				spinner.setHeading(angle + compass.getHeading());
 			}
 		}
-
+		System.out.println("rotate update");
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == null || RobotMap.driveLock == this) {
 			RobotMap.drive.tank(0, 0);
 		}
-
+		System.out.println("rotate stop");
 	}
 
 	@Override
