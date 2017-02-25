@@ -20,9 +20,6 @@ public class DistanceMovePID extends Auto {
 
 	@Override
 	public void init() {
-		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
-			RobotMap.driveLock = this;
-		}
 		done = false;
 		//System.out.println("in Init");
 		P = .35;//.175
@@ -43,6 +40,9 @@ public class DistanceMovePID extends Auto {
 	@Override
 	public void start() {
 		System.out.println("dist start");
+		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
+			RobotMap.driveLock = this;
+		}
 		done = false;
 		distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 	}

@@ -17,6 +17,10 @@ public class DistanceMove extends Auto {
 
 	@Override
 	public void init() {
+	}
+	
+	@Override
+	public void start() {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 			if (left > 0) {
@@ -31,10 +35,6 @@ public class DistanceMove extends Auto {
 			RobotMap.drive.tank(-minSpeed, -minSpeed);
 			distance += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 		}
-	}
-	
-	@Override
-	public void start() {
 	}
 	
 	@Override
