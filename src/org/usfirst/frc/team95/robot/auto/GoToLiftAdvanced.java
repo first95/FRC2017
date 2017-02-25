@@ -20,21 +20,20 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void init()
 			{
-				RobotMap.visionProcessingInit();
-
-				done = false;
-
-				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
-					{
-						RobotMap.driveLock = this;
-						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
-					}
 			}
 
 		@Override
 		public void start()
 			{
-				// Not Being Used For This Automove
+				RobotMap.visionProcessingInit();
+		
+				done = false;
+		
+				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
+					{
+						RobotMap.driveLock = this;
+						RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
+					}
 			}
 
 		@Override
