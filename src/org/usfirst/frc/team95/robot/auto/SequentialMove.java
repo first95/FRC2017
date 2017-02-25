@@ -44,8 +44,9 @@ public class SequentialMove extends Auto {
 			if ((moveNum < moves.length - 1) && moves[moveNum].succeeded()) {
 				moveNum++;
 				moves[moveNum].start();
-			} else {
+			}else {
 				done = true;
+				stop();
 			}
 		}else {
 			moves[moveNum].update();
