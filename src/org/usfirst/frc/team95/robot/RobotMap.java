@@ -79,8 +79,6 @@ public class RobotMap
 				right2.set(4);
 				right3.changeControlMode(CANTalon.TalonControlMode.Follower);
 				right3.set(4);
-				winchLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
-				winchLeft.set(8);
 
 				// Inversion does nothing in Follower mode. We accomplished this by reversing the polarity on the motor wires,
 				// so that setting both motors to "forward" runs the winch without the motors fighting each other.

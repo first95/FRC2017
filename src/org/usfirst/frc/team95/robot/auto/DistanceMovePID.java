@@ -34,12 +34,10 @@ public class DistanceMovePID extends Auto {
 		//P = P / distanceL;
 //		timer.reset();
 //		timer.start();
-		System.out.println("dist init");
 	}
 	
 	@Override
 	public void start() {
-		System.out.println("dist start");
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 			RobotMap.driveLock = this;
 		}
@@ -51,7 +49,7 @@ public class DistanceMovePID extends Auto {
 	public void update() {
 		//System.out.println("in update");
 		//System.out.println("dist update");
-		SmartDashboard.putDouble("errorL", errorL);
+		SmartDashboard.putNumber("errorL", errorL);
 		//SmartDashboard.putDouble("errorR", errorR);
 		errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 		//errorR = distanceR - (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);

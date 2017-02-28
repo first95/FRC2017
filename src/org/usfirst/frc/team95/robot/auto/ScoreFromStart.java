@@ -36,7 +36,7 @@ public class ScoreFromStart extends SequentialMove{
 			rotate = 60 *(Math.PI / 180);//sign might be wrong
 		}
 		
-		super.SetMoves(new Auto[]{new DistanceMovePID(dist1), new RotateBy(rotate, poseidon), 
+		super.SetMoves(new Auto[]{new DistanceMovePID(dist1), new RotateBy(rotate), 
 		new DistanceMovePID(dist2), new ScoreGear()});
 	}
 }

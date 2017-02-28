@@ -10,6 +10,7 @@ public class Constants {
 	public static Joystick weaponStick = new Joystick(1);
 	public static double poseidonNorthVal = 2.751;
 	public static double encoderTickPerFoot = 1002;
+	public static double encTicksPerRadian = 1110;
 	public static double robotWidth = 34.7;
 	public static double visionLength = 3;
 	public static double RFVoltsToFt(double voltage) {

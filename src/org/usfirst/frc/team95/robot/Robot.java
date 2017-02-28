@@ -114,7 +114,7 @@ public class Robot extends IterativeRobot
 				a.addDefault("None", new Nothing());
 				a.addObject("Go Forward", new DistanceMovePID(5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
-				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
+				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 
 				// Automoves to Test, One Turns, One Moves and Turns
 				a.addObject("red left", new ScoreFromStart(true, 0, poseidon));
@@ -129,14 +129,14 @@ public class Robot extends IterativeRobot
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
-				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
-				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, poseidon));
+				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
+				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
 				b.addObject("Score Gear", new ScoreGear());
 				c.addDefault("None", new Nothing());
 				c.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
-				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4, poseidon));
-				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4, poseidon));
+				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
+				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
@@ -320,10 +320,12 @@ public class Robot extends IterativeRobot
 				if (Math.abs(Constants.weaponStick.getY()) > .1)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
+						RobotMap.winchLeft.set(-Constants.weaponStick.getY());
 					}
 				else
 					{
 						RobotMap.winchRight.set(0);
+						RobotMap.winchLeft.set(0);
 					}
 
 			}

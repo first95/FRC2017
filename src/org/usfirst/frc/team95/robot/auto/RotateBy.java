@@ -6,25 +6,20 @@ import org.usfirst.frc.team95.robot.HeadingPreservation;
 import org.usfirst.frc.team95.robot.RobotMap;
 import org.usfirst.frc.team95.robot.VariableStore;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class RotateBy extends Auto {
-	double angle, distance, compValToHead;
-	HeadingPreservation spinner;
-	ADIS16448_IMU compass;
+	double angle, start, desired, error, P, speed, prevSpeed;
 	boolean done = false;
 
-	public RotateBy(double angle, ADIS16448_IMU poseidon) {
+	public RotateBy(double angle) {
 		this.angle = angle;
-		compass = poseidon;
-		spinner = new HeadingPreservation(compass);
 		
-		// System.out.println(time);
-
-		// move * RPM
 	}
 
 	@Override
 	public void init() {
-		System.out.println("rotate init");
+		P = .35;
 	}
 	
 	@Override
@@ -32,29 +27,39 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 		RobotMap.driveLock = this;
 		}
-		spinner.setHeading(compValToHead);
-		System.out.println("rotate start");
-		compValToHead = compass.getHeading() + angle;
-		if (compValToHead > Math.PI) {
-			compValToHead = (compValToHead -( Math.PI * 2));
-		}else if (compValToHead < -Math.PI) {
-			compValToHead = (compValToHead -( -Math.PI * 2));
-		}
+		start = RobotMap.left1.getEncPosition();
+		desired = start + (Constants.encTicksPerRadian * angle);
+		prevSpeed = 0;
+		error = desired - RobotMap.left1.getEncPosition();
+		speed = P * error;
+		done = false;
 	}
 	
 	@Override
 	public void update() {
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
-			if ((compValToHead) < (Math.PI / 18)) {
+			if (error <= .087) {//5 degrees
 				done = true;
-				RobotMap.driveLock = null;
-				RobotMap.drive.tank(0, 0);
-			} else {
-				spinner.setHeading(compValToHead);
+			}else {
+				error = desired - RobotMap.left1.getEncPosition();
+				speed = P * error;
+				System.out.println("else");
+				if (speed > .4) {
+					speed = .4;
+				} else if (speed < -.4) {
+					speed = -.4;
+				}
+				
+				if (speed > (prevSpeed + .08)) {
+					speed = prevSpeed +.08;
+				}
+				
+				RobotMap.drive.tank(-speed, speed);
+				
+				prevSpeed = speed;
 			}
 		}
-		System.out.println("rotate update");
 	}
 
 	@Override
@@ -62,7 +67,6 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == null || RobotMap.driveLock == this) {
 			RobotMap.drive.tank(0, 0);
 		}
-		System.out.println("rotate stop");
 	}
 
 	@Override
@@ -76,7 +80,6 @@ public class RotateBy extends Auto {
 
 	@Override
 	public boolean succeeded() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
