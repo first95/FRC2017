@@ -19,7 +19,7 @@ public class RotateBy extends Auto {
 
 	@Override
 	public void init() {
-		P = .35;
+		P = .35;//original .35
 	}
 	
 	@Override
@@ -39,16 +39,15 @@ public class RotateBy extends Auto {
 	public void update() {
 		if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done) {
 			RobotMap.driveLock = this;
-			if (error <= .087) {//5 degrees
+			if (Math.abs(error) <= Constants.encTicksPerRadian*.05) {
 				done = true;
 			}else {
 				error = desired - RobotMap.left1.getEncPosition();
-				speed = P * error;
-				System.out.println("else");
-				if (speed > .4) {
-					speed = .4;
-				} else if (speed < -.4) {
-					speed = -.4;
+				speed = (P * error)/200;//divide to make speed value reasonable
+				if (speed > .3) {
+					speed = .3;
+				} else if (speed < -.3) {
+					speed = -.3;
 				}
 				
 				if (speed > (prevSpeed + .08)) {
@@ -59,6 +58,7 @@ public class RotateBy extends Auto {
 				
 				prevSpeed = speed;
 			}
+		}else {
 		}
 	}
 
@@ -66,6 +66,7 @@ public class RotateBy extends Auto {
 	public void stop() {
 		if (RobotMap.driveLock == null || RobotMap.driveLock == this) {
 			RobotMap.drive.tank(0, 0);
+			RobotMap.driveLock = null;
 		}
 	}
 

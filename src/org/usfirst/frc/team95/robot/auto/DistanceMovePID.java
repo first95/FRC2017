@@ -43,6 +43,7 @@ public class DistanceMovePID extends Auto {
 		}
 		done = false;
 		distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
+		System.out.println("dist start");
 	}
 	
 	@Override
@@ -67,7 +68,7 @@ public class DistanceMovePID extends Auto {
 //		
 //		left += I * sumL;
 //		//right += I * sumR;
-//		
+//     	System.out.println("dist up");
 //		left += D * slopeL;
 //		//right += D * slopeR;
 		

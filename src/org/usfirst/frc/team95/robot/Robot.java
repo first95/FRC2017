@@ -308,7 +308,7 @@ public class Robot extends IterativeRobot
 				
 				if (Constants.weaponStick.getRawAxis(3) > .1)
 					{
-						RobotMap.shooter.set(.8 * (11 / panel.getVoltage()));
+						RobotMap.shooter.set(.735 * (11 / panel.getVoltage()));
 //					shooter.turnOn(); 
 //					} else if (shoot.wasJustReleased()) { 
 //						shooter.turnOff(); 

@@ -82,7 +82,7 @@ public class GoToLiftAdvanced extends Auto
 				RobotMap.drive.arcade(0, 0);
 				RobotMap.driveLock = null;
 				RobotMap.stopVisionProcessing();
-				System.out.println("vision stop");
+				//System.out.println("vision stop");
 			}
 
 		@Override
