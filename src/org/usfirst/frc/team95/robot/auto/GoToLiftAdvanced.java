@@ -14,7 +14,7 @@ public class GoToLiftAdvanced extends Auto
 		private static final double MAX_DEAD_BAND = 0.5;
 		private static final double MIN_DEAD_BAND = 0.5;
 
-		private static final double MAX_ROTATE_THROTTLE = -0.2;
+		private static final double MAX_ROTATE_THROTTLE = -0.3;
 		private static final double MAX_DRIVE_THROTTLE = -0.1;
 		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.1;
 
@@ -68,7 +68,7 @@ public class GoToLiftAdvanced extends Auto
 						RobotMap.drive.arcade(0, 0);
 						
 						done = true;
-						if (lastError < 5) {
+						if (Math.abs(lastError) < 20) {
 							succeeded = true;
 						}
 						stop();					

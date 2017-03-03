@@ -27,10 +27,21 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 		RobotMap.driveLock = this;
 		}
-		start = RobotMap.left1.getEncPosition();
+		angle *= 1.15;
+		if (angle >= 0) {
+			start = RobotMap.left1.getEncPosition();
+		}
+		else {
+			start = RobotMap.right1.getEncPosition();
+		}
 		desired = start + (Constants.encTicksPerRadian * angle);
 		prevSpeed = 0;
-		error = desired - RobotMap.left1.getEncPosition();
+		if (angle >= 0) {
+			error = desired - RobotMap.left1.getEncPosition();
+		}
+		else {
+			error = desired - RobotMap.right1.getEncPosition();
+		}
 		speed = P * error;
 		done = false;
 	}
@@ -42,7 +53,12 @@ public class RotateBy extends Auto {
 			if (Math.abs(error) <= Constants.encTicksPerRadian*.05) {
 				done = true;
 			}else {
-				error = desired - RobotMap.left1.getEncPosition();
+				if (angle >= 0) {
+					error = desired - RobotMap.left1.getEncPosition();
+				}
+				else {
+					error = desired - RobotMap.right1.getEncPosition();
+				}
 				speed = (P * error)/200;//divide to make speed value reasonable
 				if (speed > .3) {
 					speed = .3;

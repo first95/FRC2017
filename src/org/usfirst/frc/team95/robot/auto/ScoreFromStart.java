@@ -12,7 +12,7 @@ public class ScoreFromStart extends SequentialMove{
 			if (position == 0) {
 				dist1 = ((81.177 - (Constants.robotWidth/2)) / 12);
 				dist2 = ((84.84 - (Constants.robotWidth/2)) / 12) - 3;
-				rotate = -60 *(Math.PI / 180);
+				rotate = 60 *(Math.PI / 180);
 			}else if (position == 1) {
 				dist1 = ((110.517 - (Constants.robotWidth/2)) / 12) - 3;
 				dist2 = 0;
@@ -20,12 +20,12 @@ public class ScoreFromStart extends SequentialMove{
 			}else if (position == 2) {
 				dist1 = (88.44 - (Constants.robotWidth/2)) / 12;
 				dist2 = ((82.56 - (Constants.robotWidth/2)) / 12) - 3;
-				rotate = 60 *(Math.PI / 180);//sign might be wrong
+				rotate = -60 *(Math.PI / 180);//sign might be wrong
 			}
 		}else if (position == 0) {
 			dist1 = (88.44 - (Constants.robotWidth/2)) / 12;
 			dist2 = ((82.56 - (Constants.robotWidth/2)) / 12) - 3;
-			rotate = -60 *(Math.PI / 180);
+			rotate = 60 *(Math.PI / 180);
 		}else if (position == 1) {
 			dist1 = ((110.517 - (Constants.robotWidth/2)) / 12) - 3;
 			dist2 = 0;
@@ -33,7 +33,7 @@ public class ScoreFromStart extends SequentialMove{
 		}else if (position == 2) {
 			dist1 = ((81.177 - (Constants.robotWidth/2)) / 12);
 			dist2 = ((84.84 - (Constants.robotWidth/2)) / 12) - 3;
-			rotate = 60 *(Math.PI / 180);
+			rotate = -60 *(Math.PI / 180);
 		}
 		
 		super.SetMoves(new Auto[]{new DistanceMovePID(dist1), new RotateBy(rotate), 
