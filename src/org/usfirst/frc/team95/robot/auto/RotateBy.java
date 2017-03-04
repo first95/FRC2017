@@ -27,7 +27,7 @@ public class RotateBy extends Auto {
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
 		RobotMap.driveLock = this;
 		}
-		angle *= 1.15;
+		angle *= 1.3;
 		if (angle >= 0) {
 			start = RobotMap.left1.getEncPosition();
 		}

@@ -114,7 +114,8 @@ public class Robot extends IterativeRobot
 				a.addDefault("None", new Nothing());
 				a.addObject("Go Forward", new DistanceMovePID(5));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
-				a.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
+				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
+				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
 
 				// Automoves to Test, One Turns, One Moves and Turns
 				a.addObject("red left", new ScoreFromStart(true, 0, poseidon));
@@ -316,7 +317,7 @@ public class Robot extends IterativeRobot
 						RobotMap.shooter.set(0);
 					}
 				
-
+				SmartDashboard.putNumber("shooter speed", RobotMap.shooter.get());
 				if (Math.abs(Constants.weaponStick.getY()) > .1)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
