@@ -57,11 +57,16 @@ public class Robot extends IterativeRobot
 		 */
 		public void robotInit()
 			{
+			
+				
+			
 				alpha = 0;
 				beta = 0;
 				
 				RobotMap.init();
 
+				//RobotMap.visionProcessingInit();
+				
 				boop = false;
 				agit = false;
 
@@ -341,6 +346,13 @@ public class Robot extends IterativeRobot
 		public void commonPeriodic()
 			{
 
+			
+			
+			//RobotMap.gearLiftFinder.computeHeadingToTarget();
+			
+			//System.out.println(RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+			//RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+			
 				// Show the edited video output from the camera
 //				if (!RobotMap.visionProcessingActive)
 //					{

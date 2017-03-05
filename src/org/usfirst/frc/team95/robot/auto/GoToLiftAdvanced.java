@@ -15,7 +15,7 @@ public class GoToLiftAdvanced extends Auto {
 	private static final double MAX_DEAD_BAND = 0.5;
 	private static final double MIN_DEAD_BAND = -0.5;
 
-	private static final double MAX_ROTATE_THROTTLE = -0.3;
+	private static final double MAX_ROTATE_THROTTLE = -0.4;
 	private static final double MAX_DRIVE_THROTTLE = -0.2;
 	private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.2;
 
@@ -69,8 +69,10 @@ public class GoToLiftAdvanced extends Auto {
 
 		double headingError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
 
+		
+		// We flipped cam, this means degree is backwards, so a negative was added to the 25 to compensate.
 		if (headingError > MAX_DEAD_BAND || headingError < MIN_DEAD_BAND) {
-			RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE * headingError) / 25);
+			RobotMap.drive.arcade(MAX_DRIVE_THROTTLE_WHILE_TURNING, (MAX_ROTATE_THROTTLE * headingError) / -25);
 		} else {
 			RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
 		}
@@ -85,6 +87,7 @@ public class GoToLiftAdvanced extends Auto {
 			{
 				succeeded = true;
 			} 
+			
 			else
 			{
 				succeeded = false;
@@ -94,8 +97,9 @@ public class GoToLiftAdvanced extends Auto {
 
 			}
 
+		}else {
+			lastError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
 		}
-		lastError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
 	}
 
 	@Override
