@@ -22,7 +22,7 @@ public class ScoreFromStart extends SequentialMove{
 	//0 is far left
 	public ScoreFromStart(boolean redSide, int position, ADIS16448_IMU poseidon) {
 		if (redSide) {
-			if (position == 0) {
+			if (position == 0) {	
 				dist1 = HOPPER_SIDE_DIST1;
 				dist2 = HOPPER_SIDE_DIST2;
 				rotate = ROTATE_RIGHT;

@@ -34,6 +34,7 @@ public class GoToLiftAdvanced extends Auto {
 		done = false;
 		succeeded = false;
 
+		// Huge Number to confirm that it will work
 		lastError = 5000;
 
 		if (RobotMap.driveLock == this || RobotMap.driveLock == null) {
