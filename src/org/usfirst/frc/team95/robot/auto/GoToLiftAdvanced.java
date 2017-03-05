@@ -1,24 +1,24 @@
 package org.usfirst.frc.team95.robot.auto;
 
-import org.usfirst.frc.team95.robot.Robot;
 import org.usfirst.frc.team95.robot.RobotMap;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class GoToLiftAdvanced extends Auto
-	{
+public class GoToLiftAdvanced extends Auto {
 
 	boolean done = false;
 	boolean succeeded = false;
 
 	double lastError;
+
+	// Max and Min error that code will take before turning
+	// If Less than -.5 rotate, if greater than .5, rotate.
 	private static final double MAX_DEAD_BAND = 0.5;
 	private static final double MIN_DEAD_BAND = -0.5;
 
 	private static final double MAX_ROTATE_THROTTLE = -0.3;
 	private static final double MAX_DRIVE_THROTTLE = -0.2;
 	private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.2;
-	
+
 	private int checkBeforeFail = 0;
 
 	@Override
@@ -54,15 +54,15 @@ public class GoToLiftAdvanced extends Auto
 		if (RobotMap.gearLiftFinder.haveValidHeading()) {
 			System.out.println("----SEE IT-------------------------");
 			System.out.println("We can see the target");
-			System.out.println("Last Distance Gathered "+RobotMap.gearLiftFinder.getDistanceFromCamToTarget());
-			System.out.println("Heading to target in degress "+ RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+			System.out.println("Last Distance Gathered " + RobotMap.gearLiftFinder.getDistanceFromCamToTarget());
+			System.out.println("Heading to target in degress " + RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 			System.out.println("----------------------------------");
-			
+
 		} else {
 			System.out.println("----DON'T SEE IT-------------------");
 			System.out.println("We can't see the target, the heading is in valid!");
-			System.out.println("Last Distance Gathered "+RobotMap.gearLiftFinder.getDistanceFromCamToTarget());
-			System.out.println("Heading to target in degress "+ RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+			System.out.println("Last Distance Gathered " + RobotMap.gearLiftFinder.getDistanceFromCamToTarget());
+			System.out.println("Heading to target in degress " + RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 			System.out.println("----------------------------------");
 		}
 
@@ -74,18 +74,23 @@ public class GoToLiftAdvanced extends Auto
 			RobotMap.drive.arcade(MAX_DRIVE_THROTTLE, 0);
 		}
 
+		// See if the vision heading is wrong, check 3 times and if it is still
+		// wrong, stop and don't poop gear
 		if (!(RobotMap.gearLiftFinder.haveValidHeading())) {
 			RobotMap.drive.arcade(0, 0);
 
 			checkBeforeFail++;
-			if (Math.abs(lastError) < 15) {
+			if (Math.abs(lastError) < 15) 
+			{
 				succeeded = true;
-			}else{
+			} 
+			else
+			{
 				succeeded = false;
 			}
-			if(checkBeforeFail >= 3){
+			if (checkBeforeFail >= 3) {
 				done = true;
-				
+
 			}
 
 		}
@@ -96,6 +101,8 @@ public class GoToLiftAdvanced extends Auto
 	public void stop() {
 		RobotMap.drive.arcade(0, 0);
 		RobotMap.driveLock = null;
+
+		// Call that deactivates vision so we don't get lag
 		RobotMap.stopVisionProcessing();
 		// System.out.println("vision stop");
 	}

@@ -36,6 +36,7 @@ public class RobotMap
 			{
 
 				// This Is A Check To See If The Camera Is On
+				// If it is not, print out saying that it isn't in
 				if (CameraServer.getInstance() != null)
 					{
 						visionCameraOn = true;
@@ -99,7 +100,8 @@ public class RobotMap
 				right1.enableBrakeMode(true);
 				//winchRight.enableBrakeMode(true);
 			}
-
+		
+		// This starts vision processing 
 		public static void visionProcessingInit()
 			{
 				if (!visionCameraOn)
@@ -113,6 +115,7 @@ public class RobotMap
 					}
 			}
 
+		// This stops vision processing
 		public static void stopVisionProcessing()
 			{
 				if (!visionCameraOn)
