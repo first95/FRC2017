@@ -18,6 +18,8 @@ public class GoToLiftAdvanced extends Auto {
 	private static final double MAX_ROTATE_THROTTLE = -0.4;
 	private static final double MAX_DRIVE_THROTTLE = -0.2;
 	private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.2;
+	
+	private static final double MIN_DISTANCE_AWAY_STOP = 14.0;
 
 	private int checkBeforeFail = 0;
 
@@ -81,24 +83,34 @@ public class GoToLiftAdvanced extends Auto {
 		// wrong, stop and don't poop gear
 		if (!(RobotMap.gearLiftFinder.haveValidHeading())) {
 			RobotMap.drive.arcade(0, 0);
-
+			
 			checkBeforeFail++;
+			
 			if (Math.abs(lastError) < 15) 
 			{
 				succeeded = true;
 			} 
-			
 			else
 			{
 				succeeded = false;
 			}
-			if (checkBeforeFail >= 3) {
+			
+			if (checkBeforeFail >= 3) 
+			{
 				done = true;
-
 			}
 
-		}else {
+		}
+		else 
+		{
 			lastError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
+			
+			if(RobotMap.gearLiftFinder.getDistanceFromCamToTarget() <= MIN_DISTANCE_AWAY_STOP)
+			{
+				System.out.println("RAMMING AWAY!!!!");
+				succeeded = true;
+				done = true;
+			}
 		}
 	}
 

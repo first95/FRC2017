@@ -84,6 +84,7 @@ public class RotateBy extends Auto {
 			RobotMap.drive.tank(0, 0);
 			RobotMap.driveLock = null;
 		}
+		System.out.println("TESTER");
 	}
 
 	@Override

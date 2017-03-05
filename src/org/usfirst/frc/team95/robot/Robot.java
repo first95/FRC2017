@@ -115,7 +115,7 @@ public class Robot extends IterativeRobot
 				b = new SendableChooser();
 				c = new SendableChooser();
 				a.addDefault("None", new Nothing());
-				a.addObject("Go Forward", new DistanceMovePID(5));
+				a.addObject("Go Forward", new DistanceMovePID(7));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
