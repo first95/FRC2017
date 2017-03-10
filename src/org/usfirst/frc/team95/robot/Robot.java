@@ -37,19 +37,17 @@ public class Robot extends IterativeRobot
 		ADIS16448_IMU poseidon;
 		HeadingPreservation header;
 		PowerDistributionPanel panel;
-		Timer booperTimer, agitatorTimer;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
 
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, intake, agitate, shoot, incPID, decPID, alignToGearLiftAndDrive;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive;
 
 		Auto move;
 		SendableChooser a, b, c;
 		RangeBasedGearScorer rangeBasedGearScorer;
-		VoltageCompensatedShooter shooter;
 		
 
 		/**
@@ -77,7 +75,7 @@ public class Robot extends IterativeRobot
 				variableStore = new VariableStore();
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
-				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
+//				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 				
 				panel = new PowerDistributionPanel();
 				twoStickMode = true;
@@ -92,24 +90,16 @@ public class Robot extends IterativeRobot
 				// weapon buttons
 				tipHat = new ButtonTracker(Constants.weaponStick, 1);
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
-				intake = new ButtonTracker(Constants.weaponStick, 3);
-				agitate = new ButtonTracker(Constants.weaponStick, 4);
+//				intake = new ButtonTracker(Constants.weaponStick, 3);
+//				agitate = new ButtonTracker(Constants.weaponStick, 4);
 				facePush = new ButtonTracker(Constants.weaponStick, 5);
-				shoot = new ButtonTracker(Constants.weaponStick, 6);
+//				shoot = new ButtonTracker(Constants.weaponStick, 6);
 				alignToGearLiftAndDrive = new ButtonTracker(Constants.weaponStick, 7);
 
 				
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
-
-				booperTimer = new Timer();
-				booperTimer.reset();
-				booperTimer.start();
-				agitatorTimer = new Timer();
-				agitatorTimer.reset();
-				agitatorTimer.start();
-				
 
 				a = new SendableChooser();
 				b = new SendableChooser();
@@ -244,39 +234,11 @@ public class Robot extends IterativeRobot
 				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
 				 */
 
-				RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
+//				RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
 
 				RobotMap.brakes.set(brakes.isPressed());
 
-				if (agitate.isPressed())
-					{
-
-						if (booperTimer.get() >= .25)
-							{
-								boop = !boop;
-								booperTimer.reset();
-							}
-						if (agitatorTimer.get() >= .5)
-						{
-							agit = !agit;
-							agitatorTimer.reset();
-						}
-					}
-				else
-					{
-						boop = false;
-						agit = false;
-						booperTimer.reset();
-						agitatorTimer.reset();
-					}
-
-				RobotMap.andyBooper9000.set(boop);
-				
-				if (agit) {
-					RobotMap.agitator.set(.6);
-				}else {
-					RobotMap.agitator.set(0);
-				}
+//				RobotMap.andyBooper9000.set(boop);
 		
 				
 				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
@@ -308,17 +270,6 @@ public class Robot extends IterativeRobot
 				 * if (shoot.wasJustPressed()) { shooter.turnOn(); } else if (shoot.wasJustReleased()) { shooter.turnOff(); }
 				 */
 				
-				if (Constants.weaponStick.getRawAxis(3) > .1)
-					{
-						RobotMap.shooter.set(.735 * (11 / panel.getVoltage()));
-//					shooter.turnOn(); 
-//					} else if (shoot.wasJustReleased()) { 
-//						shooter.turnOff(); 
-					}else {
-						RobotMap.shooter.set(0);
-					}
-				
-				SmartDashboard.putNumber("shooter speed", RobotMap.shooter.get());
 				if (Math.abs(Constants.weaponStick.getY()) > .1)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
@@ -428,10 +379,6 @@ public class Robot extends IterativeRobot
 				tipHat.update();
 				poopGear.update();
 				facePush.update();
-				intake.update();
-				agitate.update();
-				shoot.update();
-				shooter.adjustVoltage();
 				// rangeBasedGearScorer.update();
 			}
 	}

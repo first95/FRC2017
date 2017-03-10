@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public class RobotMap
 	{
-		public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight, intake, agitator, shooter;
+		public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight;
 		public static Drive drive;
 
 		// Vision Stuff
@@ -30,7 +30,7 @@ public class RobotMap
 		// They should also check that the driveLock object is null prior to
 		// controlling the drive motors.
 		public static Object driveLock = null;
-		public static Solenoid gearPooper, hatTip, pushFaceOut, andyBooper9000, brakes;
+		public static Solenoid gearPooper, hatTip, pushFaceOut, brakes;
 
 		public static void init()
 			{
@@ -68,9 +68,9 @@ public class RobotMap
 				right3 = new CANTalon(6);
 				winchLeft = new CANTalon(7);
 				winchRight = new CANTalon(8);
-				intake = new CANTalon(10);
-				agitator = new CANTalon(9);
-				shooter = new CANTalon(11);
+//				intake = new CANTalon(10);
+//				agitator = new CANTalon(9);
+//				shooter = new CANTalon(11);
 				drive = new Drive(left1, right1);
 				left2.changeControlMode(CANTalon.TalonControlMode.Follower);
 				left2.set(1);
@@ -86,7 +86,7 @@ public class RobotMap
 				gearPooper = new Solenoid(2);
 				hatTip = new Solenoid(1);
 				pushFaceOut = new Solenoid(0);
-				andyBooper9000 = new Solenoid(4);
+//				andyBooper9000 = new Solenoid(4);
 				brakes = new Solenoid(3);
 
 				left1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
