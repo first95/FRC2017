@@ -232,16 +232,14 @@ public class Robot extends IterativeRobot
 				if (tipHat.isPressed())
 					{
 						RobotMap.hatTip.set(true);
-						RobotMap.pushFaceOut.set(false);
 						RobotMap.gearPooper.set(false);
 					}
 				else
 					{
 						RobotMap.hatTip.set(false);
-						RobotMap.pushFaceOut.set(facePush.isPressed());
 						RobotMap.gearPooper.set(poopGear.isPressed());
 					}
-
+				RobotMap.pushFaceOut.set(facePush.isPressed());
 				/*
 				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
 				 */
