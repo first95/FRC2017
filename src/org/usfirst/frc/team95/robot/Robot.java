@@ -43,7 +43,8 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, 
+			dropFloorAcquisitionMechanism, intakeFloorGear, ejectFloorGear, scoreFloorGear;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -90,11 +91,15 @@ public class Robot extends IterativeRobot
 				// weapon buttons
 				tipHat = new ButtonTracker(Constants.weaponStick, 1);
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
-//				intake = new ButtonTracker(Constants.weaponStick, 3);
-//				agitate = new ButtonTracker(Constants.weaponStick, 4);
 				facePush = new ButtonTracker(Constants.weaponStick, 5);
-//				shoot = new ButtonTracker(Constants.weaponStick, 6);
 				alignToGearLiftAndDrive = new ButtonTracker(Constants.weaponStick, 7);
+//				intake = new ButtonTracker(Constants.weaponStick, 3);
+				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);
+//				agitate = new ButtonTracker(Constants.weaponStick, 4);
+				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 4);
+//				shoot = new ButtonTracker(Constants.weaponStick, 6);
+				scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
+				ejectFloorGear = new ButtonTracker(Constants.weaponStick, 8);
 
 				
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
@@ -218,7 +223,7 @@ public class Robot extends IterativeRobot
 					}
 
 				
-				
+				// Pneumatics
 				if (tipHat.isPressed())
 					{
 						RobotMap.hatTip.set(true);
@@ -239,6 +244,20 @@ public class Robot extends IterativeRobot
 				RobotMap.brakes.set(brakes.isPressed());
 
 //				RobotMap.andyBooper9000.set(boop);
+				
+				if(scoreFloorGear.isPressed()) {
+					RobotMap.lowerFloorLifter.set(true);
+					RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+				} else {
+					RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
+					if(intakeFloorGear.isPressed()) {
+						RobotMap.floorIntake.set( Constants.FLOOR_INTAKE_THROTTLE);
+					} else if(ejectFloorGear.isPressed()) {
+						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+					} else {
+						RobotMap.floorIntake.set(0);
+					}
+				}
 		
 				
 				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
@@ -379,6 +398,10 @@ public class Robot extends IterativeRobot
 				tipHat.update();
 				poopGear.update();
 				facePush.update();
+				intakeFloorGear.update();
+				ejectFloorGear.update();
+				scoreFloorGear.update();
+				dropFloorAcquisitionMechanism.update();
 				// rangeBasedGearScorer.update();
 			}
 	}
