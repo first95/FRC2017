@@ -31,7 +31,11 @@ public class RobotMap
 		// controlling the drive motors.
 		public static Object driveLock = null;
 		public static Solenoid gearPooper, hatTip, pushFaceOut, brakes, lowerFloorLifter;
-
+		
+		public static double autoDist1 = 0;
+		public static double autoDist2 = 0;
+		public static double autoRotate = 0;
+		
 		public static void init()
 			{
 

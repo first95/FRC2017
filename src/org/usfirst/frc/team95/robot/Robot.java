@@ -3,7 +3,6 @@ package org.usfirst.frc.team95.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.usfirst.frc.team95.robot.auto.AtLiftRotate;
@@ -17,6 +16,8 @@ import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
+import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -43,29 +44,25 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, 
-			dropFloorAcquisitionMechanism, intakeFloorGear, ejectFloorGear, scoreFloorGear;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, ejectFloorGear, scoreFloorGear;
 
 		Auto move;
 		SendableChooser a, b, c;
 		RangeBasedGearScorer rangeBasedGearScorer;
-		
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
 		 */
 		public void robotInit()
 			{
-			
-				
-			
+
 				alpha = 0;
 				beta = 0;
-				
+
 				RobotMap.init();
 
-				//RobotMap.visionProcessingInit();
-				
+				// RobotMap.visionProcessingInit();
+
 				boop = false;
 				agit = false;
 
@@ -76,11 +73,11 @@ public class Robot extends IterativeRobot
 				variableStore = new VariableStore();
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
-//				shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
-				
+				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
+
 				panel = new PowerDistributionPanel();
 				twoStickMode = true;
-				
+
 				// drive buttons
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				brakes = new ButtonTracker(Constants.driveStick, 1);
@@ -93,15 +90,14 @@ public class Robot extends IterativeRobot
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
 				facePush = new ButtonTracker(Constants.weaponStick, 5);
 				alignToGearLiftAndDrive = new ButtonTracker(Constants.weaponStick, 7);
-//				intake = new ButtonTracker(Constants.weaponStick, 3);
+				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);
-//				agitate = new ButtonTracker(Constants.weaponStick, 4);
+				// agitate = new ButtonTracker(Constants.weaponStick, 4);
 				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 4);
-//				shoot = new ButtonTracker(Constants.weaponStick, 6);
+				// shoot = new ButtonTracker(Constants.weaponStick, 6);
 				scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
 				ejectFloorGear = new ButtonTracker(Constants.weaponStick, 8);
 
-				
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
@@ -125,12 +121,15 @@ public class Robot extends IterativeRobot
 				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
 				a.addObject("Score Gear", new ScoreGear());
+				
 				b.addDefault("None", new Nothing());
+				b.addObject("Score Gear From Start Stage Two", new ScoreFromStartStageTwo(poseidon));
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
 				b.addObject("Score Gear", new ScoreGear());
+				
 				c.addDefault("None", new Nothing());
 				c.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -222,7 +221,6 @@ public class Robot extends IterativeRobot
 						RobotMap.drive.arcade(Constants.driveStick, twoStickMode);
 					}
 
-				
 				// Pneumatics
 				if (tipHat.isPressed())
 					{
@@ -239,27 +237,34 @@ public class Robot extends IterativeRobot
 				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
 				 */
 
-//				RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
+				// RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
 
 				RobotMap.brakes.set(brakes.isPressed());
 
-//				RobotMap.andyBooper9000.set(boop);
-				
-				if(scoreFloorGear.isPressed()) {
-					RobotMap.lowerFloorLifter.set(true);
-					RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
-				} else {
-					RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
-					if(intakeFloorGear.isPressed()) {
-						RobotMap.floorIntake.set( Constants.FLOOR_INTAKE_THROTTLE);
-					} else if(ejectFloorGear.isPressed()) {
+				// RobotMap.andyBooper9000.set(boop);
+
+				if (scoreFloorGear.isPressed())
+					{
+						RobotMap.lowerFloorLifter.set(true);
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
-					} else {
-						RobotMap.floorIntake.set(0);
 					}
-				}
-		
-				
+				else
+					{
+						RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
+						if (intakeFloorGear.isPressed())
+							{
+								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+							}
+						else if (ejectFloorGear.isPressed())
+							{
+								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+							}
+						else
+							{
+								RobotMap.floorIntake.set(0);
+							}
+					}
+
 				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
 				// It only runs when the button is held down
 				if (alignToGearLiftAndDrive.isPressed())
@@ -284,11 +289,10 @@ public class Robot extends IterativeRobot
 						runOnceTest = true;
 					}
 
-
 				/*
 				 * if (shoot.wasJustPressed()) { shooter.turnOn(); } else if (shoot.wasJustReleased()) { shooter.turnOff(); }
 				 */
-				
+
 				if (Math.abs(Constants.weaponStick.getY()) > .1)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
@@ -314,33 +318,30 @@ public class Robot extends IterativeRobot
 		public void commonPeriodic()
 			{
 
-			
-			
-			//RobotMap.gearLiftFinder.computeHeadingToTarget();
-			
-			//System.out.println(RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-			//RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-			
+				// RobotMap.gearLiftFinder.computeHeadingToTarget();
+
+				// System.out.println(RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+				// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+
 				// Show the edited video output from the camera
-//				if (!RobotMap.visionProcessingActive)
-//					{
-//						RobotMap.gearLiftFinder.computeHeadingToTarget();
-//						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-//						SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-//						SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-//						SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-//						SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
-//					}
-//				else
-//					{
-//						SmartDashboard.putString("Hight Of Object In Pixels", "Processing Not Active");
-//						SmartDashboard.putString("Distance From Cam To Target IN INCHES", "Processing Not Active");
-//						SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
-//						SmartDashboard.putString("We can see the target", "Processing Not Active");
-//					}
+				// if (!RobotMap.visionProcessingActive)
+				// {
+				// RobotMap.gearLiftFinder.computeHeadingToTarget();
+				// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+				// SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
+				// SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
+				// SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+				// SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+				// }
+				// else
+				// {
+				// SmartDashboard.putString("Hight Of Object In Pixels", "Processing Not Active");
+				// SmartDashboard.putString("Distance From Cam To Target IN INCHES", "Processing Not Active");
+				// SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
+				// SmartDashboard.putString("We can see the target", "Processing Not Active");
+				// }
 
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
-				
 
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
