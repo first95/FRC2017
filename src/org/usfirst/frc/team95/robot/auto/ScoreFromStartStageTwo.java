@@ -16,7 +16,7 @@ public class ScoreFromStartStageTwo extends SequentialMove
 				else
 					{
 						super.SetMoves(new Auto[]
-							{ new DistanceMovePID(-(RobotMap.autoDist2)), new RotateBy(-(RobotMap.autoRotate)), new DistanceMovePID(RobotMap.autoDist1) });
+							{ new DistanceMovePID(-RobotMap.autoDist2), new RotateBy(-RobotMap.autoRotate), new DistanceMovePID(RobotMap.autoDist1)});
 					}
 
 			}

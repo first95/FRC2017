@@ -43,6 +43,9 @@ public class RobotMap
 				// If it is not, print out saying that it isn't in
 				if (CameraServer.getInstance() != null)
 					{
+						
+						System.out.println("TEST2");
+						
 						visionCameraOn = true;
 						
 						// Start Cameras For Vision Processing
