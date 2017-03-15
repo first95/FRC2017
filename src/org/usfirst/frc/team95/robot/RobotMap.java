@@ -67,10 +67,10 @@ public class RobotMap
 					}
 
 				// drive motors
-				left1 = new CANTalon(1);
+				left1 = new AdjustedTalon(1);
 				left2 = new CANTalon(2);
 				left3 = new CANTalon(3);
-				right1 = new CANTalon(4);
+				right1 = new AdjustedTalon(4);
 				right2 = new CANTalon(5);
 				right3 = new CANTalon(6);
 				winchLeft = new CANTalon(7);
