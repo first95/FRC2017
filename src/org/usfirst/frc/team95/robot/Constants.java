@@ -13,7 +13,7 @@ public class Constants {
 	public static double encTicksPerRadian = 1110;
 	public static double robotWidth = 34.7;
 	public static double visionLength = 3;
-	public static double FLOOR_INTAKE_THROTTLE = 0.3;
+	public static double FLOOR_INTAKE_THROTTLE = 0.7;
 	
 	public static double RFVoltsToFt(double voltage) {
 		
