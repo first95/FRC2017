@@ -44,7 +44,9 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, ejectFloorGear, scoreFloorGear;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, 
+		tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism,
+		intakeFloorGear, outFloorGear;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -93,10 +95,10 @@ public class Robot extends IterativeRobot
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);
 				// agitate = new ButtonTracker(Constants.weaponStick, 4);
-				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 4);
+				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 6);
 				// shoot = new ButtonTracker(Constants.weaponStick, 6);
-				scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
-				ejectFloorGear = new ButtonTracker(Constants.weaponStick, 8);
+				//scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
+				outFloorGear = new ButtonTracker(Constants.weaponStick, 4);
 
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
@@ -243,27 +245,21 @@ public class Robot extends IterativeRobot
 
 				// RobotMap.andyBooper9000.set(boop);
 
-				if (scoreFloorGear.isPressed())
+				
+				RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
+				if (intakeFloorGear.isPressed())
 					{
-						RobotMap.lowerFloorLifter.set(true);
+						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+					}
+				else if (outFloorGear.isPressed())
+					{
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 					}
 				else
 					{
-						RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
-						if (intakeFloorGear.isPressed())
-							{
-								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
-							}
-						else if (ejectFloorGear.isPressed())
-							{
-								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
-							}
-						else
-							{
-								RobotMap.floorIntake.set(0);
-							}
+						RobotMap.floorIntake.set(0);
 					}
+				
 
 				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
 				// It only runs when the button is held down
@@ -403,8 +399,7 @@ public class Robot extends IterativeRobot
 				poopGear.update();
 				facePush.update();
 				intakeFloorGear.update();
-				ejectFloorGear.update();
-				scoreFloorGear.update();
+				outFloorGear.update();
 				dropFloorAcquisitionMechanism.update();
 				// rangeBasedGearScorer.update();
 			}
