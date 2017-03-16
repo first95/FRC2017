@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, ejectFloorGear, scoreFloorGear;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, outFloorGear, scoreFloorGear;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -93,10 +93,10 @@ public class Robot extends IterativeRobot
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);
 				// agitate = new ButtonTracker(Constants.weaponStick, 4);
-				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 4);
+				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 6);
 				// shoot = new ButtonTracker(Constants.weaponStick, 6);
-				scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
-				ejectFloorGear = new ButtonTracker(Constants.weaponStick, 8);
+				//scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
+				outFloorGear = new ButtonTracker(Constants.weaponStick, 4);
 
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
@@ -255,7 +255,7 @@ public class Robot extends IterativeRobot
 							{
 								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
 							}
-						else if (ejectFloorGear.isPressed())
+						else if (outFloorGear.isPressed())
 							{
 								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 							}
@@ -400,7 +400,7 @@ public class Robot extends IterativeRobot
 				poopGear.update();
 				facePush.update();
 				intakeFloorGear.update();
-				ejectFloorGear.update();
+				outFloorGear.update();
 				scoreFloorGear.update();
 				dropFloorAcquisitionMechanism.update();
 				// rangeBasedGearScorer.update();
