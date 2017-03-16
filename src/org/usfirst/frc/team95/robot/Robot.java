@@ -330,6 +330,9 @@ public class Robot extends IterativeRobot
 		public void commonPeriodic()
 			{
 
+				SmartDashboard.putNumber("Talon Left 1 Output Current", RobotMap.left1.getOutputCurrent());
+				SmartDashboard.putNumber("Talon Right 1 Output Current", RobotMap.right1.getOutputCurrent());
+				
 				// RobotMap.gearLiftFinder.computeHeadingToTarget();
 
 				// System.out.println(RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
