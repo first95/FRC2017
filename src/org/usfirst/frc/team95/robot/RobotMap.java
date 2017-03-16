@@ -106,7 +106,11 @@ public class RobotMap
 				right1.setEncPosition(0);
 				winchRight.setEncPosition(0);
 				left1.enableBrakeMode(true);
+				left2.enableBrakeMode(true);
+				left3.enableBrakeMode(true);
 				right1.enableBrakeMode(true);
+				right2.enableBrakeMode(true);
+				right3.enableBrakeMode(true);
 				//winchRight.enableBrakeMode(true);
 			}
 		

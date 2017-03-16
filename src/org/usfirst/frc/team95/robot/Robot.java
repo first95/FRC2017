@@ -148,7 +148,12 @@ public class Robot extends IterativeRobot
 		 */
 		public void disabledInit()
 			{
-
+			RobotMap.left1.enableBrakeMode(false);
+			RobotMap.left2.enableBrakeMode(false);
+			RobotMap.left3.enableBrakeMode(false);
+			RobotMap.right1.enableBrakeMode(false);
+			RobotMap.right2.enableBrakeMode(false);
+			RobotMap.right3.enableBrakeMode(false);
 			}
 
 		public void disabledPeriodic()
@@ -162,7 +167,12 @@ public class Robot extends IterativeRobot
 		 */
 		public void autonomousInit()
 			{
-
+				RobotMap.left1.enableBrakeMode(true);
+				RobotMap.left2.enableBrakeMode(true);
+				RobotMap.left3.enableBrakeMode(true);
+				RobotMap.right1.enableBrakeMode(true);
+				RobotMap.right2.enableBrakeMode(true);
+				RobotMap.right3.enableBrakeMode(true);
 				// System.out.println("Auto INIT");
 
 				Auto am = (Auto) a.getSelected();
@@ -197,6 +207,12 @@ public class Robot extends IterativeRobot
 
 		public void teleopInit()
 			{
+				RobotMap.left1.enableBrakeMode(true);
+				RobotMap.left2.enableBrakeMode(true);
+				RobotMap.left3.enableBrakeMode(true);
+				RobotMap.right1.enableBrakeMode(true);
+				RobotMap.right2.enableBrakeMode(true);
+				RobotMap.right3.enableBrakeMode(true);
 				// This makes sure that the autonomous stops running when
 				// teleop starts running. If you want the autonomous to
 				// continue until interrupted by another command, remove
