@@ -44,7 +44,9 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, outFloorGear, scoreFloorGear;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, 
+		tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism,
+		intakeFloorGear, outFloorGear;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -243,27 +245,21 @@ public class Robot extends IterativeRobot
 
 				// RobotMap.andyBooper9000.set(boop);
 
-				if (scoreFloorGear.isPressed())
+				
+				RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
+				if (intakeFloorGear.isPressed())
 					{
-						RobotMap.lowerFloorLifter.set(true);
+						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+					}
+				else if (outFloorGear.isPressed())
+					{
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 					}
 				else
 					{
-						RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
-						if (intakeFloorGear.isPressed())
-							{
-								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
-							}
-						else if (outFloorGear.isPressed())
-							{
-								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
-							}
-						else
-							{
-								RobotMap.floorIntake.set(0);
-							}
+						RobotMap.floorIntake.set(0);
 					}
+				
 
 				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
 				// It only runs when the button is held down
@@ -401,7 +397,6 @@ public class Robot extends IterativeRobot
 				facePush.update();
 				intakeFloorGear.update();
 				outFloorGear.update();
-				scoreFloorGear.update();
 				dropFloorAcquisitionMechanism.update();
 				// rangeBasedGearScorer.update();
 			}
