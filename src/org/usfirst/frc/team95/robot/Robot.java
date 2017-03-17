@@ -265,11 +265,11 @@ public class Robot extends IterativeRobot
 				RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
 				if (intakeFloorGear.isPressed())
 					{
-						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 					}
 				else if (outFloorGear.isPressed())
 					{
-						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
 					}
 				else
 					{
