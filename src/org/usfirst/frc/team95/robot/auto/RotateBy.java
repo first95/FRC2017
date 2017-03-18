@@ -16,7 +16,7 @@ public class RotateBy extends Auto
 		@Override
 		public void init()
 			{
-				P = .4;// original .35
+				P = 0.48; // original .35
 			}
 
 		@Override
@@ -55,7 +55,7 @@ public class RotateBy extends Auto
 				if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done)
 					{
 						RobotMap.driveLock = this;
-						if (Math.abs(error) <= Constants.encTicksPerRadian * .05)
+						if (Math.abs(error) <= Constants.encTicksPerRadian * .025)
 							{
 								done = true;
 							}
@@ -70,13 +70,13 @@ public class RotateBy extends Auto
 										error = desired - RobotMap.right1.getEncPosition();
 									}
 								speed = (P * error) / 200;// divide to make speed value reasonable
-								if (speed > .3)
+								if (speed > .5)
 									{
-										speed = .3;
+										speed = .5;
 									}
-								else if (speed < -.3)
+								else if (speed < -.5)
 									{
-										speed = -.3;
+										speed = -.5;
 									}
 
 								if (speed > (prevSpeed + .08))
