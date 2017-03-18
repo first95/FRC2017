@@ -130,15 +130,20 @@ public class Robot extends IterativeRobot
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
 
 				// Automoves to Test, One Turns, One Moves and Turns
-				a.addObject("red left", new ScoreFromStartWithStageTwo(true, 0, poseidon));
-				a.addObject("red mid", new ScoreFromStart(true, 1, poseidon));
-				a.addObject("red right With Stage Two", new ScoreFromStartWithStageTwo(true, 2, poseidon));
-				a.addObject("blue left", new ScoreFromStart(false, 0, poseidon));
-				a.addObject("blue mid", new ScoreFromStart(false, 1, poseidon));
-				a.addObject("blue right", new ScoreFromStart(false, 2, poseidon));
+				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
+				a.addObject("Red Middle", new ScoreFromStart(true, 1, poseidon));
+				a.addObject("Red Right", new ScoreFromStart(true, 2, poseidon));
+				a.addObject("Blue Left", new ScoreFromStart(false, 0, poseidon));
+				a.addObject("Blue Middle", new ScoreFromStart(false, 1, poseidon));
+				a.addObject("Blue Right", new ScoreFromStart(false, 2, poseidon));
 
-				
-				
+				// Temp auto moves until we fix having two sequential moves after each other
+				a.addObject("Red Left With Stage Two", new ScoreFromStartWithStageTwo(true, 0, poseidon));
+				a.addObject("Red Mid With Stage Two", new ScoreFromStartWithStageTwo(true, 1, poseidon));
+				a.addObject("Red Right With Stage Two", new ScoreFromStartWithStageTwo(true, 2, poseidon));
+				a.addObject("Blue Left With Stage Two", new ScoreFromStartWithStageTwo(false, 0, poseidon));
+				a.addObject("Blue Middle With Stage Two", new ScoreFromStartWithStageTwo(false, 1, poseidon));
+				a.addObject("Blue Right With Stage Two", new ScoreFromStartWithStageTwo(false, 2, poseidon));
 					
 //				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 //				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));

@@ -105,7 +105,7 @@ public class DistanceMovePID extends Auto
 					}
 				
 				// Because of drift this fixes it
-				right *= .97;
+				right *= .965;
 				
 				//right = left;
 				RobotMap.drive.tank(-left, -right);
