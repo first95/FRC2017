@@ -41,7 +41,7 @@ public class TimedMove extends Auto
 				// System.out.println("Update!");
 				if (timer.get() > time)
 					{
-						done = true;
+						done = true;	
 					}
 			}
 
