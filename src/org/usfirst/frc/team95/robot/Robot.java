@@ -301,7 +301,7 @@ public class Robot extends IterativeRobot
 				 * if (shoot.wasJustPressed()) { shooter.turnOn(); } else if (shoot.wasJustReleased()) { shooter.turnOff(); }
 				 */
 
-				if (Math.abs(Constants.weaponStick.getY()) > .1)
+				if (Math.abs(Constants.weaponStick.getY()) > .15)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
 						RobotMap.winchLeft.set(-Constants.weaponStick.getY());

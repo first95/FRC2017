@@ -44,13 +44,14 @@ public class DistanceMovePID extends Auto
 				distanceR -= (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 				System.out.println("dist start");
 			}
-
+ 
 		@Override
 		public void update()
 			{
 				// System.out.println("in update");
 				// System.out.println("dist update");
 				SmartDashboard.putNumber("errorL", errorL);
+				SmartDashboard.putNumber("errorR", errorR);
 				// SmartDashboard.putDouble("errorR", errorR);
 				errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 				errorR = distanceR + (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
@@ -93,15 +94,19 @@ public class DistanceMovePID extends Auto
 				 * if (right > 1) { right = 1; } else if (right < -1) { right = -1; }
 				 */
 
-				if (left > (prevSpeedL + .08))
+				if (left > (prevSpeedL + .02))
 					{
-						left = prevSpeedL + .08;
+						left = prevSpeedL + .02;
 					}
 				
-				if (right > (prevSpeedR + .08))
+				if (right > (prevSpeedR + .02))
 					{
-						right = prevSpeedR + .08;
+						right = prevSpeedR + .02;
 					}
+				
+				// Because of drift this fixes it
+				right *= .97;
+				
 				//right = left;
 				RobotMap.drive.tank(-left, -right);
 
