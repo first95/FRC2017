@@ -7,78 +7,91 @@
 package org.usfirst.frc.team95.robot;
 
 import java.util.HashMap;
-
 import org.usfirst.frc.team95.robot.auto.Auto;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * 
  * @author daroc
  */
-public class ButtonTracker implements PollableSubsystem {
 
-	static HashMap<Joystick, ButtonTracker[]> usedNumbers = new HashMap<Joystick, ButtonTracker[]>();
+public class ButtonTracker implements PollableSubsystem
+	{
 
-	int mChannel;
-	Joystick mJoystick;
-	boolean mNow, mLast;
+		static HashMap<Joystick, ButtonTracker[]> usedNumbers = new HashMap<Joystick, ButtonTracker[]>();
 
-	Auto move;
+		int mChannel;
+		Joystick mJoystick;
+		boolean mNow, mLast;
 
-	public ButtonTracker(Joystick Joystick, int Channel) {
-		mChannel = Channel;
-		mJoystick = Joystick;
+		Auto move;
 
-		if (!usedNumbers.containsKey(Joystick)) {
-			usedNumbers.put(Joystick, new ButtonTracker[17]);
-		}
+		public ButtonTracker(Joystick Joystick, int Channel)
+			{
+				mChannel = Channel;
+				mJoystick = Joystick;
 
-		if (usedNumbers.get(Joystick)[Channel] != null) {
-			// SmartDashboard.putBoolean("ERROR", true);
-			// System.out.println("MORE THAN ONE BUTTON TRACKER PER BUTTON.");
-			DriverStation.reportError("MORE THAN ONE BUTTON TRACKER PER BUTTON!", false);
-		}
+				if (!usedNumbers.containsKey(Joystick))
+					{
+						usedNumbers.put(Joystick, new ButtonTracker[17]);
+					}
 
-		usedNumbers.get(Joystick)[Channel] = this;
-	}
+				if (usedNumbers.get(Joystick)[Channel] != null)
+					{
+						// SmartDashboard.putBoolean("ERROR", true);
+						// System.out.println("MORE THAN ONE BUTTON TRACKER PER BUTTON.");
+						DriverStation.reportError("MORE THAN ONE BUTTON TRACKER PER BUTTON!", false);
+					}
 
-	public ButtonTracker(Joystick joystick, int channel, Auto move) {
-		this(joystick, channel);
-
-		this.move = move;
-	}
-
-	public boolean isPressed() {
-		return mJoystick.getRawButton(mChannel);
-	}
-
-	public boolean wasJustPressed() {
-		return (mNow && (!mLast));
-	}
-
-	public boolean wasJustReleased() {
-		return (!mNow && mLast);
-	}
-
-	public void update() {
-		mLast = mNow;
-		mNow = mJoystick.getRawButton(mChannel);
-
-		if (this.move != null) {
-			if (wasJustPressed()) {
-				this.move.init();
-			} else if (isPressed()) {
-				this.move.update();
-			} else if (wasJustReleased()) {
-				this.move.stop();
+				usedNumbers.get(Joystick)[Channel] = this;
 			}
-		}
-	}
 
-	public void init() {
-		;
+		public ButtonTracker(Joystick joystick, int channel, Auto move)
+			{
+				this(joystick, channel);
+
+				this.move = move;
+			}
+
+		public boolean isPressed()
+			{
+				return mJoystick.getRawButton(mChannel);
+			}
+
+		public boolean wasJustPressed()
+			{
+				return (mNow && (!mLast));
+			}
+
+		public boolean wasJustReleased()
+			{
+				return (!mNow && mLast);
+			}
+
+		public void update()
+			{
+				mLast = mNow;
+				mNow = mJoystick.getRawButton(mChannel);
+
+				if (this.move != null)
+					{
+						if (wasJustPressed())
+							{
+								this.move.init();
+							}
+						else if (isPressed())
+							{
+								this.move.update();
+							}
+						else if (wasJustReleased())
+							{
+								this.move.stop();
+							}
+					}
+			}
+
+		public void init()
+			{
+
+			}
 	}
-}

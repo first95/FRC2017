@@ -5,7 +5,6 @@ import com.ctre.CANTalon;
 public class AdjustedTalon extends CANTalon
 	{
 		static final double BACKWARDS_MULTIPLIER = 1.0 / 0.92; // Main CIMs run about 8% less efficiently going backwards. Reverse that.
-
 		static final double MIN_CURRENT = 40.0;
 		static final double MAX_CURRENT = 90.0;
 		static final double MIN_ATTEN = 0.95;
