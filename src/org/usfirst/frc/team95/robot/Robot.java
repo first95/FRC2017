@@ -20,7 +20,6 @@ import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
-import org.usfirst.frc.team95.robot.auto.ScoreFromStartWithStageTwo;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
@@ -57,6 +56,23 @@ public class Robot extends IterativeRobot
 		public void robotInit()
 			{
 
+				
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				System.out.println("testednewcodes");
+				
+				
 				alpha = 0;
 				beta = 0;
 
@@ -125,7 +141,7 @@ public class Robot extends IterativeRobot
 //				a.addObject("Score Gear", new ScoreGear());
 
 				b.addDefault("None", new Nothing());
-				b.addObject("Score Gear From Start Stage Two", new ScoreFromStartStageTwo(RobotMap.autoDist2, RobotMap.autoDist1, RobotMap.autoRotate, poseidon));
+				// b.addObject("Score Gear From Start Stage Two", new ScoreFromStartStageTwo(RobotMap.autoDist2, RobotMap.autoDist1, RobotMap.autoRotate, poseidon));
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));

@@ -64,9 +64,9 @@ public class ScoreFromStart extends SequentialMove
 						rotate = ROTATE_LEFT;
 					}
 
-				RobotMap.autoDist1 = dist1;
-				RobotMap.autoDist2 = dist2;
-				RobotMap.autoRotate = rotate;
+//				RobotMap.autoDist1 = dist1;
+//				RobotMap.autoDist2 = dist2;
+//				RobotMap.autoRotate = rotate;
 
 				super.SetMoves(new Auto[]
 					{ new DistanceMovePID(dist1), new RotateBy(rotate), new DistanceMovePID(dist2), new ScoreGear() });
