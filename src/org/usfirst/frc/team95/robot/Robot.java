@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team95.robot.auto.AtLiftRotate;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
@@ -17,9 +20,6 @@ import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
@@ -44,9 +44,7 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, 
-		tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism,
-		intakeFloorGear, outFloorGear;
+		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, outFloorGear;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -97,7 +95,7 @@ public class Robot extends IterativeRobot
 				// agitate = new ButtonTracker(Constants.weaponStick, 4);
 				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 6);
 				// shoot = new ButtonTracker(Constants.weaponStick, 6);
-				//scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
+				// scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
 				outFloorGear = new ButtonTracker(Constants.weaponStick, 4);
 
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
@@ -123,7 +121,7 @@ public class Robot extends IterativeRobot
 				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
 				a.addObject("Score Gear", new ScoreGear());
-				
+
 				b.addDefault("None", new Nothing());
 				b.addObject("Score Gear From Start Stage Two", new ScoreFromStartStageTwo(poseidon));
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
@@ -131,7 +129,7 @@ public class Robot extends IterativeRobot
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
 				b.addObject("Score Gear", new ScoreGear());
-				
+
 				c.addDefault("None", new Nothing());
 				c.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -148,12 +146,12 @@ public class Robot extends IterativeRobot
 		 */
 		public void disabledInit()
 			{
-			RobotMap.left1.enableBrakeMode(false);
-			RobotMap.left2.enableBrakeMode(false);
-			RobotMap.left3.enableBrakeMode(false);
-			RobotMap.right1.enableBrakeMode(false);
-			RobotMap.right2.enableBrakeMode(false);
-			RobotMap.right3.enableBrakeMode(false);
+				RobotMap.left1.enableBrakeMode(false);
+				RobotMap.left2.enableBrakeMode(false);
+				RobotMap.left3.enableBrakeMode(false);
+				RobotMap.right1.enableBrakeMode(false);
+				RobotMap.right2.enableBrakeMode(false);
+				RobotMap.right3.enableBrakeMode(false);
 			}
 
 		public void disabledPeriodic()
@@ -261,21 +259,19 @@ public class Robot extends IterativeRobot
 
 				// RobotMap.andyBooper9000.set(boop);
 
-				
 				RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
 				if (intakeFloorGear.isPressed())
 					{
-						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 					}
 				else if (outFloorGear.isPressed())
 					{
-						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
 					}
 				else
 					{
 						RobotMap.floorIntake.set(0);
 					}
-				
 
 				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
 				// It only runs when the button is held down
@@ -330,9 +326,9 @@ public class Robot extends IterativeRobot
 		public void commonPeriodic()
 			{
 
-				SmartDashboard.putNumber("Talon Left 1 Output Current", RobotMap.left1.getOutputCurrent());
-				SmartDashboard.putNumber("Talon Right 1 Output Current", RobotMap.right1.getOutputCurrent());
-				
+				// SmartDashboard.putNumber("Talon Left 1 Output Current", RobotMap.left1.getOutputCurrent());
+				// SmartDashboard.putNumber("Talon Right 1 Output Current", RobotMap.right1.getOutputCurrent());
+
 				// RobotMap.gearLiftFinder.computeHeadingToTarget();
 
 				// System.out.println(RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
@@ -396,6 +392,7 @@ public class Robot extends IterativeRobot
 
 						alpha = (ymax + ymin) / 2;
 						beta = (zmax + zmin) / 2;
+
 						// System.out.println("ymax" + ymax);
 						// System.out.println("ymin" + ymin);
 						// System.out.println("zmax" + zmax);
@@ -404,6 +401,7 @@ public class Robot extends IterativeRobot
 						// System.out.println("beta" + beta);
 						// overides alpha and beta in compreader.
 						// lasts until code is rebooted rewriting code will be needed
+
 						poseidon.compCal(alpha, beta);
 					}
 

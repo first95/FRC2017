@@ -17,7 +17,7 @@ public class RotateBy extends Auto
 		@Override
 		public void init()
 			{
-				P = .20;// original .35
+				P = .35;// original .35
 			}
 
 		@Override
@@ -92,6 +92,7 @@ public class RotateBy extends Auto
 					}
 				else
 					{
+						
 					}
 			}
 
@@ -103,6 +104,8 @@ public class RotateBy extends Auto
 						RobotMap.drive.tank(0, 0);
 						RobotMap.driveLock = null;
 					}
+				
+				// DO NOT DELETE PLEASE
 				System.out.println("TESTER");
 			}
 

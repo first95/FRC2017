@@ -31,23 +31,22 @@ public class RobotMap
 		// controlling the drive motors.
 		public static Object driveLock = null;
 		public static Solenoid gearPooper, hatTip, pushFaceOut, brakes, lowerFloorLifter;
-		
+
 		public static double autoDist1 = 0;
 		public static double autoDist2 = 0;
 		public static double autoRotate = 0;
-		
+
 		public static void init()
 			{
 
-				// This Is A Check To See If The Camera Is On
-				// If it is not, print out saying that it isn't in
+				// This doesn't work -- Plug in the cam or everything breaks
 				if (CameraServer.getInstance() != null)
 					{
-						
+
 						System.out.println("TEST2");
-						
+
 						visionCameraOn = true;
-						
+
 						// Start Cameras For Vision Processing
 						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
 						myCam.setResolution(640, 480);
@@ -59,7 +58,7 @@ public class RobotMap
 				else
 					{
 						visionCameraOn = false;
-						
+
 						System.out.println("------------------------");
 						System.out.println("Camera Failed To Start");
 						System.out.println("Please Plug It In And Restart Robot Code If You Wish To Use Vision");
@@ -75,9 +74,11 @@ public class RobotMap
 				right3 = new CANTalon(6);
 				winchLeft = new CANTalon(7);
 				winchRight = new CANTalon(8);
-//				intake = new CANTalon(10);
-//				agitator = new CANTalon(9);
-//				shooter = new CANTalon(11);
+				
+				// intake = new CANTalon(10);
+				// agitator = new CANTalon(9);
+				// shooter = new CANTalon(11);
+				
 				floorIntake = new CANTalon(9);
 				drive = new Drive(left1, right1);
 				left2.changeControlMode(CANTalon.TalonControlMode.Follower);
@@ -94,7 +95,7 @@ public class RobotMap
 				gearPooper = new Solenoid(2);
 				hatTip = new Solenoid(1);
 				pushFaceOut = new Solenoid(0);
-//				andyBooper9000 = new Solenoid(4);
+				// andyBooper9000 = new Solenoid(4);
 				lowerFloorLifter = new Solenoid(4);
 				brakes = new Solenoid(3);
 
@@ -111,10 +112,10 @@ public class RobotMap
 				right1.enableBrakeMode(true);
 				right2.enableBrakeMode(true);
 				right3.enableBrakeMode(true);
-				//winchRight.enableBrakeMode(true);
+				// winchRight.enableBrakeMode(true);
 			}
-		
-		// This starts vision processing 
+
+		// This starts vision processing
 		public static void visionProcessingInit()
 			{
 				if (!visionCameraOn)

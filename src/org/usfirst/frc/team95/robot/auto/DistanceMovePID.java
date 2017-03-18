@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DistanceMovePID extends Auto
 	{
-		double left, right, distanceL, errorL, prevErrorL, sumL, slopeL, P, I, D, distanceR, errorR, prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeed;
+		double left, right, distanceL, errorL, prevErrorL, sumL, slopeL, P, I, D, distanceR, errorR, prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeedL, prevSpeedR;
 
 		boolean done = false;
 
@@ -41,6 +41,7 @@ public class DistanceMovePID extends Auto
 					}
 				done = false;
 				distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
+				distanceR -= (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 				System.out.println("dist start");
 			}
 
@@ -52,10 +53,10 @@ public class DistanceMovePID extends Auto
 				SmartDashboard.putNumber("errorL", errorL);
 				// SmartDashboard.putDouble("errorR", errorR);
 				errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
-				// errorR = distanceR - (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
+				errorR = distanceR + (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 
 				left = P * errorL;
-				// right = P * errorR;
+				right = P * errorR;
 
 				// newTime = timer.get();
 				// sumL += (errorL * (newTime - prevTime));
@@ -79,26 +80,41 @@ public class DistanceMovePID extends Auto
 					{
 						left = -.4;
 					}
+				
+				if (right > .4)
+					{
+						right = .4;
+					}
+				else if (right < -.4)
+					{
+						right = -.4;
+					}
 				/*
 				 * if (right > 1) { right = 1; } else if (right < -1) { right = -1; }
 				 */
 
-				if (left > (prevSpeed + .08))
+				if (left > (prevSpeedL + .08))
 					{
-						left = prevSpeed + .08;
+						left = prevSpeedL + .08;
 					}
-				right = left;
+				
+				if (right > (prevSpeedR + .08))
+					{
+						right = prevSpeedR + .08;
+					}
+				//right = left;
 				RobotMap.drive.tank(-left, -right);
 
 				// prevErrorL = errorL;
 				// //prevErrorR = errorR;
-				prevSpeed = left;
+				prevSpeedL = left;
+				prevSpeedR = right;
 
-				if (errorL < .25)
+				if (errorL < .25 && errorR < .25)
 					{
 						done = true;
 					}
-			}
+				}
 
 		@Override
 		public void stop()
