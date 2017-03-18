@@ -57,23 +57,6 @@ public class Robot extends IterativeRobot
 		public void robotInit()
 			{
 
-				
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				System.out.println("testednewcodes");
-				
-				
 				alpha = 0;
 				beta = 0;
 
@@ -144,10 +127,10 @@ public class Robot extends IterativeRobot
 				a.addObject("Blue Left With Stage Two", new ScoreFromStartWithStageTwo(false, 0, poseidon));
 				a.addObject("Blue Middle With Stage Two", new ScoreFromStartWithStageTwo(false, 1, poseidon));
 				a.addObject("Blue Right With Stage Two", new ScoreFromStartWithStageTwo(false, 2, poseidon));
-					
-//				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
-//				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
-//				a.addObject("Score Gear", new ScoreGear());
+
+				// a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
+				// a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
+				// a.addObject("Score Gear", new ScoreGear());
 
 				b.addDefault("None", new Nothing());
 				// b.addObject("Score Gear From Start Stage Two", new ScoreFromStartStageTwo(RobotMap.autoDist2, RobotMap.autoDist1, RobotMap.autoRotate, poseidon));

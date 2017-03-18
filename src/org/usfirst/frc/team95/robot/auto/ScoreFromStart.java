@@ -2,7 +2,6 @@ package org.usfirst.frc.team95.robot.auto;
 
 import org.usfirst.frc.team95.robot.ADIS16448_IMU;
 import org.usfirst.frc.team95.robot.Constants;
-import org.usfirst.frc.team95.robot.RobotMap;
 
 public class ScoreFromStart extends SequentialMove
 	{
@@ -63,10 +62,6 @@ public class ScoreFromStart extends SequentialMove
 						dist2 = HOPPER_SIDE_DIST2;
 						rotate = ROTATE_LEFT;
 					}
-
-//				RobotMap.autoDist1 = dist1;
-//				RobotMap.autoDist2 = dist2;
-//				RobotMap.autoRotate = rotate;
 
 				super.SetMoves(new Auto[]
 					{ new DistanceMovePID(dist1), new RotateBy(rotate), new DistanceMovePID(dist2), new ScoreGear() });

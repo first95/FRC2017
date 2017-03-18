@@ -9,7 +9,7 @@ public class ScoreFromStartStageTwo extends SequentialMove
 
 		public ScoreFromStartStageTwo(double distance1, double distance2, double degreeRotate, ADIS16448_IMU poseidon)
 			{
-				
+
 				System.out.println("Running 'Score Gear' Stage Two");
 
 				dist1 = distance1;
