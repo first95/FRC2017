@@ -120,9 +120,9 @@ public class Robot extends IterativeRobot
 				a.addObject("blue mid", new ScoreFromStart(false, 1, poseidon));
 				a.addObject("blue right", new ScoreFromStart(false, 2, poseidon));
 					
-				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
-				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
-				a.addObject("Score Gear", new ScoreGear());
+//				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
+//				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
+//				a.addObject("Score Gear", new ScoreGear());
 
 				b.addDefault("None", new Nothing());
 				b.addObject("Score Gear From Start Stage Two", new ScoreFromStartStageTwo(RobotMap.autoDist2, RobotMap.autoDist1, RobotMap.autoRotate, poseidon));

@@ -134,7 +134,7 @@ public class RobotMap
 			{
 				if (!visionCameraOn)
 					{
-						System.out.println("Canno't Process, Vision Camera Off");
+						System.out.println("Can't Process, Vision Camera Off");
 					}
 				else
 					{

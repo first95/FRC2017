@@ -11,7 +11,6 @@ public class RotateBy extends Auto
 		public RotateBy(double angle)
 			{
 				this.angle = angle;
-
 			}
 
 		@Override
