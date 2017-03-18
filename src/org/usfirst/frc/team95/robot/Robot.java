@@ -20,6 +20,7 @@ import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
+import org.usfirst.frc.team95.robot.auto.ScoreFromStartWithStageTwo;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
@@ -129,12 +130,15 @@ public class Robot extends IterativeRobot
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
 
 				// Automoves to Test, One Turns, One Moves and Turns
-				a.addObject("red left", new ScoreFromStart(true, 0, poseidon));
+				a.addObject("red left", new ScoreFromStartWithStageTwo(true, 0, poseidon));
 				a.addObject("red mid", new ScoreFromStart(true, 1, poseidon));
-				a.addObject("red right", new ScoreFromStart(true, 2, poseidon));
+				a.addObject("red right With Stage Two", new ScoreFromStartWithStageTwo(true, 2, poseidon));
 				a.addObject("blue left", new ScoreFromStart(false, 0, poseidon));
 				a.addObject("blue mid", new ScoreFromStart(false, 1, poseidon));
 				a.addObject("blue right", new ScoreFromStart(false, 2, poseidon));
+
+				
+				
 					
 //				a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 //				a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
