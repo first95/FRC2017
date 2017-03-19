@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team95.robot.auto.AtLiftRotate;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
 import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
@@ -19,7 +18,6 @@ import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
-import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStartWithStageTwo;
 
 /**
@@ -27,7 +25,6 @@ import org.usfirst.frc.team95.robot.auto.ScoreFromStartWithStageTwo;
  */
 public class Robot extends IterativeRobot
 	{
-
 		// This boolean and moveIt are used to run an automove on the press of a button
 		boolean runOnceTest = true;
 		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
@@ -62,8 +59,6 @@ public class Robot extends IterativeRobot
 
 				RobotMap.init();
 
-				// RobotMap.visionProcessingInit();
-
 				boop = false;
 				agit = false;
 
@@ -71,13 +66,13 @@ public class Robot extends IterativeRobot
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
 				SmartDashboard.putData("Auto mode", chooser);
+				
 				variableStore = new VariableStore();
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
-				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
-
 				panel = new PowerDistributionPanel();
 				twoStickMode = true;
+				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// drive buttons
 				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
@@ -91,21 +86,21 @@ public class Robot extends IterativeRobot
 				poopGear = new ButtonTracker(Constants.weaponStick, 2);
 				facePush = new ButtonTracker(Constants.weaponStick, 5);
 				alignToGearLiftAndDrive = new ButtonTracker(Constants.weaponStick, 7);
-				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);
-				// agitate = new ButtonTracker(Constants.weaponStick, 4);
 				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 6);
-				// shoot = new ButtonTracker(Constants.weaponStick, 6);
-				// scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
 				outFloorGear = new ButtonTracker(Constants.weaponStick, 4);
-
+				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
-
+				// agitate = new ButtonTracker(Constants.weaponStick, 4);
+				// shoot = new ButtonTracker(Constants.weaponStick, 6);
+				// scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
+				
 				a = new SendableChooser();
 				b = new SendableChooser();
 				c = new SendableChooser();
+				
 				a.addDefault("None", new Nothing());
 				a.addObject("Go Forward", new DistanceMovePID(7));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -133,7 +128,6 @@ public class Robot extends IterativeRobot
 				// a.addObject("Score Gear", new ScoreGear());
 
 				b.addDefault("None", new Nothing());
-				// b.addObject("Score Gear From Start Stage Two", new ScoreFromStartStageTwo(RobotMap.autoDist2, RobotMap.autoDist1, RobotMap.autoRotate, poseidon));
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
@@ -145,10 +139,10 @@ public class Robot extends IterativeRobot
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+				
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
-
 			}
 
 		/**
@@ -321,7 +315,6 @@ public class Robot extends IterativeRobot
 						RobotMap.winchRight.set(0);
 						RobotMap.winchLeft.set(0);
 					}
-
 			}
 
 		/**
@@ -335,7 +328,6 @@ public class Robot extends IterativeRobot
 		// This is run in disabled, teleop, and auto periodics.
 		public void commonPeriodic()
 			{
-
 				// SmartDashboard.putNumber("Talon Left 1 Output Current", RobotMap.left1.getOutputCurrent());
 				// SmartDashboard.putNumber("Talon Right 1 Output Current", RobotMap.right1.getOutputCurrent());
 

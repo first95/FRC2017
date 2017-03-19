@@ -81,5 +81,4 @@ public class SequentialMove extends Auto
 			{
 				return succeeded;
 			}
-
 	}

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+
 import java.util.TreeMap;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public class VariableStore
 					{
 						value = Double.parseDouble(storedValues.get(variableName));
 					}
+				
 				return value;
 			}
 
@@ -36,6 +38,7 @@ public class VariableStore
 					{
 						value = storedValues.get(variableName);
 					}
+				
 				return value;
 			}
 
@@ -76,10 +79,10 @@ public class VariableStore
 								writer.println(entry.getValue());
 							}
 					}
+				
 				catch (IOException e)
 					{
 						// System.out.println(e);
 					}
-
 			}
 	}

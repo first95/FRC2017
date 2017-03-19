@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.SpeedController;
 
 public class Drive
 	{
-
 		SpeedController left;
 		SpeedController right;
 
@@ -59,7 +58,6 @@ public class Drive
 				x = Math.pow(x, 3);
 				y = Math.pow(y, 3);
 				arcade(y, x);
-
 			}
 
 		public void halfArcade(Joystick stick, boolean twostick)
@@ -89,6 +87,5 @@ public class Drive
 				x = Math.pow(x, 3);
 				y = Math.pow(y, 3);
 				halfArcade(y, x);
-
 			}
 	}

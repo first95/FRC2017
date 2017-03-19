@@ -4,42 +4,51 @@ import org.usfirst.frc.team95.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class OpenPooper extends Auto{
+public class OpenPooper extends Auto
+	{
+		boolean done = false;
+		double time;
+		Timer timer = new Timer();
 
-	boolean done = false;
-	double time;
-	Timer timer = new Timer();
-	public OpenPooper(double time) {// milliseconds
-		this.time = time;
-	}
-	public void init() {
-		done = false;
-	}
+		public OpenPooper(double time)
+			{
+				// milliseconds
+				this.time = time;
+			}
 
-	public void start() {
-		timer.reset();
-		timer.start();
-		RobotMap.gearPooper.set(true);
-		
-	}
+		public void init()
+			{
+				done = false;
+			}
 
-	public void update() {
-		if (timer.get() > time) {
-			done = true;
-		}
-	}
+		public void start()
+			{
+				timer.reset();
+				timer.start();
+				RobotMap.gearPooper.set(true);
+			}
 
-	public void stop() {
-		
-	}
+		public void update()
+			{
+				if (timer.get() > time)
+					{
+						done = true;
+					}
+			}
 
-	public boolean isDone() {
-		return done;
-	}
-	@Override
-	public boolean succeeded() {
-		// TODO Auto-generated method stub
-		return true;
-	}
+		public void stop()
+			{
 
-}
+			}
+
+		public boolean isDone()
+			{
+				return done;
+			}
+
+		@Override
+		public boolean succeeded()
+			{
+				return true;
+			}
+	}

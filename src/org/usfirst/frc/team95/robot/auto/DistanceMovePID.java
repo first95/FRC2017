@@ -2,12 +2,12 @@ package org.usfirst.frc.team95.robot.auto;
 
 import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DistanceMovePID extends Auto
 	{
 		double left, right, distanceL, errorL, prevErrorL, sumL, slopeL, P, I, D, distanceR, errorR, prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeedL, prevSpeedR;
-
 		boolean done = false;
 
 		public DistanceMovePID(double distance)
@@ -20,12 +20,13 @@ public class DistanceMovePID extends Auto
 		public void init()
 			{
 				done = false;
-				// System.out.println("in Init");
-				P = .35;// .175
-				/*
-				 * //I = 0; D = 0; sumL = 0; sumR = 0; prevTime = 0; prevSpeed = 0;
-				 */
+				P = .35;
 
+				// System.out.println("in Init");
+				//
+				// I = 0; D = 0; sumL = 0; sumR = 0; prevTime = 0; prevSpeed = 0;
+				//
+				//
 				// distanceR += (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 				// P = P / distanceL;
 				// timer.reset();
@@ -44,15 +45,13 @@ public class DistanceMovePID extends Auto
 				distanceR -= (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 				System.out.println("dist start");
 			}
- 
+
 		@Override
 		public void update()
 			{
-				// System.out.println("in update");
-				// System.out.println("dist update");
 				SmartDashboard.putNumber("errorL", errorL);
 				SmartDashboard.putNumber("errorR", errorR);
-				// SmartDashboard.putDouble("errorR", errorR);
+				
 				errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 				errorR = distanceR + (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 
@@ -81,7 +80,7 @@ public class DistanceMovePID extends Auto
 					{
 						left = -.4;
 					}
-				
+
 				if (right > .4)
 					{
 						right = .4;
@@ -98,16 +97,16 @@ public class DistanceMovePID extends Auto
 					{
 						left = prevSpeedL + .02;
 					}
-				
+
 				if (right > (prevSpeedR + .02))
 					{
 						right = prevSpeedR + .02;
 					}
-				
+
 				// Because of drift this fixes it
 				right *= .965;
-				
-				//right = left;
+
+				// right = left;
 				RobotMap.drive.tank(-left, -right);
 
 				// prevErrorL = errorL;
@@ -119,7 +118,7 @@ public class DistanceMovePID extends Auto
 					{
 						done = true;
 					}
-				}
+			}
 
 		@Override
 		public void stop()
@@ -143,5 +142,4 @@ public class DistanceMovePID extends Auto
 			{
 				return true;
 			}
-
 	}

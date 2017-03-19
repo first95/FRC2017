@@ -2,6 +2,7 @@ package org.usfirst.frc.team95.robot;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
 import edu.wpi.first.wpilibj.I2C;
 
 public class GyroReader
@@ -19,7 +20,6 @@ public class GyroReader
 
 		public double getXAng()
 			{
-
 				ByteBuffer rawAccel = ByteBuffer.allocateDirect(2);
 				m_i2c.read(0x1D, 2, rawAccel);
 
@@ -32,7 +32,6 @@ public class GyroReader
 
 		public double getYAng()
 			{
-
 				ByteBuffer rawAccel = ByteBuffer.allocateDirect(2);
 				m_i2c.read(0x1F, 2, rawAccel);
 
@@ -45,7 +44,6 @@ public class GyroReader
 
 		public double getZAng()
 			{
-
 				ByteBuffer rawAccel = ByteBuffer.allocateDirect(2);
 				m_i2c.read(0x21, 2, rawAccel);
 

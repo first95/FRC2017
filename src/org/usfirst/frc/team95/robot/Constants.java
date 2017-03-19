@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class Constants
 	{
-
 		public static double joystickDeadbandV = 0.07;
 		public static double joystickDeadbandH = 0.05;
 		public static Joystick driveStick = new Joystick(0);
@@ -18,7 +17,6 @@ public class Constants
 
 		public static double RFVoltsToFt(double voltage)
 			{
-
 				double distance;
 				// Sonar Range finder based on data sheet almost acurrate
 				// distance = (voltage * 100) / .977; //mV to mm

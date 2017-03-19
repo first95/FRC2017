@@ -1,6 +1,7 @@
 package org.usfirst.frc.team95.robot;
 
 import com.ctre.CANTalon;
+
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
@@ -43,7 +44,7 @@ public class RobotMap
 				if (CameraServer.getInstance() != null)
 					{
 
-						System.out.println("TEST2");
+						System.out.println("--- Camera On ---");
 
 						visionCameraOn = true;
 
@@ -120,11 +121,12 @@ public class RobotMap
 			{
 				if (!visionCameraOn)
 					{
-						System.out.println("Canno't Process, Vision Camera Off");
+						System.out.println("Can't Process, Vision Camera Off");
 					}
 				else
 					{
 						visionProcessingActive = true;
+						System.out.println("--- Vision Processing On ---");
 						gearLiftFinder = new VisualGearLiftFinder(cvSink);
 					}
 			}
@@ -134,11 +136,12 @@ public class RobotMap
 			{
 				if (!visionCameraOn)
 					{
-						System.out.println("Can't Process, Vision Camera Off");
+						System.out.println("--- Can't Process, Vision Camera Off ---");
 					}
 				else
 					{
 						visionProcessingActive = false;
+						System.out.println("--- Vision Processing Off ---");
 					}
 			}
 	}

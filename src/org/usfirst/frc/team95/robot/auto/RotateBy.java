@@ -124,5 +124,4 @@ public class RotateBy extends Auto
 			{
 				return true;
 			}
-
 	}

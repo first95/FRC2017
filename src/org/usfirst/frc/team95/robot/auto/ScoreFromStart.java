@@ -5,9 +5,8 @@ import org.usfirst.frc.team95.robot.Constants;
 
 public class ScoreFromStart extends SequentialMove
 	{
-
 		// Constants
-		private final static double BOIL_SIDE_DIST1 = (81.68 / 12) - 2.2;
+		private final static double BOIL_SIDE_DIST1 = (81.68 / 12) - 2;
 		private final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 2.8;
 		private final static double CENTER_DIST1 = ((110.517 - (Constants.robotWidth / 2)) / 12) - 3;
 		private final static double CENTER_DIST2 = 0.0;

@@ -6,7 +6,6 @@ import org.usfirst.frc.team95.robot.RobotMap;
 
 public class ScoreFromStartWithStageTwo extends SequentialMove
 	{
-
 		// Constants
 		private final static double BOIL_SIDE_DIST1 = (81.68 / 12) - 2;
 		private final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 2.8;
@@ -69,6 +68,6 @@ public class ScoreFromStartWithStageTwo extends SequentialMove
 				RobotMap.autoRotate = rotate;
 
 				super.SetMoves(new Auto[]
-					{ new DistanceMovePID(dist1), new RotateBy(rotate), new DistanceMovePID(dist2), new ScoreGearStageTwo()});
+					{ new DistanceMovePID(dist1), new RotateBy(rotate), new DistanceMovePID(dist2), new ScoreGearWithStageTwo()});
 			}
 	}

@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
 
 public class CompassReader
 	{
@@ -31,7 +30,6 @@ public class CompassReader
 
 		public double getRawCompX()
 			{
-
 				ByteBuffer angle = ByteBuffer.allocateDirect(2);
 				m_i2c.read(3, 2, angle);
 
@@ -44,7 +42,6 @@ public class CompassReader
 
 		public double getRawCompZ()
 			{
-
 				ByteBuffer angle = ByteBuffer.allocateDirect(2);
 				m_i2c.read(5, 2, angle);
 
@@ -57,7 +54,6 @@ public class CompassReader
 
 		public double getRawCompY()
 			{
-
 				ByteBuffer angle = ByteBuffer.allocateDirect(2);
 				m_i2c.read(7, 2, angle);
 
@@ -70,7 +66,6 @@ public class CompassReader
 
 		public double getHeading()
 			{
-
 				double ang;// , yrot, zrot, ysig;
 				double y = getRawCompY() - alpha;
 				double z = getRawCompZ() - beta;

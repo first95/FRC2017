@@ -44,5 +44,4 @@ public class VoltageCompensatedShooter
 						m_shooter.set(0);
 					}
 			}
-
 	}
