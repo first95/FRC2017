@@ -1,5 +1,6 @@
 package org.usfirst.frc.team95.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -37,6 +38,8 @@ public class Robot extends IterativeRobot
 		HeadingPreservation header;
 		PowerDistributionPanel panel;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
+		
+		AnalogInput artemis;
 
 		Double headingToPres;
 		double dist;
@@ -59,14 +62,12 @@ public class Robot extends IterativeRobot
 
 				RobotMap.init();
 
-				boop = false;
-				agit = false;
-
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
 				SmartDashboard.putData("Auto mode", chooser);
 				
+				artemis = new AnalogInput(0);
 				variableStore = new VariableStore();
 				poseidon = new ADIS16448_IMU(variableStore);
 				header = new HeadingPreservation(poseidon);
@@ -408,8 +409,8 @@ public class Robot extends IterativeRobot
 					}
 
 				brakes.update();
-				compCal1.update();
-				compCalReset.update();
+//				compCal1.update();
+//				compCalReset.update();
 				slowMo.update();
 				tipHat.update();
 				poopGear.update();
