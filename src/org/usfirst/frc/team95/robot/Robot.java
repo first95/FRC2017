@@ -44,7 +44,7 @@ public class Robot extends IterativeRobot
 		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		boolean twoStickMode, boop, agit;
+		boolean twoStickMode, gotGear;
 		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, outFloorGear;
 
 		Auto move;
@@ -73,10 +73,11 @@ public class Robot extends IterativeRobot
 				header = new HeadingPreservation(poseidon);
 				panel = new PowerDistributionPanel();
 				twoStickMode = true;
+				gotGear = false;
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// drive buttons
-				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
+				//changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 				brakes = new ButtonTracker(Constants.driveStick, 1);
 				slowMo = new ButtonTracker(Constants.driveStick, 6);
 				compCal1 = new ButtonTracker(Constants.driveStick, 7);
@@ -354,7 +355,14 @@ public class Robot extends IterativeRobot
 				// SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
 				// SmartDashboard.putString("We can see the target", "Processing Not Active");
 				// }
-
+				if (artemis.getVoltage() > .5) {
+					gotGear = true;
+				}else {
+					gotGear = false;
+				}
+				
+				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
+				
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
