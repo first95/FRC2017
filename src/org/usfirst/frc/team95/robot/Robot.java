@@ -185,7 +185,6 @@ public class Robot extends IterativeRobot
 					{ am, bm, cm };
 
 				move = new SequentialMove(m);
-				// move = new TimedStraightMove(0.3, 10);
 				move.init();
 				move.start();
 			}
@@ -198,6 +197,7 @@ public class Robot extends IterativeRobot
 				commonPeriodic();
 
 				// System.out.println("Auto Periodic");
+				System.out.println(move);
 				move.update();
 
 				Scheduler.getInstance().run();
@@ -227,7 +227,7 @@ public class Robot extends IterativeRobot
 				commonPeriodic();
 				Scheduler.getInstance().run();
 
-				// drive
+				// Drive
 				if (slowMo.isPressed())
 					{
 						RobotMap.drive.halfArcade(Constants.driveStick, true);
@@ -272,6 +272,7 @@ public class Robot extends IterativeRobot
 					}
 
 
+				//Climber
 				if (Math.abs(Constants.weaponStick.getY()) > .15)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
@@ -320,12 +321,15 @@ public class Robot extends IterativeRobot
 				// SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
 				// SmartDashboard.putString("We can see the target", "Processing Not Active");
 				// }
+			
+				// IR sensor for ground loader. Will probably remove
 				if (artemis.getVoltage() > .5) {
 					gotGear = true;
 				}else {
 					gotGear = false;
 				}
 				
+				//various Smart Dashboard stuff
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
 				
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
@@ -336,6 +340,7 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
 				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
 
+				//compass calibration. button tracker is disabled (not updated)
 				if (compCal1.isPressed())
 					{// && compCal2.Pressedp()) {
 						// auto cal
@@ -374,6 +379,7 @@ public class Robot extends IterativeRobot
 						poseidon.compCal(alpha, beta);
 					}
 
+				//updates
 				brakes.update();
 //				compCal1.update();
 //				compCalReset.update();
