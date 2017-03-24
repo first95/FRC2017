@@ -3,6 +3,7 @@ package org.usfirst.frc.team95.robot;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AdjustedTalon extends CANTalon
 	{
@@ -50,16 +51,21 @@ public class AdjustedTalon extends CANTalon
 						rate = Math.min(rate, 1);
 						rate = Math.max(rate, -1);
 					}
-				if (voltage > MIN_VOLTAGE && voltage < MAX_VOLTAGE)
+				if (voltage < MAX_VOLTAGE)
 				{
 					newAtten = (SLOPEV * voltage) + INTERCEPTV;
+					newAtten = Math.max(newAtten, MIN_ATTENV);
 					rate *= newAtten;
-				}else if (current > MIN_CURRENT && current < MAX_CURRENT)
+					System.out.println("Atenn" + newAtten);
+				}else if (current < MAX_CURRENT)
 					{
 						newAtten = (SLOPEC * current) + INTERCEPTC;
+						newAtten = Math.max(newAtten, MAX_ATTENC);
 						rate *= newAtten;
+						System.out.println("Atenn" + newAtten);
 					}
-
+				System.out.println("Voltage" + panel.getVoltage());
+				System.out.println("Rate" + rate);
 				super.set(rate);
 			}
 
