@@ -1,5 +1,6 @@
 package org.usfirst.frc.team95.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -30,23 +31,22 @@ public class Robot extends IterativeRobot
 		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
 
 		SendableChooser chooser;
-
-		GyroReader gyro;
+		
 		VariableStore variableStore;
 		ADIS16448_IMU poseidon;
-		HeadingPreservation header;
 		PowerDistributionPanel panel;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
+		
+		AnalogInput artemis;
 
-		Double headingToPres;
 		double dist;
 		Double[] angleRec;
-		boolean twoStickMode, boop, agit;
-		ButtonTracker headPres, compCal1, compCalReset, slowMo, changeDriveMode, brakes, tipHat, facePush, poopGear, incPID, decPID, alignToGearLiftAndDrive, dropFloorAcquisitionMechanism, intakeFloorGear, outFloorGear;
+		boolean gotGear;
+		ButtonTracker compCal1, compCalReset, slowMo, brakes, 
+		tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear;
 
 		Auto move;
 		SendableChooser a, b, c;
-		RangeBasedGearScorer rangeBasedGearScorer;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -60,36 +60,32 @@ public class Robot extends IterativeRobot
 				
 				RobotMap.init();
 
-				boop = false;
-				agit = false;
-
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
 				SmartDashboard.putData("Auto mode", chooser);
 				
+				artemis = new AnalogInput(0);
 				variableStore = new VariableStore();
 				poseidon = new ADIS16448_IMU(variableStore);
-				header = new HeadingPreservation(poseidon);
 				panel = new PowerDistributionPanel();
-				twoStickMode = true;
+				gotGear = false;
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// drive buttons
-				changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
-				brakes = new ButtonTracker(Constants.driveStick, 1);
-				slowMo = new ButtonTracker(Constants.driveStick, 6);
-				compCal1 = new ButtonTracker(Constants.driveStick, 7);
-				compCalReset = new ButtonTracker(Constants.driveStick, 8);
+				//changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
+				brakes = new ButtonTracker(Constants.driveStick, 1);		 // A
+				slowMo = new ButtonTracker(Constants.driveStick, 6); 	   	 // R Bumber
+				compCal1 = new ButtonTracker(Constants.driveStick, 7);		 // Select
+				compCalReset = new ButtonTracker(Constants.driveStick, 8);   // Start
 
 				// weapon buttons
-				tipHat = new ButtonTracker(Constants.weaponStick, 1);
-				poopGear = new ButtonTracker(Constants.weaponStick, 2);
-				facePush = new ButtonTracker(Constants.weaponStick, 5);
-				alignToGearLiftAndDrive = new ButtonTracker(Constants.weaponStick, 7);
-				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);
-				dropFloorAcquisitionMechanism = new ButtonTracker(Constants.weaponStick, 6);
-				outFloorGear = new ButtonTracker(Constants.weaponStick, 4);
+				tipHat = new ButtonTracker(Constants.weaponStick, 1); 		  	// A
+				poopGear = new ButtonTracker(Constants.weaponStick, 2);			// B
+				facePush = new ButtonTracker(Constants.weaponStick, 5);			// L Bumber
+				dropGroundLoader = new ButtonTracker(Constants.weaponStick, 6); // R Bumber
+				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);  // X
+				outFloorGear = new ButtonTracker(Constants.weaponStick, 4);		// Y
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
@@ -188,7 +184,6 @@ public class Robot extends IterativeRobot
 					{ am, bm, cm };
 
 				move = new SequentialMove(m);
-				// move = new TimedStraightMove(0.3, 10);
 				move.init();
 				move.start();
 			}
@@ -201,6 +196,7 @@ public class Robot extends IterativeRobot
 				commonPeriodic();
 
 				// System.out.println("Auto Periodic");
+				System.out.println(move);
 				move.update();
 
 				Scheduler.getInstance().run();
@@ -230,14 +226,14 @@ public class Robot extends IterativeRobot
 				commonPeriodic();
 				Scheduler.getInstance().run();
 
-				// drive
+				// Drive
 				if (slowMo.isPressed())
 					{
-						RobotMap.drive.halfArcade(Constants.driveStick, twoStickMode);
+						RobotMap.drive.halfArcade(Constants.driveStick, true);
 					}
 				else
 					{
-						RobotMap.drive.arcade(Constants.driveStick, twoStickMode);
+						RobotMap.drive.arcade(Constants.driveStick, true);
 					}
 
 				// Pneumatics
@@ -260,9 +256,7 @@ public class Robot extends IterativeRobot
 
 				RobotMap.brakes.set(brakes.isPressed());
 
-				// RobotMap.andyBooper9000.set(boop);
-
-				RobotMap.lowerFloorLifter.set(dropFloorAcquisitionMechanism.isPressed());
+				RobotMap.lowerFloorLifter.set(dropGroundLoader.isPressed());
 				if (intakeFloorGear.isPressed())
 					{
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
@@ -276,35 +270,10 @@ public class Robot extends IterativeRobot
 						RobotMap.floorIntake.set(0);
 					}
 
-				// This runs the gotoLiftAdvanced automove when 7(select) on the weapon stick is pressed
-				// It only runs when the button is held down
-				if (alignToGearLiftAndDrive.isPressed())
-					{
-						if (runOnceTest)
-							{
-								moveItToLift.init();
-								runOnceTest = false;
-							}
-						else
-							{
-								moveItToLift.update();
-							}
-					}
-				else
-					{
-						if (!runOnceTest)
-							{
-								moveItToLift.stop();
-							}
 
-						runOnceTest = true;
-					}
-
-				/*
-				 * if (shoot.wasJustPressed()) { shooter.turnOn(); } else if (shoot.wasJustReleased()) { shooter.turnOff(); }
-				 */
-
+				//Climber
 				if (Math.abs(Constants.weaponStick.getY()) > .18)
+
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
 						RobotMap.winchLeft.set(-Constants.weaponStick.getY());
@@ -352,7 +321,17 @@ public class Robot extends IterativeRobot
 				// SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
 				// SmartDashboard.putString("We can see the target", "Processing Not Active");
 				// }
-
+			
+				// IR sensor for ground loader. Will probably remove
+				if (artemis.getVoltage() > .5) {
+					gotGear = true;
+				}else {
+					gotGear = false;
+				}
+				
+				//various Smart Dashboard stuff
+				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
+				
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
@@ -361,6 +340,7 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
 				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
 
+				//compass calibration. button tracker is disabled (not updated)
 				if (compCal1.isPressed())
 					{// && compCal2.Pressedp()) {
 						// auto cal
@@ -394,28 +374,21 @@ public class Robot extends IterativeRobot
 						alpha = (ymax + ymin) / 2;
 						beta = (zmax + zmin) / 2;
 
-						// System.out.println("ymax" + ymax);
-						// System.out.println("ymin" + ymin);
-						// System.out.println("zmax" + zmax);
-						// System.out.println("zmin" + zmin);
-						// System.out.println("alpha" + alpha);
-						// System.out.println("beta" + beta);
-						// overides alpha and beta in compreader.
-						// lasts until code is rebooted rewriting code will be needed
+						
 
 						poseidon.compCal(alpha, beta);
 					}
 
+				//updates
 				brakes.update();
-				compCal1.update();
-				compCalReset.update();
+//				compCal1.update();
+//				compCalReset.update();
 				slowMo.update();
 				tipHat.update();
 				poopGear.update();
 				facePush.update();
 				intakeFloorGear.update();
 				outFloorGear.update();
-				dropFloorAcquisitionMechanism.update();
-				// rangeBasedGearScorer.update();
+				dropGroundLoader.update();
 			}
 	}
