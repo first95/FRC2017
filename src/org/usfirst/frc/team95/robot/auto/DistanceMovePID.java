@@ -40,6 +40,7 @@ public class DistanceMovePID extends Auto
 					{
 						RobotMap.driveLock = this;
 					}
+				
 				done = false;
 				distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
 				distanceR -= (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);

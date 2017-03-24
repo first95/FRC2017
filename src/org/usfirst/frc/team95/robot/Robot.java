@@ -57,6 +57,7 @@ public class Robot extends IterativeRobot
 				alpha = 0;
 				beta = 0;
 
+				
 				RobotMap.init();
 
 				boop = false;
@@ -117,10 +118,8 @@ public class Robot extends IterativeRobot
 
 				// Temp auto moves until we fix having two sequential moves after each other
 				a.addObject("Red Left With Stage Two", new ScoreFromStartWithStageTwo(true, 0, poseidon));
-				a.addObject("Red Mid With Stage Two", new ScoreFromStartWithStageTwo(true, 1, poseidon));
 				a.addObject("Red Right With Stage Two", new ScoreFromStartWithStageTwo(true, 2, poseidon));
 				a.addObject("Blue Left With Stage Two", new ScoreFromStartWithStageTwo(false, 0, poseidon));
-				a.addObject("Blue Middle With Stage Two", new ScoreFromStartWithStageTwo(false, 1, poseidon));
 				a.addObject("Blue Right With Stage Two", new ScoreFromStartWithStageTwo(false, 2, poseidon));
 
 				// a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
@@ -305,7 +304,7 @@ public class Robot extends IterativeRobot
 				 * if (shoot.wasJustPressed()) { shooter.turnOn(); } else if (shoot.wasJustReleased()) { shooter.turnOff(); }
 				 */
 
-				if (Math.abs(Constants.weaponStick.getY()) > .15)
+				if (Math.abs(Constants.weaponStick.getY()) > .18)
 					{
 						RobotMap.winchRight.set(Constants.weaponStick.getY());
 						RobotMap.winchLeft.set(-Constants.weaponStick.getY());

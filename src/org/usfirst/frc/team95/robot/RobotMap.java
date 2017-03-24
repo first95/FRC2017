@@ -19,11 +19,13 @@ public class RobotMap
 		// Vision Stuff
 		public static VisualGearLiftFinder gearLiftFinder = null;
 		public static UsbCamera myCam = null;
+		public static UsbCamera myCam2 = null;
 		public static CvSource smartDashboardVideoOutput = null;
 		public static CvSink cvSink = null;
 
 		// Vision Checks
 		public static boolean visionProcessingActive = false;
+		public static boolean startCam2 = true;
 		public static boolean visionCameraOn = false;
 
 		// Autonomous moves wishing to control the robot's drive base
@@ -40,31 +42,19 @@ public class RobotMap
 		public static void init()
 			{
 
-				// This doesn't work -- Plug in the cam or everything breaks
-				if (CameraServer.getInstance() != null)
-					{
+				myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
+				myCam.setResolution(640, 480);
+				myCam.setExposureManual(35);
+				myCam.setFPS(30);
 
-						System.out.println("--- Camera On ---");
+				myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video1");
+				myCam2.setResolution(640, 480);
+				myCam2.setFPS(30);
 
-						visionCameraOn = true;
+				visionCameraOn = true;
 
-						// Start Cameras For Vision Processing
-						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
-						myCam.setResolution(640, 480);
-						myCam.setExposureManual(35);
-						myCam.setFPS(30);
-						smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
-						cvSink = CameraServer.getInstance().getVideo();
-					}
-				else
-					{
-						visionCameraOn = false;
-
-						System.out.println("------------------------");
-						System.out.println("Camera Failed To Start");
-						System.out.println("Please Plug It In And Restart Robot Code If You Wish To Use Vision");
-						System.out.println("------------------------");
-					}
+				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+				cvSink = CameraServer.getInstance().getVideo();
 
 				// drive motors
 				left1 = new AdjustedTalon(1);
