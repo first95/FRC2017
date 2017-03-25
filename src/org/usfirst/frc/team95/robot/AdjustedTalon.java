@@ -21,7 +21,7 @@ public class AdjustedTalon extends CANTalon
 		static final double MAX_ATTENV = 0.95;
 		static final double SLOPEV = ((MAX_ATTENV - MIN_ATTENV) / (MAX_VOLTAGE - MIN_VOLTAGE));
 		static final double INTERCEPTV = (MIN_ATTENV - (SLOPEV * MIN_VOLTAGE));
-		
+
 		public AdjustedTalon(int deviceNumber)
 			{
 				super(deviceNumber);
@@ -52,20 +52,21 @@ public class AdjustedTalon extends CANTalon
 						rate = Math.max(rate, -1);
 					}
 				if (voltage < MAX_VOLTAGE)
-				{
-					newAtten = (SLOPEV * voltage) + INTERCEPTV;
-					newAtten = Math.max(newAtten, MIN_ATTENV);
-					rate *= newAtten;
-					System.out.println("Atenn" + newAtten);
-				}else if (current < MAX_CURRENT)
+					{
+						newAtten = (SLOPEV * voltage) + INTERCEPTV;
+						newAtten = Math.max(newAtten, MIN_ATTENV);
+						rate *= newAtten;
+						// System.out.println("Atenn" + newAtten);
+					}
+				else if (current < MAX_CURRENT)
 					{
 						newAtten = (SLOPEC * current) + INTERCEPTC;
 						newAtten = Math.max(newAtten, MAX_ATTENC);
 						rate *= newAtten;
-						System.out.println("Atenn" + newAtten);
+						// System.out.println("Atenn" + newAtten);
 					}
-				System.out.println("Voltage" + panel.getVoltage());
-				System.out.println("Rate" + rate);
+				// System.out.println("Voltage" + panel.getVoltage());
+				// System.out.println("Rate" + rate);
 				super.set(rate);
 			}
 

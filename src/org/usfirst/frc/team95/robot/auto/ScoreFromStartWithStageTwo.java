@@ -17,6 +17,8 @@ public class ScoreFromStartWithStageTwo extends SequentialMove
 		private final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
 		private final static double ROTATE_NONE = 0.0;
 
+		private final static double TEMP_BLUESIDE_VAR_DIST1 = (81.68 / 12) - 2;
+
 		// First Distance, Rotate, Second Distance
 		private double dist1, dist2, rotate;
 
@@ -58,16 +60,16 @@ public class ScoreFromStartWithStageTwo extends SequentialMove
 					}
 				else if (position == 2)
 					{
-						dist1 = HOPPER_SIDE_DIST1;
+						dist1 = TEMP_BLUESIDE_VAR_DIST1;
 						dist2 = HOPPER_SIDE_DIST2;
 						rotate = ROTATE_LEFT;
 					}
-				
+
 				RobotMap.autoDist1 = dist1;
 				RobotMap.autoDist2 = dist2;
 				RobotMap.autoRotate = rotate;
 
 				super.SetMoves(new Auto[]
-					{ new DistanceMovePID(dist1), new RotateBy(rotate), new DistanceMovePID(dist2), new ScoreGearWithStageTwo()});
+					{ new DistanceMovePID(dist1), new RotateBy(rotate), new DistanceMovePID(dist2), new ScoreGearWithStageTwo() });
 			}
 	}

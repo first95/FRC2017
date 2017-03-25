@@ -25,8 +25,10 @@ public class RobotMap
 
 		// Vision Checks
 		public static boolean visionProcessingActive = false;
-		public static boolean startCam2 = true;
-		public static boolean visionCameraOn = false;
+		public static boolean visionCamerasOn = false;
+		public static boolean startVisionCameras = true;
+		public static boolean firstCamOn = true;
+		public static boolean secondCamOn = false;
 
 		// Autonomous moves wishing to control the robot's drive base
 		// should set the driveLock object to "this" (that is, themselves).
@@ -42,19 +44,26 @@ public class RobotMap
 		public static void init()
 			{
 
-				myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
-				myCam.setResolution(640, 480);
-				myCam.setExposureManual(35);
-				myCam.setFPS(30);
+				if (startVisionCameras)
+					{
+						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
+						myCam.setResolution(640, 480);
+						myCam.setExposureManual(35);
+						myCam.setFPS(30);
 
-				myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video1");
-				myCam2.setResolution(640, 480);
-				myCam2.setFPS(30);
+						smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+						cvSink = CameraServer.getInstance().getVideo();
 
-				visionCameraOn = true;
-
-				smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
-				cvSink = CameraServer.getInstance().getVideo();
+						visionCamerasOn = true;
+					}
+				else
+					{
+						System.out.println("---------------------------------------------------");
+						System.out.println("- startVisionCameras is false!                    -");
+						System.out.println("- This Mean Vision Could Not Start                -");
+						System.out.println("- Plug In Cam And Restart Or Vision Will Not Work -");
+						System.out.println("---------------------------------------------------");
+					}
 
 				// drive motors
 				left1 = new AdjustedTalon(1);
@@ -106,32 +115,72 @@ public class RobotMap
 				// winchRight.enableBrakeMode(true);
 			}
 
+		public static void switchVisionCameras()
+			{
+
+				
+				System.out.println("IN CLASS");
+				myCam = null;
+				
+//				if (firstCamOn)
+//					{
+//						CameraServer.getInstance().removeServer("Hephaestus");
+//						firstCamOn = false;
+//
+//						myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video1");
+//						myCam2.setResolution(640, 480);
+//						myCam2.setFPS(30);
+//						secondCamOn = true;
+//					}
+//				else if (!firstCamOn)
+//					{
+//						CameraServer.getInstance().removeServer("Theia");
+//						secondCamOn = false;
+//						
+//						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
+//						myCam.setResolution(640, 480);
+//						myCam.setExposureManual(35);
+//						myCam.setFPS(30);
+//						firstCamOn = true;
+//					}
+
+			}
+
 		// This starts vision processing
 		public static void visionProcessingInit()
 			{
-				if (!visionCameraOn)
+				if (!visionCamerasOn)
 					{
-						System.out.println("Can't Process, Vision Camera Off");
+						System.out.println("----------------------------------------");
+						System.out.println("--- Can't Process, Vision Camera Off ---");
+						System.out.println("----------------------------------------");
 					}
 				else
 					{
 						visionProcessingActive = true;
+						System.out.println("----------------------------");
 						System.out.println("--- Vision Processing On ---");
+						System.out.println("----------------------------");
 						gearLiftFinder = new VisualGearLiftFinder(cvSink);
+
 					}
 			}
 
 		// This stops vision processing
 		public static void stopVisionProcessing()
 			{
-				if (!visionCameraOn)
+				if (!visionCamerasOn)
 					{
+						System.out.println("----------------------------------------");
 						System.out.println("--- Can't Process, Vision Camera Off ---");
+						System.out.println("----------------------------------------");
 					}
 				else
 					{
 						visionProcessingActive = false;
+						System.out.println("-----------------------------");
 						System.out.println("--- Vision Processing Off ---");
+						System.out.println("-----------------------------");
 					}
 			}
 	}

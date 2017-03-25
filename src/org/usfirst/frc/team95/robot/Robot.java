@@ -14,7 +14,6 @@ import org.usfirst.frc.team95.robot.auto.DistanceMove;
 import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
 import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
-import org.usfirst.frc.team95.robot.auto.RangeBasedGearScorer;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
@@ -26,24 +25,26 @@ import org.usfirst.frc.team95.robot.auto.ScoreFromStartWithStageTwo;
  */
 public class Robot extends IterativeRobot
 	{
-		// This boolean and moveIt are used to run an automove on the press of a button
+		// This boolean and moveIt are used to run an GoToLiftAdvanced automove on the press of a button
 		boolean runOnceTest = true;
 		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
 
 		SendableChooser chooser;
-		
+
 		VariableStore variableStore;
 		ADIS16448_IMU poseidon;
 		PowerDistributionPanel panel;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
-		
+
 		AnalogInput artemis;
 
 		double dist;
 		Double[] angleRec;
 		boolean gotGear;
-		ButtonTracker compCal1, compCalReset, slowMo, brakes, 
-		tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear;
+		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear;
+
+		ButtonTracker testSwitchCam;
+		boolean runOnce = true;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -57,14 +58,13 @@ public class Robot extends IterativeRobot
 				alpha = 0;
 				beta = 0;
 
-				
 				RobotMap.init();
 
 				chooser = new SendableChooser();
 				// chooser.addDefault("Default Auto", new ExampleCommand());
 				// chooser.addObject("My Auto", new MyAutoCommand());
 				SmartDashboard.putData("Auto mode", chooser);
-				
+
 				artemis = new AnalogInput(0);
 				variableStore = new VariableStore();
 				poseidon = new ADIS16448_IMU(variableStore);
@@ -73,19 +73,20 @@ public class Robot extends IterativeRobot
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// drive buttons
-				//changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
-				brakes = new ButtonTracker(Constants.driveStick, 1);		 // A
-				slowMo = new ButtonTracker(Constants.driveStick, 6); 	   	 // R Bumber
-				compCal1 = new ButtonTracker(Constants.driveStick, 7);		 // Select
-				compCalReset = new ButtonTracker(Constants.driveStick, 8);   // Start
+				// changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
+				brakes = new ButtonTracker(Constants.driveStick, 1); // A
+				slowMo = new ButtonTracker(Constants.driveStick, 6); // R Bumber
+				compCal1 = new ButtonTracker(Constants.driveStick, 7); // Select
+				compCalReset = new ButtonTracker(Constants.driveStick, 8); // Start
 
 				// weapon buttons
-				tipHat = new ButtonTracker(Constants.weaponStick, 1); 		  	// A
-				poopGear = new ButtonTracker(Constants.weaponStick, 2);			// B
-				facePush = new ButtonTracker(Constants.weaponStick, 5);			// L Bumber
+				testSwitchCam = new ButtonTracker(Constants.weaponStick, 7);
+				tipHat = new ButtonTracker(Constants.weaponStick, 1); // A
+				poopGear = new ButtonTracker(Constants.weaponStick, 2); // B
+				facePush = new ButtonTracker(Constants.weaponStick, 5); // L Bumber
 				dropGroundLoader = new ButtonTracker(Constants.weaponStick, 6); // R Bumber
-				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3);  // X
-				outFloorGear = new ButtonTracker(Constants.weaponStick, 4);		// Y
+				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3); // X
+				outFloorGear = new ButtonTracker(Constants.weaponStick, 4); // Y
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
 				// { range1, range2 });
@@ -93,11 +94,11 @@ public class Robot extends IterativeRobot
 				// agitate = new ButtonTracker(Constants.weaponStick, 4);
 				// shoot = new ButtonTracker(Constants.weaponStick, 6);
 				// scoreFloorGear = new ButtonTracker(Constants.weaponStick, 6);
-				
+
 				a = new SendableChooser();
 				b = new SendableChooser();
 				c = new SendableChooser();
-				
+
 				a.addDefault("None", new Nothing());
 				a.addObject("Go Forward", new DistanceMovePID(7));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -134,7 +135,7 @@ public class Robot extends IterativeRobot
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
-				
+
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
@@ -210,6 +211,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right1.enableBrakeMode(true);
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
+
 				// This makes sure that the autonomous stops running when
 				// teleop starts running. If you want the autonomous to
 				// continue until interrupted by another command, remove
@@ -225,6 +227,8 @@ public class Robot extends IterativeRobot
 			{
 				commonPeriodic();
 				Scheduler.getInstance().run();
+				
+				SmartDashboard.putString("Raymond Sucks", "Raymond Sucks");
 
 				// Drive
 				if (slowMo.isPressed())
@@ -261,17 +265,16 @@ public class Robot extends IterativeRobot
 					{
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 					}
-				else if (outFloorGear.isPressed())
-					{
-						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
-					}
+//				else if (outFloorGear.isPressed())
+//					{
+//						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+//					}
 				else
 					{
 						RobotMap.floorIntake.set(0);
 					}
 
-
-				//Climber
+				// Climber
 				if (Math.abs(Constants.weaponStick.getY()) > .18)
 
 					{
@@ -283,6 +286,20 @@ public class Robot extends IterativeRobot
 						RobotMap.winchRight.set(0);
 						RobotMap.winchLeft.set(0);
 					}
+
+				if (testSwitchCam.isPressed())
+					{
+						
+						System.out.println("TRYING TO CLOSE CAM");
+						RobotMap.switchVisionCameras();
+						
+//						if (runOnce = true)
+//							{
+//								runOnce = false;
+//								RobotMap.switchVisionCameras();
+//							}
+					}
+
 			}
 
 		/**
@@ -321,17 +338,20 @@ public class Robot extends IterativeRobot
 				// SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
 				// SmartDashboard.putString("We can see the target", "Processing Not Active");
 				// }
-			
+
 				// IR sensor for ground loader. Will probably remove
-				if (artemis.getVoltage() > .5) {
-					gotGear = true;
-				}else {
-					gotGear = false;
-				}
-				
-				//various Smart Dashboard stuff
+				if (artemis.getVoltage() > .5)
+					{
+						gotGear = true;
+					}
+				else
+					{
+						gotGear = false;
+					}
+
+				// various Smart Dashboard stuff
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
-				
+
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
@@ -340,7 +360,7 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
 				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
 
-				//compass calibration. button tracker is disabled (not updated)
+				// compass calibration. button tracker is disabled (not updated)
 				if (compCal1.isPressed())
 					{// && compCal2.Pressedp()) {
 						// auto cal
@@ -374,15 +394,13 @@ public class Robot extends IterativeRobot
 						alpha = (ymax + ymin) / 2;
 						beta = (zmax + zmin) / 2;
 
-						
-
 						poseidon.compCal(alpha, beta);
 					}
 
-				//updates
+				// updates
 				brakes.update();
-//				compCal1.update();
-//				compCalReset.update();
+				// compCal1.update();
+				// compCalReset.update();
 				slowMo.update();
 				tipHat.update();
 				poopGear.update();
