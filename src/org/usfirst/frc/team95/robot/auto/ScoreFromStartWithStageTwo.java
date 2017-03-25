@@ -13,7 +13,7 @@ public class ScoreFromStartWithStageTwo extends SequentialMove
 		private final static double CENTER_DIST2 = 0.0;
 		private final static double HOPPER_SIDE_DIST1 = (81.68 / 12) - 1.2;
 		private final static double HOPPER_SIDE_DIST2 = (67.34 / 12) - 3;
-		private final static double ROTATE_LEFT = (-60 * (Math.PI / 180)) * 1.5; // sign might be wrong
+		private final static double ROTATE_LEFT = (-60 * (Math.PI / 180)) * 1.65; // sign might be wrong
 		private final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
 		private final static double ROTATE_NONE = 0.0;
 

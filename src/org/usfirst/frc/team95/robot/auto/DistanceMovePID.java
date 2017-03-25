@@ -73,22 +73,22 @@ public class DistanceMovePID extends Auto
 				// left += D * slopeL;
 				// //right += D * slopeR;
 
-				if (left > .4)
+				if (left > .3)
 					{
-						left = .4;
+						left = .3;
 					}
-				else if (left < -.4)
+				else if (left < -.3)
 					{
-						left = -.4;
+						left = -.3;
 					}
 
-				if (right > .4)
+				if (right > .3)
 					{
-						right = .4;
+						right = .3;
 					}
-				else if (right < -.4)
+				else if (right < -.3)
 					{
-						right = -.4;
+						right = -.3;
 					}
 				/*
 				 * if (right > 1) { right = 1; } else if (right < -1) { right = -1; }
