@@ -44,6 +44,7 @@ public class Robot extends IterativeRobot
 		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear;
 
 		ButtonTracker testSwitchCam;
+
 		boolean runOnce = true;
 
 		Auto move;
@@ -81,6 +82,7 @@ public class Robot extends IterativeRobot
 
 				// weapon buttons
 				testSwitchCam = new ButtonTracker(Constants.weaponStick, 7);
+
 				tipHat = new ButtonTracker(Constants.weaponStick, 1); // A
 				poopGear = new ButtonTracker(Constants.weaponStick, 2); // B
 				facePush = new ButtonTracker(Constants.weaponStick, 5); // L Bumber
@@ -127,7 +129,7 @@ public class Robot extends IterativeRobot
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
-				b.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
+				b.addObject("Left", new RotateBy(-Math.PI / 4));
 				b.addObject("Score Gear", new ScoreGear());
 
 				c.addDefault("None", new Nothing());
@@ -212,6 +214,8 @@ public class Robot extends IterativeRobot
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
 
+				// RobotMap.switchVisionCameras();
+
 				// This makes sure that the autonomous stops running when
 				// teleop starts running. If you want the autonomous to
 				// continue until interrupted by another command, remove
@@ -227,7 +231,7 @@ public class Robot extends IterativeRobot
 			{
 				commonPeriodic();
 				Scheduler.getInstance().run();
-				
+
 				SmartDashboard.putString("Raymond Sucks", "Raymond Sucks");
 
 				// Drive
@@ -265,10 +269,10 @@ public class Robot extends IterativeRobot
 					{
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 					}
-//				else if (outFloorGear.isPressed())
-//					{
-//						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
-//					}
+				else if (outFloorGear.isPressed())
+					{
+						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+					}
 				else
 					{
 						RobotMap.floorIntake.set(0);
@@ -289,15 +293,10 @@ public class Robot extends IterativeRobot
 
 				if (testSwitchCam.isPressed())
 					{
-						
+
 						System.out.println("TRYING TO CLOSE CAM");
 						RobotMap.switchVisionCameras();
-						
-//						if (runOnce = true)
-//							{
-//								runOnce = false;
-//								RobotMap.switchVisionCameras();
-//							}
+
 					}
 
 			}

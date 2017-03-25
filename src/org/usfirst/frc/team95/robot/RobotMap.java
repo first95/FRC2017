@@ -26,8 +26,9 @@ public class RobotMap
 		// Vision Checks
 		public static boolean visionProcessingActive = false;
 		public static boolean visionCamerasOn = false;
-		public static boolean startVisionCameras = true;
-		public static boolean firstCamOn = true;
+		public static boolean startFirstCam = true;
+		public static boolean startSecondCam = false;
+		public static boolean firstCamOn = false;
 		public static boolean secondCamOn = false;
 
 		// Autonomous moves wishing to control the robot's drive base
@@ -44,16 +45,17 @@ public class RobotMap
 		public static void init()
 			{
 
-				if (startVisionCameras)
+				if (startFirstCam)
 					{
-						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
+						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video1");
 						myCam.setResolution(640, 480);
 						myCam.setExposureManual(35);
 						myCam.setFPS(30);
+						firstCamOn = true;
 
 						smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 						cvSink = CameraServer.getInstance().getVideo();
-
+						
 						visionCamerasOn = true;
 					}
 				else
@@ -118,32 +120,57 @@ public class RobotMap
 		public static void switchVisionCameras()
 			{
 
-				
-				System.out.println("IN CLASS");
-				myCam = null;
-				
-//				if (firstCamOn)
-//					{
-//						CameraServer.getInstance().removeServer("Hephaestus");
-//						firstCamOn = false;
-//
-//						myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video1");
-//						myCam2.setResolution(640, 480);
-//						myCam2.setFPS(30);
-//						secondCamOn = true;
-//					}
-//				else if (!firstCamOn)
-//					{
-//						CameraServer.getInstance().removeServer("Theia");
-//						secondCamOn = false;
-//						
-//						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video0");
-//						myCam.setResolution(640, 480);
-//						myCam.setExposureManual(35);
-//						myCam.setFPS(30);
-//						firstCamOn = true;
-//					}
+				System.out.println("--------------------------------");
+				System.out.println("- Attempting To Switch Cameras -");
+				System.out.println("--------------------------------");
 
+				if (firstCamOn == true)
+					{
+						myCam.setFPS(0);
+						myCam.setResolution(0, 0);
+
+						System.out.println("----------------------");
+						System.out.println("- First Cam Disabled -");
+						System.out.println("----------------------");
+						
+						if (secondCamOn == false)
+							{
+								System.out.println("-------------------------------------");
+								System.out.println("- Attempting To Activate Second Cam -");
+								System.out.println("-------------------------------------");
+								
+								myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video0");
+								myCam2.setResolution(640, 480);
+								myCam2.setFPS(30);
+								
+								System.out.println("---------------------");
+								System.out.println("- Second Cam Enabled -");
+								System.out.println("---------------------");
+							}
+						myCam2.setFPS(30);
+						myCam2.setResolution(640, 480);
+						secondCamOn = true;
+						
+						System.out.println("---------------------");
+						System.out.println("- Second Cam Enabled -");
+						System.out.println("---------------------");						
+					}
+				else if (secondCamOn == true)
+					{
+						myCam2.setFPS(0);
+						myCam2.setResolution(0, 0);
+						secondCamOn = false;
+						System.out.println("-----------------------");
+						System.out.println("- Second Cam Disabled -");
+						System.out.println("-----------------------");
+						
+						myCam.setFPS(30);
+						myCam.setResolution(640, 480);
+						firstCamOn = true;
+						System.out.println("---------------------");
+						System.out.println("- First Cam Enabled -");
+						System.out.println("---------------------");
+					}
 			}
 
 		// This starts vision processing
@@ -151,16 +178,16 @@ public class RobotMap
 			{
 				if (!visionCamerasOn)
 					{
-						System.out.println("----------------------------------------");
-						System.out.println("--- Can't Process, Vision Camera Off ---");
-						System.out.println("----------------------------------------");
+						System.out.println("------------------------------------");
+						System.out.println("- Can't Process, Vision Camera Off -");
+						System.out.println("------------------------------------");
 					}
 				else
 					{
 						visionProcessingActive = true;
-						System.out.println("----------------------------");
-						System.out.println("--- Vision Processing On ---");
-						System.out.println("----------------------------");
+						System.out.println("------------------------");
+						System.out.println("- Vision Processing On -");
+						System.out.println("------------------------");
 						gearLiftFinder = new VisualGearLiftFinder(cvSink);
 
 					}
@@ -171,16 +198,16 @@ public class RobotMap
 			{
 				if (!visionCamerasOn)
 					{
-						System.out.println("----------------------------------------");
-						System.out.println("--- Can't Process, Vision Camera Off ---");
-						System.out.println("----------------------------------------");
+						System.out.println("------------------------------------");
+						System.out.println("- Can't Process, Vision Camera Off -");
+						System.out.println("------------------------------------");
 					}
 				else
 					{
 						visionProcessingActive = false;
-						System.out.println("-----------------------------");
-						System.out.println("--- Vision Processing Off ---");
-						System.out.println("-----------------------------");
+						System.out.println("-------------------------");
+						System.out.println("- Vision Processing Off -");
+						System.out.println("-------------------------");
 					}
 			}
 	}

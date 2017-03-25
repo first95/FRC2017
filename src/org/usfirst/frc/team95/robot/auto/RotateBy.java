@@ -16,7 +16,7 @@ public class RotateBy extends Auto
 		@Override
 		public void init()
 			{
-				P = 0.65; // original .35
+				P = 0.22; // original .35
 			}
 
 		@Override
