@@ -214,7 +214,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
 
-				// RobotMap.switchVisionCameras();
+				RobotMap.switchVisionCameras();
 
 				// This makes sure that the autonomous stops running when
 				// teleop starts running. If you want the autonomous to
