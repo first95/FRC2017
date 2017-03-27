@@ -21,13 +21,17 @@ import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStartWithStageTwo;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
+ * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the
+ * IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also
+ * update the manifest file in the resource directory.
  */
 public class Robot extends IterativeRobot
 	{
-		// This boolean and moveIt are used to run an GoToLiftAdvanced automove on the press of a button
-		boolean runOnceTest = true;
+
+		// THESE VARS ARE USED TO RUN A GOTOLIFYADVANCED AUTOMOVE ON THE PRESS OF A BUTTON -- CURRENTLY NOT BEING USED:
+		boolean moveItToTestCheck = true;
 		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
+		boolean runOnce = true;
 
 		SendableChooser chooser;
 
@@ -44,8 +48,6 @@ public class Robot extends IterativeRobot
 		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear;
 
 		ButtonTracker testSwitchCam;
-
-		boolean runOnce = true;
 
 		Auto move;
 		SendableChooser a, b, c;
@@ -73,25 +75,23 @@ public class Robot extends IterativeRobot
 				gotGear = false;
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
-				// drive buttons
-				// changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
+				// DRIVE BUTTONS:
 				brakes = new ButtonTracker(Constants.driveStick, 1); // A
 				slowMo = new ButtonTracker(Constants.driveStick, 6); // R Bumber
 				compCal1 = new ButtonTracker(Constants.driveStick, 7); // Select
 				compCalReset = new ButtonTracker(Constants.driveStick, 8); // Start
+				// changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 
-				// weapon buttons
-				testSwitchCam = new ButtonTracker(Constants.weaponStick, 7);
-
+				// WEAPON BUTTONS:
 				tipHat = new ButtonTracker(Constants.weaponStick, 1); // A
 				poopGear = new ButtonTracker(Constants.weaponStick, 2); // B
 				facePush = new ButtonTracker(Constants.weaponStick, 5); // L Bumber
 				dropGroundLoader = new ButtonTracker(Constants.weaponStick, 6); // R Bumber
 				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3); // X
 				outFloorGear = new ButtonTracker(Constants.weaponStick, 4); // Y
+				// testSwitchCam = new ButtonTracker(Constants.weaponStick, 7);
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
-				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[]
-				// { range1, range2 });
+				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[] { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
 				// agitate = new ButtonTracker(Constants.weaponStick, 4);
 				// shoot = new ButtonTracker(Constants.weaponStick, 6);
@@ -107,15 +107,13 @@ public class Robot extends IterativeRobot
 				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
 
-				// Automoves to Test, One Turns, One Moves and Turns
+				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1, poseidon));
 				a.addObject("Red Right", new ScoreFromStart(true, 2, poseidon));
 				a.addObject("Blue Left", new ScoreFromStart(false, 0, poseidon));
 				a.addObject("Blue Middle", new ScoreFromStart(false, 1, poseidon));
 				a.addObject("Blue Right", new ScoreFromStart(false, 2, poseidon));
-
-				// Temp auto moves until we fix having two sequential moves after each other
 				a.addObject("Red Left With Stage Two", new ScoreFromStartWithStageTwo(true, 0, poseidon));
 				a.addObject("Red Right With Stage Two", new ScoreFromStartWithStageTwo(true, 2, poseidon));
 				a.addObject("Blue Left With Stage Two", new ScoreFromStartWithStageTwo(false, 0, poseidon));
@@ -141,39 +139,51 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
+
 			}
 
 		/**
-		 * This function is called once each time the robot enters Disabled mode. You can use it to reset any subsystem information you want to clear when the robot is disabled.
+		 * This function is called once each time the robot enters Disabled mode. You can use it to reset any subsystem
+		 * information you want to clear when the robot is disabled.
 		 */
 		public void disabledInit()
 			{
+
+				// WHEN DISABLE ROBOT DISABLE BRAKES:
 				RobotMap.left1.enableBrakeMode(false);
 				RobotMap.left2.enableBrakeMode(false);
 				RobotMap.left3.enableBrakeMode(false);
 				RobotMap.right1.enableBrakeMode(false);
 				RobotMap.right2.enableBrakeMode(false);
 				RobotMap.right3.enableBrakeMode(false);
+
 			}
 
 		public void disabledPeriodic()
 			{
+
 				commonPeriodic();
 				Scheduler.getInstance().run();
+
 			}
 
 		/**
-		 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box below the Gyro You can add additional auto modes by adding additional commands to the chooser code above (like the commented example) or additional comparisons to the switch structure below with additional strings & commands.
+		 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes using the
+		 * dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard, remove
+		 * all of the chooser code and uncomment the getString code to get the auto name from the text box below the Gyro You can
+		 * add additional auto modes by adding additional commands to the chooser code above (like the commented example) or
+		 * additional comparisons to the switch structure below with additional strings & commands.
 		 */
 		public void autonomousInit()
 			{
+
+				// WHEN ENABLE ROBOT, ENABLE BRAKES:
 				RobotMap.left1.enableBrakeMode(true);
 				RobotMap.left2.enableBrakeMode(true);
 				RobotMap.left3.enableBrakeMode(true);
 				RobotMap.right1.enableBrakeMode(true);
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
-				// System.out.println("Auto INIT");
 
 				Auto am = (Auto) a.getSelected();
 				Auto bm = (Auto) b.getSelected();
@@ -189,6 +199,7 @@ public class Robot extends IterativeRobot
 				move = new SequentialMove(m);
 				move.init();
 				move.start();
+
 			}
 
 		/**
@@ -196,17 +207,18 @@ public class Robot extends IterativeRobot
 		 */
 		public void autonomousPeriodic()
 			{
+
 				commonPeriodic();
-
-				// System.out.println("Auto Periodic");
-				System.out.println(move);
 				move.update();
-
 				Scheduler.getInstance().run();
+
 			}
 
 		public void teleopInit()
 			{
+
+				// WHEN ENABLE ROBOT, ENABLE BRAKES:
+				RobotMap.left1.enableBrakeMode(true);
 				RobotMap.left1.enableBrakeMode(true);
 				RobotMap.left2.enableBrakeMode(true);
 				RobotMap.left3.enableBrakeMode(true);
@@ -214,14 +226,16 @@ public class Robot extends IterativeRobot
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
 
+				// AFTER AUTO AND VISION IS DONE, SWITCH CAMS -- FRONT TO BACK:
 				RobotMap.switchVisionCameras();
 
-				// This makes sure that the autonomous stops running when
-				// teleop starts running. If you want the autonomous to
-				// continue until interrupted by another command, remove
-				// this line or comment it out.
+				/*
+				 * This makes sure that the autonomous stops running when / teleop starts running. If you want the autonomous to /
+				 * continue until interrupted by another command, remove / this line or comment it out.
+				 */
 				if (move != null)
 					move.stop();
+
 			}
 
 		/**
@@ -229,12 +243,11 @@ public class Robot extends IterativeRobot
 		 */
 		public void teleopPeriodic()
 			{
+
 				commonPeriodic();
 				Scheduler.getInstance().run();
 
-				SmartDashboard.putString("Raymond Sucks", "Raymond Sucks");
-
-				// Drive
+				// SLOW MOVE DRIVE:
 				if (slowMo.isPressed())
 					{
 						RobotMap.drive.halfArcade(Constants.driveStick, true);
@@ -244,7 +257,7 @@ public class Robot extends IterativeRobot
 						RobotMap.drive.arcade(Constants.driveStick, true);
 					}
 
-				// Pneumatics
+				// PNEUMATICS:
 				if (tipHat.isPressed())
 					{
 						RobotMap.hatTip.set(true);
@@ -256,9 +269,9 @@ public class Robot extends IterativeRobot
 						RobotMap.gearPooper.set(poopGear.isPressed());
 					}
 				RobotMap.pushFaceOut.set(facePush.isPressed());
-				/*
-				 * if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased()) { rangeBasedGearScorer.stop(); }
-				 */
+
+				// if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased())
+				// {rangeBasedGearScorer.stop(); }
 
 				// RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
 
@@ -278,7 +291,7 @@ public class Robot extends IterativeRobot
 						RobotMap.floorIntake.set(0);
 					}
 
-				// Climber
+				// CLIMBER:
 				if (Math.abs(Constants.weaponStick.getY()) > .18)
 
 					{
@@ -306,39 +319,68 @@ public class Robot extends IterativeRobot
 		 */
 		public void testPeriodic()
 			{
+
 				LiveWindow.run();
+
 			}
 
-		// This is run in disabled, teleop, and auto periodics.
+		/*
+		 * This is run in disabled, teleop, and auto periodics.
+		 */
 		public void commonPeriodic()
 			{
-				// SmartDashboard.putNumber("Talon Left 1 Output Current", RobotMap.left1.getOutputCurrent());
-				// SmartDashboard.putNumber("Talon Right 1 Output Current", RobotMap.right1.getOutputCurrent());
+
+				// SmartDashboard.putNumber("Talon
+				// Left 1 Output Current",
+				// RobotMap.left1.getOutputCurrent());
+				// SmartDashboard.putNumber("Talon
+				// Right 1 Output Current",
+				// RobotMap.right1.getOutputCurrent());
 
 				// RobotMap.gearLiftFinder.computeHeadingToTarget();
 
 				// System.out.println(RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
 				// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 
-				// Show the edited video output from the camera
-				// if (!RobotMap.visionProcessingActive)
+				// Show the edited video output
+				// from the camera
+				// if
+				// (!RobotMap.visionProcessingActive)
 				// {
 				// RobotMap.gearLiftFinder.computeHeadingToTarget();
 				// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-				// SmartDashboard.putNumber("Hight Of Object In Pixels", RobotMap.gearLiftFinder.heightOfObjectInPixels);
-				// SmartDashboard.putNumber("Distance From Cam To Target IN INCHES", RobotMap.gearLiftFinder.distanceFromCamToTarget);
-				// SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				// SmartDashboard.putBoolean("We can see the target", RobotMap.gearLiftFinder.haveValidHeading());
+				// SmartDashboard.putNumber("Hight
+				// Of Object In Pixels",
+				// RobotMap.gearLiftFinder.heightOfObjectInPixels);
+				// SmartDashboard.putNumber("Distance
+				// From Cam To Target IN INCHES",
+				// RobotMap.gearLiftFinder.distanceFromCamToTarget);
+				// SmartDashboard.putNumber("Degree
+				// Offset (X)",
+				// RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
+				// SmartDashboard.putBoolean("We
+				// can see the target",
+				// RobotMap.gearLiftFinder.haveValidHeading());
 				// }
 				// else
 				// {
-				// SmartDashboard.putString("Hight Of Object In Pixels", "Processing Not Active");
-				// SmartDashboard.putString("Distance From Cam To Target IN INCHES", "Processing Not Active");
-				// SmartDashboard.putString("Degree Offset (X)", "Processing Not Active");
-				// SmartDashboard.putString("We can see the target", "Processing Not Active");
+				// SmartDashboard.putString("Hight
+				// Of Object In Pixels",
+				// "Processing Not Active");
+				// SmartDashboard.putString("Distance
+				// From Cam To Target IN INCHES",
+				// "Processing Not Active");
+				// SmartDashboard.putString("Degree
+				// Offset (X)", "Processing Not
+				// Active");
+				// SmartDashboard.putString("We
+				// can see the target",
+				// "Processing Not Active");
 				// }
 
-				// IR sensor for ground loader. Will probably remove
+				/*
+				 * IR sensor for ground loader, will probably remove
+				 */
 				if (artemis.getVoltage() > .5)
 					{
 						gotGear = true;
@@ -348,25 +390,25 @@ public class Robot extends IterativeRobot
 						gotGear = false;
 					}
 
-				// various Smart Dashboard stuff
+				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
-
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
-
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
-
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
 				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
-
-				// compass calibration. button tracker is disabled (not updated)
+				/*
+				 * compass calibration. button tracker is disabled (not updated)
+				 */
 				if (compCal1.isPressed())
 					{// && compCal2.Pressedp()) {
-						// auto cal
+						// AUTO CAL
 						tempy = poseidon.getMagX();
 						tempz = poseidon.getMagZ();
 						if (compCal1.wasJustPressed())
-							{// && compCal2.justPressedp()) {
+							{// &&
+								// compCal2.justPressedp())
+								// {
 								ymax = tempy;
 								ymin = tempy;
 								zmax = tempz;
@@ -394,12 +436,11 @@ public class Robot extends IterativeRobot
 						beta = (zmax + zmin) / 2;
 
 						poseidon.compCal(alpha, beta);
+
 					}
 
-				// updates
+				// UPDATES:
 				brakes.update();
-				// compCal1.update();
-				// compCalReset.update();
 				slowMo.update();
 				tipHat.update();
 				poopGear.update();
@@ -407,5 +448,8 @@ public class Robot extends IterativeRobot
 				intakeFloorGear.update();
 				outFloorGear.update();
 				dropGroundLoader.update();
+				// compCal1.update();
+				// compCalReset.update();
+
 			}
 	}

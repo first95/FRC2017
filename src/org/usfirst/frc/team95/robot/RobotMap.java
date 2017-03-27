@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides flexibility changing wiring, makes checking the wiring easier and significantly reduces the number of magic numbers floating around.
+ * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides flexibility
+ * changing wiring, makes checking the wiring easier and significantly reduces the number of magic numbers floating around.
  */
 public class RobotMap
 	{
@@ -55,7 +56,7 @@ public class RobotMap
 
 						smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 						cvSink = CameraServer.getInstance().getVideo();
-						
+
 						visionCamerasOn = true;
 					}
 				else
@@ -67,7 +68,7 @@ public class RobotMap
 						System.out.println("---------------------------------------------------");
 					}
 
-				// drive motors
+				// DRIVE MOTERS:
 				left1 = new AdjustedTalon(1);
 				left2 = new CANTalon(2);
 				left3 = new CANTalon(3);
@@ -92,14 +93,16 @@ public class RobotMap
 				right3.changeControlMode(CANTalon.TalonControlMode.Follower);
 				right3.set(4);
 
-				// Inversion does nothing in Follower mode. We accomplished this by reversing the polarity on the motor wires,
-				// so that setting both motors to "forward" runs the winch without the motors fighting each other.
+				/*
+				 * Inversion does nothing in Follower mode. We accomplished this by reversing the polarity on the motor wires, so
+				 * that setting both motors to "forward" runs the winch without the motors fighting each other.
+				 */
 				gearPooper = new Solenoid(2);
 				hatTip = new Solenoid(1);
 				pushFaceOut = new Solenoid(0);
-				// andyBooper9000 = new Solenoid(4);
 				lowerFloorLifter = new Solenoid(4);
 				brakes = new Solenoid(3);
+				// andyBooper9000 = new Solenoid(4);
 
 				left1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 				right1.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
@@ -115,6 +118,7 @@ public class RobotMap
 				right2.enableBrakeMode(true);
 				right3.enableBrakeMode(true);
 				// winchRight.enableBrakeMode(true);
+				
 			}
 
 		public static void switchVisionCameras()
@@ -132,17 +136,17 @@ public class RobotMap
 						System.out.println("----------------------");
 						System.out.println("- First Cam Disabled -");
 						System.out.println("----------------------");
-						
+
 						if (secondCamOn == false)
 							{
 								System.out.println("-------------------------------------");
 								System.out.println("- Attempting To Activate Second Cam -");
 								System.out.println("-------------------------------------");
-								
+
 								myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video0");
 								myCam2.setResolution(640, 480);
 								myCam2.setFPS(30);
-								
+
 								System.out.println("---------------------");
 								System.out.println("- Second Cam Enabled -");
 								System.out.println("---------------------");
@@ -150,10 +154,10 @@ public class RobotMap
 						myCam2.setFPS(30);
 						myCam2.setResolution(640, 480);
 						secondCamOn = true;
-						
+
 						System.out.println("---------------------");
 						System.out.println("- Second Cam Enabled -");
-						System.out.println("---------------------");						
+						System.out.println("---------------------");
 					}
 				else if (secondCamOn == true)
 					{
@@ -163,7 +167,7 @@ public class RobotMap
 						System.out.println("-----------------------");
 						System.out.println("- Second Cam Disabled -");
 						System.out.println("-----------------------");
-						
+
 						myCam.setFPS(30);
 						myCam.setResolution(640, 480);
 						firstCamOn = true;
