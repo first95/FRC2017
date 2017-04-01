@@ -54,6 +54,7 @@ public class SequentialMove extends Auto
 							}
 						else
 							{
+								succeeded = moves[moveNum].succeeded();
 								done = true;
 								stop();
 							}
