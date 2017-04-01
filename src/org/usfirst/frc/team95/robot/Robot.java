@@ -382,17 +382,7 @@ public class Robot extends IterativeRobot
 				// "Processing Not Active");
 				// }
 
-				/*
-				 * IR sensor for ground loader, will probably remove
-				 */
-				if (artemis.getVoltage() > .5)
-					{
-						gotGear = true;
-					}
-				else
-					{
-						gotGear = false;
-					}
+				
 
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);

@@ -1,5 +1,10 @@
 package org.usfirst.frc.team95.robot;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Queue;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -21,7 +26,7 @@ public class AdjustedTalon extends CANTalon
 		static final double MAX_ATTENV = 0.95;
 		static final double SLOPEV = ((MAX_ATTENV - MIN_ATTENV) / (MAX_VOLTAGE - MIN_VOLTAGE));
 		static final double INTERCEPTV = (MIN_ATTENV - (SLOPEV * MIN_VOLTAGE));
-
+		Queue<Double> voltageRec = (Queue<Double>) Arrays.asList(12.0);
 		public AdjustedTalon(int deviceNumber)
 			{
 				super(deviceNumber);
@@ -43,7 +48,14 @@ public class AdjustedTalon extends CANTalon
 				double current = super.getOutputCurrent();
 				double voltage = panel.getVoltage();
 				double newAtten;
-
+				
+				voltageRec.add(voltage);
+				if (voltageRec.size() > 3) {
+					voltageRec.remove();
+				}
+				
+				voltage = Collections.min(voltageRec);
+				
 				if (rate < 0.0)
 					{
 						rate *= BACKWARDS_MULTIPLIER;
