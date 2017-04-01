@@ -2,6 +2,7 @@ package org.usfirst.frc.team95.robot;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -26,7 +27,7 @@ public class AdjustedTalon extends CANTalon
 		static final double MAX_ATTENV = 0.95;
 		static final double SLOPEV = ((MAX_ATTENV - MIN_ATTENV) / (MAX_VOLTAGE - MIN_VOLTAGE));
 		static final double INTERCEPTV = (MIN_ATTENV - (SLOPEV * MIN_VOLTAGE));
-		Queue<Double> voltageRec = (Queue<Double>) Arrays.asList(12.0);
+		Queue<Double> voltageRec = new LinkedList<Double>();
 		public AdjustedTalon(int deviceNumber)
 			{
 				super(deviceNumber);
