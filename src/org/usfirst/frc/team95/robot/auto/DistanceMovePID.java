@@ -53,10 +53,10 @@ public class DistanceMovePID extends Auto
 				SmartDashboard.putNumber("errorL", errorL);
 				SmartDashboard.putNumber("errorR", errorR);
 				
-				errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
+				errorL = distanceL - (RobotMap.left1.getEncPosition()  / Constants.encoderTickPerFoot);
 				errorR = distanceR + (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
 
-				left = P * errorL;
+				left  = P * errorL;
 				right = P * errorR;
 
 				// newTime = timer.get();
@@ -73,41 +73,13 @@ public class DistanceMovePID extends Auto
 				// left += D * slopeL;
 				// //right += D * slopeR;
 
-				if (left > .3)
-					{
-						left = .3;
-					}
-				else if (left < -.3)
-					{
-						left = -.3;
-					}
+				left  = Math.min(0.3, Math.max(-0.3, left ));
+				right = Math.min(0.3, Math.max(-0.3, right));
 
-				if (right > .3)
-					{
-						right = .3;
-					}
-				else if (right < -.3)
-					{
-						right = -.3;
-					}
-				/*
-				 * if (right > 1) { right = 1; } else if (right < -1) { right = -1; }
-				 */
 
-				if (left > (prevSpeedL + .02))
-					{
-						left = prevSpeedL + .02;
-					}
-
-				if (right > (prevSpeedR + .02))
-					{
-						right = prevSpeedR + .02;
-					}
-
-				// Because of drift this fixes it
-				right *= .965;
-
-				// right = left;
+				left  = Math.min((prevSpeedL + .02),  left );
+				right = Math.min((prevSpeedL + .02),  right);
+				
 				RobotMap.drive.tank(-left, -right);
 
 				// prevErrorL = errorL;
