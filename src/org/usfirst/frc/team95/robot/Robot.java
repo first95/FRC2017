@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -51,13 +52,13 @@ public class Robot extends IterativeRobot
 
 		Auto move;
 		SendableChooser a, b, c;
-
+		Timer cycleTimer;
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
 		 */
 		public void robotInit()
 			{
-
+				cycleTimer = new Timer();
 				alpha = 0;
 				beta = 0;
 
@@ -216,7 +217,8 @@ public class Robot extends IterativeRobot
 
 		public void teleopInit()
 			{
-
+				cycleTimer.reset();
+				cycleTimer.start();
 				// WHEN ENABLE ROBOT, ENABLE BRAKES:
 				RobotMap.left1.enableBrakeMode(true);
 				RobotMap.left1.enableBrakeMode(true);
@@ -243,7 +245,7 @@ public class Robot extends IterativeRobot
 		 */
 		public void teleopPeriodic()
 			{
-
+				
 				commonPeriodic();
 				Scheduler.getInstance().run();
 
@@ -304,13 +306,15 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
-				if (testSwitchCam.isPressed())
-					{
-
-						System.out.println("TRYING TO CLOSE CAM");
-						RobotMap.switchVisionCameras();
-
-					}
+//				if (testSwitchCam.isPressed())
+//					{
+//
+//						System.out.println("TRYING TO CLOSE CAM");
+//						RobotMap.switchVisionCameras();
+//
+//					}
+				
+				System.out.println(cycleTimer.get());
 
 			}
 
