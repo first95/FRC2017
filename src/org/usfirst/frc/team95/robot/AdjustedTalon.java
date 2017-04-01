@@ -61,7 +61,10 @@ public class AdjustedTalon extends CANTalon
 						newAtten = Math.max(newAtten, MIN_ATTENV);
 						rate *= newAtten;
 						// System.out.println("Atenn" + newAtten);
+					}else {
+						newAtten = 1;
 					}
+				SmartDashboard.putNumber("Atten", newAtten);
 				/*else if (current < MAX_CURRENT)
 					{
 						newAtten = (SLOPEC * current) + INTERCEPTC;

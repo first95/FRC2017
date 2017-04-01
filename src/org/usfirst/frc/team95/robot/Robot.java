@@ -401,6 +401,9 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
 				SmartDashboard.putNumber("Beta", variableStore.GetDouble(CompassReader.compassBetaVariableName, 0));
+				SmartDashboard.putNumber("Voltage", panel.getVoltage());
+				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
+				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
 				/*
 				 * compass calibration. button tracker is disabled (not updated)
 				 */
