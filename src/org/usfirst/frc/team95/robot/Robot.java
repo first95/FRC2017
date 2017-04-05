@@ -19,7 +19,7 @@ import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
-import org.usfirst.frc.team95.robot.auto.ScoreFromStartWithStageTwo;
+import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the
@@ -33,6 +33,8 @@ public class Robot extends IterativeRobot
 		boolean moveItToTestCheck = true;
 		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
 		boolean runOnce = true;
+		double maxFloorIntakeCurrent = 0;
+		boolean gearInGroundLoader = false;
 
 		SendableChooser chooser;
 
@@ -53,6 +55,7 @@ public class Robot extends IterativeRobot
 		Auto move;
 		SendableChooser a, b, c;
 		Timer cycleTimer;
+
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
 		 */
@@ -115,14 +118,10 @@ public class Robot extends IterativeRobot
 				a.addObject("Blue Left", new ScoreFromStart(false, 0, poseidon));
 				a.addObject("Blue Middle", new ScoreFromStart(false, 1, poseidon));
 				a.addObject("Blue Right", new ScoreFromStart(false, 2, poseidon));
-				a.addObject("Red Left With Stage Two", new ScoreFromStartWithStageTwo(true, 0, poseidon));
-				a.addObject("Red Right With Stage Two", new ScoreFromStartWithStageTwo(true, 2, poseidon));
-				a.addObject("Blue Left With Stage Two", new ScoreFromStartWithStageTwo(false, 0, poseidon));
-				a.addObject("Blue Right With Stage Two", new ScoreFromStartWithStageTwo(false, 2, poseidon));
-
 				// a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
 				// a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
 				// a.addObject("Score Gear", new ScoreGear());
+				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo(poseidon));
 
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
@@ -245,7 +244,7 @@ public class Robot extends IterativeRobot
 		 */
 		public void teleopPeriodic()
 			{
-				
+
 				commonPeriodic();
 				Scheduler.getInstance().run();
 
@@ -287,6 +286,11 @@ public class Robot extends IterativeRobot
 				else if (outFloorGear.isPressed())
 					{
 						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+						
+						if (RobotMap.floorIntake.getOutputCurrent() < maxFloorIntakeCurrent)
+							{
+								gearInGroundLoader = false;
+							}
 					}
 				else
 					{
@@ -306,14 +310,14 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
-//				if (testSwitchCam.isPressed())
-//					{
-//
-//						System.out.println("TRYING TO CLOSE CAM");
-//						RobotMap.switchVisionCameras();
-//
-//					}
-				
+				// if (testSwitchCam.isPressed())
+				// {
+				//
+				// System.out.println("TRYING TO CLOSE CAM");
+				// RobotMap.switchVisionCameras();
+				//
+				// }
+
 				System.out.println(cycleTimer.get());
 
 			}
@@ -382,8 +386,6 @@ public class Robot extends IterativeRobot
 				// "Processing Not Active");
 				// }
 
-				
-
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
@@ -394,6 +396,9 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("Voltage", panel.getVoltage());
 				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
+
+				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
+
 				/*
 				 * compass calibration. button tracker is disabled (not updated)
 				 */
@@ -435,6 +440,12 @@ public class Robot extends IterativeRobot
 						poseidon.compCal(alpha, beta);
 
 					}
+
+				if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
+					{
+						gearInGroundLoader = true;
+					}
+				SmartDashboard.putBoolean("Gear In Ground Loader", gearInGroundLoader);
 
 				// UPDATES:
 				brakes.update();
