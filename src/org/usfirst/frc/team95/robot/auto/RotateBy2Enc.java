@@ -29,7 +29,7 @@ public class RotateBy2Enc extends Auto
 						RobotMap.driveLock = this;
 					}
 
-				angle *= 1.35;
+				//angle *= 1.35;
 
 				startL = RobotMap.left1.getEncPosition();
 				startR = RobotMap.right1.getEncPosition();
@@ -71,22 +71,22 @@ public class RotateBy2Enc extends Auto
 								speedL = (P * errorL) / 200;// divide to make speed value reasonable
 								speedR = (P * errorR) / 200;
 
-								if (speedL > .2)
+								if (speedL > .3)
 									{
-										speedL = .2;
+										speedL = .3;
 									}
-								else if (speedL < -.2)
+								else if (speedL < -.3)
 									{
-										speedL = -.2;
+										speedL = -.3;
 									}
 
-								if (speedR > .2)
+								if (speedR > .3)
 									{
-										speedR = .2;
+										speedR = .3;
 									}
-								else if (speedR < -.2)
+								else if (speedR < -.3)
 									{
-										speedR = -.2;
+										speedR = -.3;
 									}
 
 								if (speedL > (prevSpeedL + .08))
@@ -99,6 +99,8 @@ public class RotateBy2Enc extends Auto
 										speedR = prevSpeedR + .08;
 									}
 
+								SmartDashboard.putNumber("speedL", speedL);
+								SmartDashboard.putNumber("speedR", speedR);
 								
 								RobotMap.drive.tank(speedL, speedR);
 
