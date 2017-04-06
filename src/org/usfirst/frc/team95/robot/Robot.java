@@ -111,6 +111,9 @@ public class Robot extends IterativeRobot
 				c = new SendableChooser();
 
 				a.addDefault("None", new Nothing());
+				
+				a.addObject("Test Foot", new DistanceMovePID(1));
+				
 				a.addObject("Go Forward", new DistanceMovePID(7));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
@@ -295,10 +298,10 @@ public class Robot extends IterativeRobot
 					{
 
 						RobotMap.lowerFloorLifter.set(true);
-						System.out.println("Auto Picker Upper FloorLifter Deploy");
+						// System.out.println("Auto Picker Upper FloorLifter Deploy");
 
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
-						System.out.println("Roll Intake");
+						// System.out.println("Roll Intake");
 
 						if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
 							{
@@ -310,14 +313,14 @@ public class Robot extends IterativeRobot
 								if (gearCurrentTimer.get() > 1.2 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
 									{
 										gearInGroundLoader = true;
-										System.out.println("Gear In Gorund Loader");
+										// System.out.println("Gear In Gorund Loader");
 										gearCurrentTimer.stop();
 									}
 							}
 
 						if (gearInGroundLoader)
 							{
-								System.out.println("Shutting Off");
+								// System.out.println("Shutting Off");
 								autoGearInGroundLoaderJustRan = true;
 								RobotMap.floorIntake.set(0);
 								RobotMap.lowerFloorLifter.set(false);
@@ -472,6 +475,9 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
 
 				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
+				
+				//System.out.println("LEFT ENC: " + RobotMap.left1.getEncPosition());
+				//System.out.println("RIGHT ENC: " + RobotMap.right1.getEncPosition());
 
 				/*
 				 * compass calibration. button tracker is disabled (not updated)

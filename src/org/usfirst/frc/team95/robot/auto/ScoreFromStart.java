@@ -7,19 +7,15 @@ import org.usfirst.frc.team95.robot.RobotMap;
 public class ScoreFromStart extends SequentialMove
 	{
 		// Constants
-		private final static double BOIL_SIDE_DIST1 = (81.68 / 12) - 2;
-		private final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 2.8;
+		private final static double BOIL_SIDE_DIST1 = (69.68) / 12;
+		private final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 3;
 		private final static double CENTER_DIST1 = ((110.517 - (Constants.robotWidth / 2)) / 12) - 6;
 		private final static double CENTER_DIST2 = 0.0;
-		private final static double HOPPER_SIDE_DIST1 = (81.68 / 12) - 1.2;
-		private final static double HOPPER_SIDE_DIST2 = (67.34 / 12) - 3;
+		private final static double HOPPER_SIDE_DIST1 = (70.94 / 12);
+		private final static double HOPPER_SIDE_DIST2 = (65.06 / 12) - 3;
 		private final static double ROTATE_LEFT = (-60 * (Math.PI / 180)) * 1.35; // sign might be wrong
 		private final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
 		private final static double ROTATE_NONE = 0.0;
-
-		private final static double TEMP_BLUESIDE_HOPPER_DIST1 = ((81.68 / 12) - 6)/2.0;
-		private final static double TEMP_BLUESIDE_BOILER_DIST1 = (81.68 / 12) - 3.2;
-		private final static double TEMP_BLUESIDE_ROTATE_RIGHT = 70 * (Math.PI / 180);
 
 		// First Distance, Rotate, Second Distance
 		private double dist1, dist2, rotate;
@@ -50,9 +46,9 @@ public class ScoreFromStart extends SequentialMove
 					}
 				else if (position == 0)
 					{
-						dist1 = TEMP_BLUESIDE_BOILER_DIST1;
+						dist1 = BOIL_SIDE_DIST1;
 						dist2 = BOIL_SIDE_DIST2;
-						rotate = TEMP_BLUESIDE_ROTATE_RIGHT;
+						rotate = ROTATE_RIGHT;
 					}
 				else if (position == 1)
 					{
@@ -62,7 +58,7 @@ public class ScoreFromStart extends SequentialMove
 					}
 				else if (position == 2)
 					{
-						dist1 = TEMP_BLUESIDE_HOPPER_DIST1;
+						dist1 = HOPPER_SIDE_DIST1;
 						dist2 = HOPPER_SIDE_DIST2;
 						rotate = ROTATE_LEFT;
 					}
