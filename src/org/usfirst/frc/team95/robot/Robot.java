@@ -33,8 +33,11 @@ public class Robot extends IterativeRobot
 		boolean moveItToTestCheck = true;
 		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
 		boolean runOnce = true;
-		double maxFloorIntakeCurrent = 0;
+		double maxFloorIntakeCurrent = 2;
+		double lastKnownGearCurrent;
 		boolean gearInGroundLoader = false;
+		boolean gearInGroundLoaderAlreadyRunning = true;
+		Timer gearCurrentTimer;
 
 		SendableChooser chooser;
 
@@ -48,7 +51,7 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean gotGear;
-		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear;
+		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper;
 
 		ButtonTracker testSwitchCam;
 
@@ -61,6 +64,7 @@ public class Robot extends IterativeRobot
 		 */
 		public void robotInit()
 			{
+				gearCurrentTimer = new Timer();
 				cycleTimer = new Timer();
 				alpha = 0;
 				beta = 0;
@@ -88,6 +92,7 @@ public class Robot extends IterativeRobot
 
 				// WEAPON BUTTONS:
 				tipHat = new ButtonTracker(Constants.weaponStick, 1); // A
+				autoPickerUpper = new ButtonTracker(Constants.weaponStick, 7);
 				poopGear = new ButtonTracker(Constants.weaponStick, 2); // B
 				facePush = new ButtonTracker(Constants.weaponStick, 5); // L Bumber
 				dropGroundLoader = new ButtonTracker(Constants.weaponStick, 6); // R Bumber
@@ -279,14 +284,36 @@ public class Robot extends IterativeRobot
 				RobotMap.brakes.set(brakes.isPressed());
 
 				RobotMap.lowerFloorLifter.set(dropGroundLoader.isPressed());
+
+				if (dropGroundLoader.wasJustPressed())
+					{
+						gearInGroundLoader = false;
+					}
+
 				if (intakeFloorGear.isPressed())
 					{
+
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+
+						if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
+							{
+								if (lastKnownGearCurrent < maxFloorIntakeCurrent)
+									{
+										gearCurrentTimer.reset();
+										gearCurrentTimer.start();
+									}
+								if (gearCurrentTimer.get() > .5 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
+									{
+										gearInGroundLoader = true;
+										gearCurrentTimer.stop();
+									}
+							}
+
 					}
 				else if (outFloorGear.isPressed())
 					{
 						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
-						
+
 						if (RobotMap.floorIntake.getOutputCurrent() < maxFloorIntakeCurrent)
 							{
 								gearInGroundLoader = false;
@@ -295,6 +322,44 @@ public class Robot extends IterativeRobot
 				else
 					{
 						RobotMap.floorIntake.set(0);
+					}
+
+				if (autoPickerUpper.isPressed())
+					{
+
+						if (gearInGroundLoaderAlreadyRunning)
+							{
+								RobotMap.lowerFloorLifter.set(true);
+								gearInGroundLoaderAlreadyRunning = false;
+							}
+
+						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+
+						if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
+							{
+								if (lastKnownGearCurrent < maxFloorIntakeCurrent)
+									{
+										gearCurrentTimer.reset();
+										gearCurrentTimer.start();
+									}
+								if (gearCurrentTimer.get() > 999 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
+									{
+										gearInGroundLoader = true;
+										gearCurrentTimer.stop();
+									}
+							}
+
+						if (gearInGroundLoader)
+							{
+								RobotMap.floorIntake.set(0);
+								RobotMap.lowerFloorLifter.set(false);
+
+								gearInGroundLoaderAlreadyRunning = true;
+							}
+						else
+							{
+								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+							}
 					}
 
 				// CLIMBER:
@@ -319,6 +384,7 @@ public class Robot extends IterativeRobot
 				// }
 
 				System.out.println(cycleTimer.get());
+				lastKnownGearCurrent = RobotMap.floorIntake.getOutputCurrent();
 
 			}
 
@@ -441,10 +507,6 @@ public class Robot extends IterativeRobot
 
 					}
 
-				if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
-					{
-						gearInGroundLoader = true;
-					}
 				SmartDashboard.putBoolean("Gear In Ground Loader", gearInGroundLoader);
 
 				// UPDATES:
