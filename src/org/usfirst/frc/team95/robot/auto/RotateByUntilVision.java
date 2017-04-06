@@ -5,12 +5,12 @@ import org.usfirst.frc.team95.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class RotateBy2Enc extends Auto
+public class RotateByUntilVision extends Auto
 	{
 		double angle, startL, startR, desiredL, desiredR, errorL, errorR, P, speedL, speedR, prevSpeedL, prevSpeedR;
 		boolean done = false;
 
-		public RotateBy2Enc(double angle)
+		public RotateByUntilVision(double angle)
 			{
 				this.angle = angle;
 			}
@@ -24,12 +24,17 @@ public class RotateBy2Enc extends Auto
 		@Override
 		public void start()
 			{
+				
+				RobotMap.visionProcessingInit();
+				
+				
+				
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
 					}
 
-				// angle *= 1.35;
+				//angle *= 1.35;
 
 				startL = RobotMap.left1.getEncPosition();
 				startR = RobotMap.right1.getEncPosition();
@@ -52,99 +57,43 @@ public class RotateBy2Enc extends Auto
 		@Override
 		public void update()
 			{
-
+				
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
+				
 				SmartDashboard.putNumber("errorL", errorL);
 				SmartDashboard.putNumber("errorR", errorR);
-
+				
 				if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done)
 					{
 						RobotMap.driveLock = this;
-						if (Math.abs(errorL) <= Constants.encTicksPerRadian * .04 && Math.abs(errorR) <= Constants.encTicksPerRadian * .04)
+						if (RobotMap.gearLiftFinder.haveValidHeading())
 							{
 								done = true;
 							}
-						else if (Math.abs(errorL) <= Constants.encTicksPerRadian * .04)
-							{
-
-								errorR = desiredR - RobotMap.right1.getEncPosition();
-
-								speedR = (P * errorR) / 200;
-
-								if (speedR > .3)
-									{
-										speedR = .3;
-									}
-								else if (speedR < -.3)
-									{
-										speedR = -.3;
-									}
-
-								if (speedR > (prevSpeedR + .08))
-									{
-										speedR = prevSpeedR + .08;
-									}
-
-								SmartDashboard.putNumber("speedR", speedR);
-
-								RobotMap.drive.tank(0, speedR);
-
-								prevSpeedR = speedR;
-
-							}
-						else if (Math.abs(errorR) <= Constants.encTicksPerRadian * .04)
-							{
-								errorL = desiredL + RobotMap.left1.getEncPosition();
-
-								speedL = (P * errorL) / 200;// divide to make speed value reasonable
-
-								if (speedL > .3)
-									{
-										speedL = .3;
-									}
-								else if (speedL < -.3)
-									{
-										speedL = -.3;
-									}
-
-
-								if (speedL > (prevSpeedL + .08))
-									{
-										speedL = prevSpeedL + .08;
-									}
-
-
-								SmartDashboard.putNumber("speedL", speedL);
-
-								RobotMap.drive.tank(speedL, 0);
-
-								prevSpeedL = speedL;
-							
-
-							}
 						else
-							{
+							{	
 								errorL = desiredL + RobotMap.left1.getEncPosition();
 								errorR = desiredR - RobotMap.right1.getEncPosition();
 
 								speedL = (P * errorL) / 200;// divide to make speed value reasonable
 								speedR = (P * errorR) / 200;
 
-								if (speedL > .3)
+								if (speedL > .4)
 									{
-										speedL = .3;
+										speedL = .4;
 									}
-								else if (speedL < -.3)
+								else if (speedL < -.4)
 									{
-										speedL = -.3;
+										speedL = -.4;
 									}
 
-								if (speedR > .3)
+								if (speedR > .4)
 									{
-										speedR = .3;
+										speedR = .4;
 									}
-								else if (speedR < -.3)
+								else if (speedR < -.4)
 									{
-										speedR = -.3;
+										speedR = -.4;
 									}
 
 								if (speedL > (prevSpeedL + .08))
@@ -156,25 +105,19 @@ public class RotateBy2Enc extends Auto
 									{
 										speedR = prevSpeedR + .08;
 									}
-
-								SmartDashboard.putNumber("speedL", speedL);
-								SmartDashboard.putNumber("speedR", speedR);
-
+								
 								RobotMap.drive.tank(speedL, speedR);
 
 								prevSpeedL = speedL;
 								prevSpeedR = speedR;
 							}
 					}
-
+			
 			}
 
 		@Override
 		public void stop()
 			{
-				
-				RobotMap.stopVisionProcessing();
-				
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);
