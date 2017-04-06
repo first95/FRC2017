@@ -112,7 +112,7 @@ public class Robot extends IterativeRobot
 
 				a.addDefault("None", new Nothing());
 				
-				a.addObject("Test Foot", new DistanceMovePID(1));
+				a.addObject("Test Foot", new DistanceMovePID((69.68) / 12));
 				
 				a.addObject("Go Forward", new DistanceMovePID(7));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
