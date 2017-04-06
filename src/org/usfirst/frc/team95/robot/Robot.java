@@ -36,7 +36,7 @@ public class Robot extends IterativeRobot
 		double maxFloorIntakeCurrent = 2;
 		double lastKnownGearCurrent;
 		boolean gearInGroundLoader = false;
-		boolean gearInGroundLoaderAlreadyRunning = true;
+		boolean autoGearInGroundLoaderJustRan = false;
 		Timer gearCurrentTimer;
 
 		SendableChooser chooser;
@@ -283,57 +283,22 @@ public class Robot extends IterativeRobot
 
 				RobotMap.brakes.set(brakes.isPressed());
 
-				RobotMap.lowerFloorLifter.set(dropGroundLoader.isPressed());
-
-				if (dropGroundLoader.wasJustPressed())
+				if (autoPickerUpper.wasJustReleased())
 					{
-						gearInGroundLoader = false;
-					}
-
-				if (intakeFloorGear.isPressed())
-					{
-
-						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
-
-						if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
-							{
-								if (lastKnownGearCurrent < maxFloorIntakeCurrent)
-									{
-										gearCurrentTimer.reset();
-										gearCurrentTimer.start();
-									}
-								if (gearCurrentTimer.get() > .5 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
-									{
-										gearInGroundLoader = true;
-										gearCurrentTimer.stop();
-									}
-							}
-
-					}
-				else if (outFloorGear.isPressed())
-					{
-						RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
-
-						if (RobotMap.floorIntake.getOutputCurrent() < maxFloorIntakeCurrent)
-							{
-								gearInGroundLoader = false;
-							}
-					}
-				else
-					{
+						autoGearInGroundLoaderJustRan = false;
+						RobotMap.lowerFloorLifter.set(false);
 						RobotMap.floorIntake.set(0);
+						gearCurrentTimer.stop();
 					}
 
-				if (autoPickerUpper.isPressed())
+				if (autoPickerUpper.isPressed() && !autoGearInGroundLoaderJustRan)
 					{
 
-						if (gearInGroundLoaderAlreadyRunning)
-							{
-								RobotMap.lowerFloorLifter.set(true);
-								gearInGroundLoaderAlreadyRunning = false;
-							}
+						RobotMap.lowerFloorLifter.set(true);
+						System.out.println("Auto Picker Upper FloorLifter Deploy");
 
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+						System.out.println("Roll Intake");
 
 						if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
 							{
@@ -342,24 +307,67 @@ public class Robot extends IterativeRobot
 										gearCurrentTimer.reset();
 										gearCurrentTimer.start();
 									}
-								if (gearCurrentTimer.get() > 999 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
+								if (gearCurrentTimer.get() > 1.2 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
 									{
 										gearInGroundLoader = true;
+										System.out.println("Gear In Gorund Loader");
 										gearCurrentTimer.stop();
 									}
 							}
 
 						if (gearInGroundLoader)
 							{
+								System.out.println("Shutting Off");
+								autoGearInGroundLoaderJustRan = true;
 								RobotMap.floorIntake.set(0);
 								RobotMap.lowerFloorLifter.set(false);
+							}
+					}
+				else
+					{
 
-								gearInGroundLoaderAlreadyRunning = true;
+						if (intakeFloorGear.isPressed())
+							{
+
+								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+
+								if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
+									{
+										if (lastKnownGearCurrent < maxFloorIntakeCurrent)
+											{
+												gearCurrentTimer.reset();
+												gearCurrentTimer.start();
+											}
+										if (gearCurrentTimer.get() > .8 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
+											{
+												gearInGroundLoader = true;
+												gearCurrentTimer.stop();
+											}
+									}
+
+							}
+						else if (outFloorGear.isPressed())
+							{
+								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
+
+								if (RobotMap.floorIntake.getOutputCurrent() < maxFloorIntakeCurrent)
+									{
+										gearInGroundLoader = false;
+									}
 							}
 						else
 							{
-								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
+								RobotMap.floorIntake.set(0);
 							}
+
+						RobotMap.lowerFloorLifter.set(dropGroundLoader.isPressed());
+
+						if (dropGroundLoader.wasJustPressed())
+							{
+								autoGearInGroundLoaderJustRan = false;
+								gearInGroundLoader = false;
+							}
+
 					}
 
 				// CLIMBER:
@@ -383,7 +391,7 @@ public class Robot extends IterativeRobot
 				//
 				// }
 
-				System.out.println(cycleTimer.get());
+				// System.out.println(cycleTimer.get());
 				lastKnownGearCurrent = RobotMap.floorIntake.getOutputCurrent();
 
 			}
