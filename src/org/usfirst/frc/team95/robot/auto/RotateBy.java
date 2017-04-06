@@ -69,6 +69,7 @@ public class RotateBy extends Auto
 									{
 										error = desired - RobotMap.right1.getEncPosition();
 									}
+								
 								speed = (P * error) / 200;// divide to make speed value reasonable
 								if (speed > .5)
 									{

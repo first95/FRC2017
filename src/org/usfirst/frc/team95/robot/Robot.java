@@ -16,6 +16,7 @@ import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
 import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
+import org.usfirst.frc.team95.robot.auto.RotateBy2Enc;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
@@ -112,7 +113,9 @@ public class Robot extends IterativeRobot
 
 				a.addDefault("None", new Nothing());
 				
-				a.addObject("Test Foot", new DistanceMovePID((69.68) / 12));
+				a.addObject("Test Go Forward", new DistanceMovePID((69.68) / 12));
+				a.addObject("Test Rotate, left", new RotateBy(-60 * (Math.PI / 180)));
+				a.addObject("Test 2Enc Rotate", new RotateBy2Enc(-60 * (Math.PI / 180)));
 				
 				a.addObject("Go Forward", new DistanceMovePID(7));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
