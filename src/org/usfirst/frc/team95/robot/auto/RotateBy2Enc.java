@@ -40,7 +40,7 @@ public class RotateBy2Enc extends Auto
 				prevSpeedL = 0;
 				prevSpeedR = 0;
 
-				errorL = desiredL - RobotMap.left1.getEncPosition();
+				errorL = desiredL + RobotMap.left1.getEncPosition();
 				errorR = desiredR - RobotMap.right1.getEncPosition();
 
 				speedL = P * errorL;
@@ -65,7 +65,7 @@ public class RotateBy2Enc extends Auto
 							}
 						else
 							{	
-								errorL = desiredL - RobotMap.left1.getEncPosition();
+								errorL = desiredL + RobotMap.left1.getEncPosition();
 								errorR = desiredR - RobotMap.right1.getEncPosition();
 
 								speedL = (P * errorL) / 200;// divide to make speed value reasonable
