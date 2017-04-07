@@ -84,6 +84,8 @@ public class RobotMap
 				// agitator = new CANTalon(9);
 				// shooter = new CANTalon(11);
 
+				compressor = new Compressor();
+				
 				floorIntake = new CANTalon(9);
 				drive = new Drive(left1, right1);
 				left2.changeControlMode(CANTalon.TalonControlMode.Follower);

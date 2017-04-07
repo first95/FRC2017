@@ -48,9 +48,7 @@ public class Robot extends IterativeRobot
 		double dist;
 		Double[] angleRec;
 		boolean gotGear, compressorMode;
-		ButtonTracker compCal1, compCalReset, slowMo, brakes,
-		tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear,
-		outFloorGear, autoPickerUpper, disableCompressor;
+		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper, disableCompressor;
 		Auto move;
 		SendableChooser a, b, c;
 		Timer cycleTimer;
@@ -111,13 +109,13 @@ public class Robot extends IterativeRobot
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
-				
+
 				a.addObject("Test - Go Forward", new DistanceMovePID((69.68) / 12));
 				a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
 				a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision(-60 * (Math.PI / 180)));
 				// a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear());
-				
+
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1, poseidon));
@@ -125,7 +123,7 @@ public class Robot extends IterativeRobot
 				a.addObject("Blue Left", new ScoreFromStart(false, 0, poseidon));
 				a.addObject("Blue Middle", new ScoreFromStart(false, 1, poseidon));
 				a.addObject("Blue Right", new ScoreFromStart(false, 2, poseidon));
-				
+
 				// SENDABLE CHOSER TWO:
 				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo(poseidon));
 				b.addDefault("None", new Nothing());
@@ -201,7 +199,8 @@ public class Robot extends IterativeRobot
 				picked += bm.getClass().getName() + ", ";
 				picked += cm.getClass().getName();
 				DriverStation.reportError(picked, false);
-				Auto[] m = { am, bm, cm };
+				Auto[] m =
+					{ am, bm, cm };
 				move = new SequentialMove(m);
 				move.init();
 				move.start();
@@ -222,7 +221,7 @@ public class Robot extends IterativeRobot
 
 		public void teleopInit()
 			{
-				
+
 				// WHEN ENABLE ROBOT, ENABLE BRAKES:
 				RobotMap.left1.enableBrakeMode(true);
 				RobotMap.left1.enableBrakeMode(true);
@@ -231,7 +230,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right1.enableBrakeMode(true);
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
-				
+
 				// AFTER AUTO AND VISION IS DONE, SWITCH CAMS -- FRONT TO BACK:
 				RobotMap.switchVisionCameras();
 
@@ -274,7 +273,7 @@ public class Robot extends IterativeRobot
 						RobotMap.hatTip.set(false);
 						RobotMap.gearPooper.set(poopGear.isPressed());
 					}
-				
+
 				// PUSH FACE:
 				RobotMap.pushFaceOut.set(facePush.isPressed());
 
@@ -379,14 +378,37 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
-				if (disableCompressor.wasJustPressed()) {
-					compressorMode = !compressorMode;
-				}
-				if (compressorMode) {
-					RobotMap.compressor.start();
-				}else {
-					RobotMap.compressor.stop();
-				}
+				if (disableCompressor.wasJustPressed())
+					{
+						System.out.println("Compressor Button PRESSED!");
+						compressorMode = !compressorMode;
+					}
+				if (compressorMode)
+					{
+						System.out.println("Attempting To Enable");
+						if (!RobotMap.compressor.enabled())
+							{
+								RobotMap.compressor.start();
+								System.out.println("Compressor Enabled");
+							}
+						else
+							{
+								System.out.println("Compressor Already On");
+							}
+					}
+				else
+					{
+						System.out.println("Attempting To Disable Compressor");
+						if (RobotMap.compressor.enabled())
+							{
+								RobotMap.compressor.stop();
+								System.out.println("Compressor Disabled");
+							}
+						else
+							{
+								System.out.println("Compressor Already Off");
+							}
+					}
 				lastKnownGearCurrent = RobotMap.floorIntake.getOutputCurrent();
 
 			}
@@ -409,7 +431,7 @@ public class Robot extends IterativeRobot
 
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
-				SmartDashboard.putBoolean("Compressor", RobotMap.compressor.enabled());
+				SmartDashboard.putBoolean("Compressor", compressorMode);
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
@@ -419,6 +441,7 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
 				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
+				System.out.println(RobotMap.compressor.enabled());
 
 				/*
 				 * Compass calibration. button tracker is disabled (not updated)
@@ -474,6 +497,6 @@ public class Robot extends IterativeRobot
 				intakeFloorGear.update();
 				outFloorGear.update();
 				dropGroundLoader.update();
-				
+
 			}
 	}
