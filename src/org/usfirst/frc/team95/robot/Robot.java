@@ -111,11 +111,12 @@ public class Robot extends IterativeRobot
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
+				
 				a.addObject("Test - Go Forward", new DistanceMovePID((69.68) / 12));
 				a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
 				a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision(-60 * (Math.PI / 180)));
-				a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear());
+				// a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear());
 				
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
