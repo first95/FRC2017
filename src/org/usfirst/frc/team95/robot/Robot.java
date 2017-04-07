@@ -64,6 +64,8 @@ public class Robot extends IterativeRobot
 				beta = 0;
 
 				RobotMap.init();
+				
+				//RobotMap.visionProcessingInit();
 
 				chooser = new SendableChooser();
 				SmartDashboard.putData("Auto mode", chooser);
@@ -380,21 +382,21 @@ public class Robot extends IterativeRobot
 
 				if (disableCompressor.wasJustPressed())
 					{
-						System.out.println("Compressor Button PRESSED!");
+						//System.out.println("Compressor Button PRESSED!");
 						compressorMode = !compressorMode;
 					}
 
 				if (compressorMode)
 					{
-						System.out.println("Attempting To Enable");
+						//System.out.println("Attempting To Enable");
 						if (!RobotMap.compressor.enabled())
 							{
 								RobotMap.compressor.start();
-								System.out.println("Compressor Enabled");
+								//System.out.println("Compressor Enabled");
 							}
 						else
 							{
-								System.out.println("Compressor Already On");
+								//System.out.println("Compressor Already On");
 							}
 					}
 				else
@@ -430,6 +432,9 @@ public class Robot extends IterativeRobot
 		 */
 		public void commonPeriodic()
 			{
+				
+				//RoobotMap.gearLiftFinder.computeHeadingToTarget();
+				//RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
