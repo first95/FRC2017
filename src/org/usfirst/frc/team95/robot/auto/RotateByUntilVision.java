@@ -25,7 +25,7 @@ public class RotateByUntilVision extends Auto
 		public void start()
 			{
 				
-				RobotMap.visionProcessingInit();
+				//RobotMap.visionProcessingInit();
 				
 				
 				
@@ -58,7 +58,7 @@ public class RotateByUntilVision extends Auto
 		public void update()
 			{
 				
-				RobotMap.gearLiftFinder.computeHeadingToTarget();
+				//RobotMap.gearLiftFinder.computeHeadingToTarget();
 				
 				SmartDashboard.putNumber("errorL", errorL);
 				SmartDashboard.putNumber("errorR", errorR);
@@ -68,6 +68,7 @@ public class RotateByUntilVision extends Auto
 						RobotMap.driveLock = this;
 						if (RobotMap.gearLiftFinder.haveValidHeading())
 							{
+								//RobotMap.brakes.set(true);
 								done = true;
 							}
 						else
@@ -78,22 +79,22 @@ public class RotateByUntilVision extends Auto
 								speedL = (P * errorL) / 200;// divide to make speed value reasonable
 								speedR = (P * errorR) / 200;
 
-								if (speedL > .4)
+								if (speedL > .25)
 									{
-										speedL = .4;
+										speedL = .25;
 									}
-								else if (speedL < -.4)
+								else if (speedL < -.25)
 									{
-										speedL = -.4;
+										speedL = -.25;
 									}
 
-								if (speedR > .4)
+								if (speedR > .25)
 									{
-										speedR = .4;
+										speedR = .25;
 									}
-								else if (speedR < -.4)
+								else if (speedR < -.25)
 									{
-										speedR = -.4;
+										speedR = -.25;
 									}
 
 								if (speedL > (prevSpeedL + .08))
@@ -118,6 +119,8 @@ public class RotateByUntilVision extends Auto
 		@Override
 		public void stop()
 			{
+				
+				//RobotMap.brakes.set(false);
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);
