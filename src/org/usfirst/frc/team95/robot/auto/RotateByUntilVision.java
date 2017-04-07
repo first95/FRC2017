@@ -25,16 +25,12 @@ public class RotateByUntilVision extends Auto
 		public void start()
 			{
 				
-				//RobotMap.visionProcessingInit();
-				
-				
+				RobotMap.visionProcessingInit();
 				
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
 					}
-
-				//angle *= 1.35;
 
 				startL = RobotMap.left1.getEncPosition();
 				startR = RobotMap.right1.getEncPosition();
@@ -58,7 +54,7 @@ public class RotateByUntilVision extends Auto
 		public void update()
 			{
 				
-				//RobotMap.gearLiftFinder.computeHeadingToTarget();
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
 				
 				SmartDashboard.putNumber("errorL", errorL);
 				SmartDashboard.putNumber("errorR", errorR);
@@ -68,7 +64,6 @@ public class RotateByUntilVision extends Auto
 						RobotMap.driveLock = this;
 						if (RobotMap.gearLiftFinder.haveValidHeading())
 							{
-								//RobotMap.brakes.set(true);
 								done = true;
 							}
 						else
@@ -120,7 +115,8 @@ public class RotateByUntilVision extends Auto
 		public void stop()
 			{
 				
-				//RobotMap.brakes.set(false);
+				RobotMap.stopVisionProcessing();
+				
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);

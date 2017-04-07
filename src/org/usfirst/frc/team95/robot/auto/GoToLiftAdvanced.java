@@ -35,7 +35,7 @@ public class GoToLiftAdvanced extends Auto
 		public void start()
 			{
 				System.out.println("vision start");
-				//RobotMap.visionProcessingInit();
+				RobotMap.visionProcessingInit();
 
 				done = false;
 				succeeded = false;
@@ -54,7 +54,7 @@ public class GoToLiftAdvanced extends Auto
 		public void update()
 			{
 				// System.out.println("vision update");
-				//RobotMap.gearLiftFinder.computeHeadingToTarget();
+				RobotMap.gearLiftFinder.computeHeadingToTarget();
 
 				// Should be printed by SmartDashboard
 				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());

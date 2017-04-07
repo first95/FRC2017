@@ -5,12 +5,12 @@ import org.usfirst.frc.team95.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class RotateBy2Enc extends Auto
+public class RotateByWithTwoEncoders extends Auto
 	{
 		double angle, startL, startR, desiredL, desiredR, errorL, errorR, P, speedL, speedR, prevSpeedL, prevSpeedR;
 		boolean done = false;
 
-		public RotateBy2Enc(double angle)
+		public RotateByWithTwoEncoders(double angle)
 			{
 				this.angle = angle;
 			}

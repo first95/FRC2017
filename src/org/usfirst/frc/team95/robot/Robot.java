@@ -16,9 +16,9 @@ import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
 import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
-import org.usfirst.frc.team95.robot.auto.RotateBy2Enc;
+import org.usfirst.frc.team95.robot.auto.RotateByWithTwoEncoders;
 import org.usfirst.frc.team95.robot.auto.RotateByUntilVision;
-import org.usfirst.frc.team95.robot.auto.RotateGoToLift;
+import org.usfirst.frc.team95.robot.auto.RotateAndScoreGear;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
@@ -32,32 +32,23 @@ import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
 public class Robot extends IterativeRobot
 	{
 
-		// THESE VARS ARE USED TO RUN A GOTOLIFYADVANCED AUTOMOVE ON THE PRESS OF A BUTTON -- CURRENTLY NOT BEING USED:
-		boolean moveItToTestCheck = true;
-		GoToLiftAdvanced moveItToLift = new GoToLiftAdvanced();
-		boolean runOnce = true;
-		double maxFloorIntakeCurrent = 2;
+		// Variables That Are Used In Auto Pickup Of A Ground Gear
+		Timer gearCurrentTimer;
+		static final double MAX_FLOOR_INTAKE_CURRENT = 2;
 		double lastKnownGearCurrent;
 		boolean gearInGroundLoader = false;
 		boolean autoGearInGroundLoaderJustRan = false;
-		Timer gearCurrentTimer;
 
 		SendableChooser chooser;
-
 		VariableStore variableStore;
 		ADIS16448_IMU poseidon;
 		PowerDistributionPanel panel;
 		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
-
 		AnalogInput artemis;
-
 		double dist;
 		Double[] angleRec;
 		boolean gotGear;
 		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper;
-
-		ButtonTracker testSwitchCam;
-
 		Auto move;
 		SendableChooser a, b, c;
 		Timer cycleTimer;
@@ -68,17 +59,13 @@ public class Robot extends IterativeRobot
 		public void robotInit()
 			{
 				gearCurrentTimer = new Timer();
-				cycleTimer = new Timer();
+
 				alpha = 0;
 				beta = 0;
 
 				RobotMap.init();
 
-				//RobotMap.visionProcessingInit();
-				
 				chooser = new SendableChooser();
-				// chooser.addDefault("Default Auto", new ExampleCommand());
-				// chooser.addObject("My Auto", new MyAutoCommand());
 				SmartDashboard.putData("Auto mode", chooser);
 
 				artemis = new AnalogInput(0);
@@ -103,7 +90,6 @@ public class Robot extends IterativeRobot
 				dropGroundLoader = new ButtonTracker(Constants.weaponStick, 6); // R Bumber
 				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3); // X
 				outFloorGear = new ButtonTracker(Constants.weaponStick, 4); // Y
-				// testSwitchCam = new ButtonTracker(Constants.weaponStick, 7);
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[] { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
@@ -115,19 +101,18 @@ public class Robot extends IterativeRobot
 				b = new SendableChooser();
 				c = new SendableChooser();
 
+				// SENDABLE CHOSER ONE:
 				a.addDefault("None", new Nothing());
-				
-				a.addObject("Test Go Forward", new DistanceMovePID((69.68) / 12));
-				a.addObject("Test Rotate, left", new RotateBy(-60 * (Math.PI / 180)));
-				a.addObject("Test 2Enc Rotate", new RotateBy2Enc(-60 * (Math.PI / 180)));
-				a.addObject("Test Roate With Vision", new RotateByUntilVision(-60 * (Math.PI / 180)));
-				a.addObject("Test Vision Rotate + Go TO Lift", new RotateGoToLift());
-				
 				a.addObject("Go Forward", new DistanceMovePID(7));
 				a.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
-
+				a.addObject("Test - Go Forward", new DistanceMovePID((69.68) / 12));
+				a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
+				a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
+				a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision(-60 * (Math.PI / 180)));
+				a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear());
+				
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1, poseidon));
@@ -135,11 +120,9 @@ public class Robot extends IterativeRobot
 				a.addObject("Blue Left", new ScoreFromStart(false, 0, poseidon));
 				a.addObject("Blue Middle", new ScoreFromStart(false, 1, poseidon));
 				a.addObject("Blue Right", new ScoreFromStart(false, 2, poseidon));
-				// a.addObject("GoToLiftAdvanced", new GoToLiftAdvanced());
-				// a.addObject("AtLiftRotate", new AtLiftRotate(poseidon));
-				// a.addObject("Score Gear", new ScoreGear());
+				
+				// SENDABLE CHOSER TWO:
 				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo(poseidon));
-
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -147,12 +130,14 @@ public class Robot extends IterativeRobot
 				b.addObject("Left", new RotateBy(-Math.PI / 4));
 				b.addObject("Score Gear", new ScoreGear());
 
+				// SENDAZBLE CHOSER THREE:
 				c.addDefault("None", new Nothing());
 				c.addObject("Go Forward", new DistanceMove(0.3, 0.3, 5));
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
 
+				// DISPLAY CHOSERS TO DASHBOARD:
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
@@ -202,6 +187,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
 
+				// RUN SELECTED AUTO MOVE:
 				Auto am = (Auto) a.getSelected();
 				Auto bm = (Auto) b.getSelected();
 				Auto cm = (Auto) c.getSelected();
@@ -210,9 +196,7 @@ public class Robot extends IterativeRobot
 				picked += bm.getClass().getName() + ", ";
 				picked += cm.getClass().getName();
 				DriverStation.reportError(picked, false);
-				Auto[] m =
-					{ am, bm, cm };
-
+				Auto[] m = { am, bm, cm };
 				move = new SequentialMove(m);
 				move.init();
 				move.start();
@@ -233,8 +217,7 @@ public class Robot extends IterativeRobot
 
 		public void teleopInit()
 			{
-				cycleTimer.reset();
-				cycleTimer.start();
+				
 				// WHEN ENABLE ROBOT, ENABLE BRAKES:
 				RobotMap.left1.enableBrakeMode(true);
 				RobotMap.left1.enableBrakeMode(true);
@@ -243,7 +226,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right1.enableBrakeMode(true);
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
-
+				
 				// AFTER AUTO AND VISION IS DONE, SWITCH CAMS -- FRONT TO BACK:
 				RobotMap.switchVisionCameras();
 
@@ -286,15 +269,14 @@ public class Robot extends IterativeRobot
 						RobotMap.hatTip.set(false);
 						RobotMap.gearPooper.set(poopGear.isPressed());
 					}
+				
+				// PUSH FACE:
 				RobotMap.pushFaceOut.set(facePush.isPressed());
 
-				// if (facePush.wasJustPressed()) { rangeBasedGearScorer.start(); } else if (facePush.wasJustReleased())
-				// {rangeBasedGearScorer.stop(); }
-
-				// RobotMap.intake.set(-Constants.weaponStick.getRawAxis(2));
-
+				// DEPLOY BRAKES:
 				RobotMap.brakes.set(brakes.isPressed());
 
+				// GROUND GEAR HANDLER CHECK:
 				if (autoPickerUpper.wasJustReleased())
 					{
 						autoGearInGroundLoaderJustRan = false;
@@ -303,33 +285,30 @@ public class Robot extends IterativeRobot
 						gearCurrentTimer.stop();
 					}
 
+				// GROUND GEAR HANDLER:
 				if (autoPickerUpper.isPressed() && !autoGearInGroundLoaderJustRan)
 					{
 
 						RobotMap.lowerFloorLifter.set(true);
-						// System.out.println("Auto Picker Upper FloorLifter Deploy");
 
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
-						// System.out.println("Roll Intake");
 
-						if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
+						if (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT)
 							{
-								if (lastKnownGearCurrent < maxFloorIntakeCurrent)
+								if (lastKnownGearCurrent < MAX_FLOOR_INTAKE_CURRENT)
 									{
 										gearCurrentTimer.reset();
 										gearCurrentTimer.start();
 									}
-								if (gearCurrentTimer.get() > 1.2 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
+								if (gearCurrentTimer.get() > 1.2 && (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT))
 									{
 										gearInGroundLoader = true;
-										// System.out.println("Gear In Gorund Loader");
 										gearCurrentTimer.stop();
 									}
 							}
 
 						if (gearInGroundLoader)
 							{
-								// System.out.println("Shutting Off");
 								autoGearInGroundLoaderJustRan = true;
 								RobotMap.floorIntake.set(0);
 								RobotMap.lowerFloorLifter.set(false);
@@ -343,14 +322,14 @@ public class Robot extends IterativeRobot
 
 								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 
-								if (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent)
+								if (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT)
 									{
-										if (lastKnownGearCurrent < maxFloorIntakeCurrent)
+										if (lastKnownGearCurrent < MAX_FLOOR_INTAKE_CURRENT)
 											{
 												gearCurrentTimer.reset();
 												gearCurrentTimer.start();
 											}
-										if (gearCurrentTimer.get() > .8 && (RobotMap.floorIntake.getOutputCurrent() > maxFloorIntakeCurrent))
+										if (gearCurrentTimer.get() > .8 && (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT))
 											{
 												gearInGroundLoader = true;
 												gearCurrentTimer.stop();
@@ -362,7 +341,7 @@ public class Robot extends IterativeRobot
 							{
 								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
 
-								if (RobotMap.floorIntake.getOutputCurrent() < maxFloorIntakeCurrent)
+								if (RobotMap.floorIntake.getOutputCurrent() < MAX_FLOOR_INTAKE_CURRENT)
 									{
 										gearInGroundLoader = false;
 									}
@@ -395,15 +374,6 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
-				// if (testSwitchCam.isPressed())
-				// {
-				//
-				// System.out.println("TRYING TO CLOSE CAM");
-				// RobotMap.switchVisionCameras();
-				//
-				// }
-
-				// System.out.println(cycleTimer.get());
 				lastKnownGearCurrent = RobotMap.floorIntake.getOutputCurrent();
 
 			}
@@ -424,58 +394,6 @@ public class Robot extends IterativeRobot
 		public void commonPeriodic()
 			{
 
-				//RobotMap.gearLiftFinder.computeHeadingToTarget();
-				
-				//RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-				
-				// SmartDashboard.putNumber("Talon
-				// Left 1 Output Current",
-				// RobotMap.left1.getOutputCurrent());
-				// SmartDashboard.putNumber("Talon
-				// Right 1 Output Current",
-				// RobotMap.right1.getOutputCurrent());
-
-				// RobotMap.gearLiftFinder.computeHeadingToTarget();
-
-				// System.out.println(RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-
-				// Show the edited video output
-				// from the camera
-				// if
-				// (!RobotMap.visionProcessingActive)
-				// {
-				// RobotMap.gearLiftFinder.computeHeadingToTarget();
-				// RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-				// SmartDashboard.putNumber("Hight
-				// Of Object In Pixels",
-				// RobotMap.gearLiftFinder.heightOfObjectInPixels);
-				// SmartDashboard.putNumber("Distance
-				// From Cam To Target IN INCHES",
-				// RobotMap.gearLiftFinder.distanceFromCamToTarget);
-				// SmartDashboard.putNumber("Degree
-				// Offset (X)",
-				// RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
-				// SmartDashboard.putBoolean("We
-				// can see the target",
-				// RobotMap.gearLiftFinder.haveValidHeading());
-				// }
-				// else
-				// {
-				// SmartDashboard.putString("Hight
-				// Of Object In Pixels",
-				// "Processing Not Active");
-				// SmartDashboard.putString("Distance
-				// From Cam To Target IN INCHES",
-				// "Processing Not Active");
-				// SmartDashboard.putString("Degree
-				// Offset (X)", "Processing Not
-				// Active");
-				// SmartDashboard.putString("We
-				// can see the target",
-				// "Processing Not Active");
-				// }
-
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
@@ -486,14 +404,10 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("Voltage", panel.getVoltage());
 				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
-
 				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
-				
-				//System.out.println("LEFT ENC: " + RobotMap.left1.getEncPosition());
-				//System.out.println("RIGHT ENC: " + RobotMap.right1.getEncPosition());
 
 				/*
-				 * compass calibration. button tracker is disabled (not updated)
+				 * Compass calibration. button tracker is disabled (not updated)
 				 */
 				if (compCal1.isPressed())
 					{// && compCal2.Pressedp()) {
@@ -534,6 +448,7 @@ public class Robot extends IterativeRobot
 
 					}
 
+				// Display if Gear In In Ground Loader:
 				SmartDashboard.putBoolean("Gear In Ground Loader", gearInGroundLoader);
 
 				// UPDATES:
@@ -545,8 +460,6 @@ public class Robot extends IterativeRobot
 				intakeFloorGear.update();
 				outFloorGear.update();
 				dropGroundLoader.update();
-				// compCal1.update();
-				// compCalReset.update();
-
+				
 			}
 	}

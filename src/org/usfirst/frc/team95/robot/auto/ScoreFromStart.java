@@ -68,6 +68,6 @@ public class ScoreFromStart extends SequentialMove
 				RobotMap.autoRotate = rotate;
 				
 				super.SetMoves(new Auto[]
-					{ new DistanceMovePID(dist1), new RotateBy2Enc(rotate), new DistanceMovePID(dist2), new ScoreGear() });
+					{ new DistanceMovePID(dist1), new RotateAndScoreGear()});
 			}
 	}
