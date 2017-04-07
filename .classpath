@@ -29,11 +29,11 @@
 	<classpathentry kind="lib" path="libs/frc-2017/NetworkTables-sources.jar"/>
 	<classpathentry kind="lib" path="libs/frc-2017/WPILib.jar" sourcepath="libs/frc-2017/WPILib-sources.jar"/>
 	<classpathentry kind="lib" path="libs/frc-2017/WPILib-sources.jar"/>
-	<classpathentry kind="lib" path="libs/CTRE-4.4.1.9/CTRLib.jar"/>
 	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>
 	<classpathentry kind="var" path="networktables" sourcepath="networktables.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>
 	<classpathentry kind="var" path="cscore" sourcepath="cscore.sources"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
+	<classpathentry kind="lib" path="libs/CTRE-4.4.1.12/CTRLib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

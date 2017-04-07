@@ -2,17 +2,18 @@ package org.usfirst.frc.team95.robot.auto;
 
 import org.usfirst.frc.team95.robot.ADIS16448_IMU;
 import org.usfirst.frc.team95.robot.Constants;
+import org.usfirst.frc.team95.robot.RobotMap;
 
 public class ScoreFromStart extends SequentialMove
 	{
 		// Constants
-		private final static double BOIL_SIDE_DIST1 = (81.68 / 12) - 2;
-		private final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 2.8;
+		private final static double BOIL_SIDE_DIST1 = (69.68) / 12;
+		private final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 3;
 		private final static double CENTER_DIST1 = ((110.517 - (Constants.robotWidth / 2)) / 12) - 6;
 		private final static double CENTER_DIST2 = 0.0;
-		private final static double HOPPER_SIDE_DIST1 = (81.68 / 12) - 1.2;
-		private final static double HOPPER_SIDE_DIST2 = (67.34 / 12) - 3;
-		private final static double ROTATE_LEFT = (-60 * (Math.PI / 180)) * 1.5; // sign might be wrong
+		private final static double HOPPER_SIDE_DIST1 = (70.94 / 12);
+		private final static double HOPPER_SIDE_DIST2 = (65.06 / 12) - 3;
+		private final static double ROTATE_LEFT = (-60 * (Math.PI / 180)); // sign might be wrong
 		private final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
 		private final static double ROTATE_NONE = 0.0;
 
@@ -62,7 +63,11 @@ public class ScoreFromStart extends SequentialMove
 						rotate = ROTATE_LEFT;
 					}
 
+				RobotMap.autoDist1 = dist1;
+				RobotMap.autoDist2 = dist2;
+				RobotMap.autoRotate = rotate;
+				
 				super.SetMoves(new Auto[]
-					{ new DistanceMovePID(dist1), new RotateBy(rotate), new DistanceMovePID(dist2), new ScoreGear() });
+					{ new DistanceMovePID(dist1), new RotateAndScoreGear()});
 			}
 	}
