@@ -114,7 +114,7 @@ public class Robot extends IterativeRobot
 				a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
 				a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision(-60 * (Math.PI / 180)));
-				// a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear());
+				a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear(-60 * (Math.PI / 180)));
 
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
@@ -378,37 +378,39 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
-				if (disableCompressor.wasJustPressed())
-					{
-						System.out.println("Compressor Button PRESSED!");
-						compressorMode = !compressorMode;
-					}
-				if (compressorMode)
-					{
-						System.out.println("Attempting To Enable");
-						if (!RobotMap.compressor.enabled())
-							{
-								RobotMap.compressor.start();
-								System.out.println("Compressor Enabled");
-							}
-						else
-							{
-								System.out.println("Compressor Already On");
-							}
-					}
-				else
-					{
-						System.out.println("Attempting To Disable Compressor");
-						if (RobotMap.compressor.enabled())
-							{
-								RobotMap.compressor.stop();
-								System.out.println("Compressor Disabled");
-							}
-						else
-							{
-								System.out.println("Compressor Already Off");
-							}
-					}
+				// if (disableCompressor.wasJustPressed())
+				// {
+				// System.out.println("Compressor Button PRESSED!");
+				// compressorMode = !compressorMode;
+				// }
+				//
+				// if (compressorMode)
+				// {
+				// System.out.println("Attempting To Enable");
+				// if (!RobotMap.compressor.enabled())
+				// {
+				// RobotMap.compressor.start();
+				// System.out.println("Compressor Enabled");
+				// }
+				// else
+				// {
+				// System.out.println("Compressor Already On");
+				// }
+				// }
+				// else
+				// {
+				// System.out.println("Attempting To Disable Compressor");
+				// if (RobotMap.compressor.enabled())
+				// {
+				// RobotMap.compressor.stop();
+				// System.out.println("Compressor Disabled");
+				// }
+				// else
+				// {
+				// System.out.println("Compressor Already Off");
+				// }
+				// }
+
 				lastKnownGearCurrent = RobotMap.floorIntake.getOutputCurrent();
 
 			}
@@ -441,7 +443,8 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
 				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
-				System.out.println(RobotMap.compressor.enabled());
+
+				// System.out.println(RobotMap.compressor.enabled());
 
 				/*
 				 * Compass calibration. button tracker is disabled (not updated)
