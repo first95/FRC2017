@@ -47,8 +47,10 @@ public class Robot extends IterativeRobot
 		AnalogInput artemis;
 		double dist;
 		Double[] angleRec;
-		boolean gotGear;
-		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper;
+		boolean gotGear, compressorMode;
+		ButtonTracker compCal1, compCalReset, slowMo, brakes,
+		tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear,
+		outFloorGear, autoPickerUpper, disableCompressor;
 		Auto move;
 		SendableChooser a, b, c;
 		Timer cycleTimer;
@@ -73,6 +75,7 @@ public class Robot extends IterativeRobot
 				poseidon = new ADIS16448_IMU(variableStore);
 				panel = new PowerDistributionPanel();
 				gotGear = false;
+				compressorMode = true;
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// DRIVE BUTTONS:
@@ -84,12 +87,13 @@ public class Robot extends IterativeRobot
 
 				// WEAPON BUTTONS:
 				tipHat = new ButtonTracker(Constants.weaponStick, 1); // A
-				autoPickerUpper = new ButtonTracker(Constants.weaponStick, 7);
+				autoPickerUpper = new ButtonTracker(Constants.weaponStick, 7);// select
 				poopGear = new ButtonTracker(Constants.weaponStick, 2); // B
 				facePush = new ButtonTracker(Constants.weaponStick, 5); // L Bumber
 				dropGroundLoader = new ButtonTracker(Constants.weaponStick, 6); // R Bumber
 				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3); // X
 				outFloorGear = new ButtonTracker(Constants.weaponStick, 4); // Y
+				disableCompressor = new ButtonTracker(Constants.weaponStick, 8); // start
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[] { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
@@ -374,6 +378,14 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
+				if (disableCompressor.wasJustPressed()) {
+					compressorMode = !compressorMode;
+				}
+				if (compressorMode) {
+					RobotMap.compressor.start();
+				}else {
+					RobotMap.compressor.stop();
+				}
 				lastKnownGearCurrent = RobotMap.floorIntake.getOutputCurrent();
 
 			}
@@ -396,6 +408,7 @@ public class Robot extends IterativeRobot
 
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
+				SmartDashboard.putBoolean("Compressor", RobotMap.compressor.enabled());
 				SmartDashboard.putNumber("Heading", poseidon.getHeading());
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());

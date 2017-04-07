@@ -6,6 +6,7 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
@@ -37,6 +38,7 @@ public class RobotMap
 		// They should also check that the driveLock object is null prior to
 		// controlling the drive motors.
 		public static Object driveLock = null;
+		public static Compressor compressor;
 		public static Solenoid gearPooper, hatTip, pushFaceOut, brakes, lowerFloorLifter;
 
 		public static double autoDist1 = 0;
