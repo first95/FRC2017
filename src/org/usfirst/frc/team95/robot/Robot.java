@@ -378,38 +378,38 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
-				// if (disableCompressor.wasJustPressed())
-				// {
-				// System.out.println("Compressor Button PRESSED!");
-				// compressorMode = !compressorMode;
-				// }
-				//
-				// if (compressorMode)
-				// {
-				// System.out.println("Attempting To Enable");
-				// if (!RobotMap.compressor.enabled())
-				// {
-				// RobotMap.compressor.start();
-				// System.out.println("Compressor Enabled");
-				// }
-				// else
-				// {
-				// System.out.println("Compressor Already On");
-				// }
-				// }
-				// else
-				// {
-				// System.out.println("Attempting To Disable Compressor");
-				// if (RobotMap.compressor.enabled())
-				// {
-				// RobotMap.compressor.stop();
-				// System.out.println("Compressor Disabled");
-				// }
-				// else
-				// {
-				// System.out.println("Compressor Already Off");
-				// }
-				// }
+				if (disableCompressor.wasJustPressed())
+					{
+						System.out.println("Compressor Button PRESSED!");
+						compressorMode = !compressorMode;
+					}
+
+				if (compressorMode)
+					{
+						System.out.println("Attempting To Enable");
+						if (!RobotMap.compressor.enabled())
+							{
+								RobotMap.compressor.start();
+								System.out.println("Compressor Enabled");
+							}
+						else
+							{
+								System.out.println("Compressor Already On");
+							}
+					}
+				else
+					{
+						System.out.println("Attempting To Disable Compressor");
+						if (RobotMap.compressor.enabled())
+							{
+								RobotMap.compressor.stop();
+								System.out.println("Compressor Disabled");
+							}
+						else
+							{
+								System.out.println("Compressor Already Off");
+							}
+					}
 
 				lastKnownGearCurrent = RobotMap.floorIntake.getOutputCurrent();
 
@@ -492,6 +492,7 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putBoolean("Gear In Ground Loader", gearInGroundLoader);
 
 				// UPDATES:
+				disableCompressor.update();
 				brakes.update();
 				slowMo.update();
 				tipHat.update();
