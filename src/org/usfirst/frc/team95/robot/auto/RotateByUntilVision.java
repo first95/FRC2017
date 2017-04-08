@@ -105,13 +105,13 @@ public class RotateByUntilVision extends Auto
 									}
 								
 								speed = (P * error) / 200;// divide to make speed value reasonable
-								if (speed > .5)
+								if (speed > .45)
 									{
-										speed = .5;
+										speed = .45;
 									}
-								else if (speed < -.5)
+								else if (speed < -.45)
 									{
-										speed = -.5;
+										speed = -.45;
 									}
 
 								if (speed > (prevSpeed + .08))
