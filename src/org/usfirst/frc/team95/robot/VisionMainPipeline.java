@@ -32,9 +32,9 @@ public class VisionMainPipeline {
 	public void process(Mat source0) {
 		// Step HSL_Threshold0:
 		Mat hslThresholdInput = source0;
-		double[] hslThresholdHue = {71.22302158273384, 92.1212121212121};
-		double[] hslThresholdSaturation = {64.20863309352518, 255.0};
-		double[] hslThresholdLuminance = {32.10431654676259, 255.0};
+		double[] hslThresholdHue = {74.46043165467627, 89.09090909090908};
+		double[] hslThresholdSaturation = {96.96625440059259, 212.100147286284};
+		double[] hslThresholdLuminance = {27.51798561151079, 134.79797979797985};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:

@@ -21,36 +21,45 @@
       <property name="path[11]" value="C:\Users\spami\Documents\team95\2017\LED Peg\1ftH5ftD2Angle0Brightness.jpg"/>
       <property name="path[14]" value="C:\Users\spami\Documents\team95\2017\LED Peg\1ftH7ftD0Angle0Brightness.jpg"/>
     </grip:MultiImageFile>
+    <grip:MultiImageFile>
+      <property name="numImages" value="5"/>
+      <property name="path[0]" value="C:\Users\spami\Documents\team95\2017\2017-4-8 test photos from robot\visionTestFive.png"/>
+      <property name="path[1]" value="C:\Users\spami\Documents\team95\2017\2017-4-8 test photos from robot\visionTestFour.png"/>
+      <property name="index" value="4"/>
+      <property name="path[2]" value="C:\Users\spami\Documents\team95\2017\2017-4-8 test photos from robot\visionTestOne.png"/>
+      <property name="path[3]" value="C:\Users\spami\Documents\team95\2017\2017-4-8 test photos from robot\visionTestTeo.png"/>
+      <property name="path[4]" value="C:\Users\spami\Documents\team95\2017\2017-4-8 test photos from robot\visionTestThree.png"/>
+    </grip:MultiImageFile>
   </sources>
   <steps>
     <grip:Step name="HSL Threshold">
       <grip:Input step="0" socket="0"/>
       <grip:Input step="0" socket="1">
         <value>
-          <double>67.98561151079139</double>
-          <double>102.72727272727273</double>
+          <double>74.46043165467627</double>
+          <double>89.09090909090908</double>
         </value>
       </grip:Input>
       <grip:Input step="0" socket="2">
         <value>
-          <double>64.20863309352518</double>
-          <double>255.0</double>
+          <double>96.96625440059259</double>
+          <double>212.100147286284</double>
         </value>
       </grip:Input>
       <grip:Input step="0" socket="3">
         <value>
-          <double>32.10431654676259</double>
-          <double>255.0</double>
+          <double>27.51798561151079</double>
+          <double>134.79797979797985</double>
         </value>
       </grip:Input>
-      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Output step="0" socket="0" previewed="true"/>
     </grip:Step>
     <grip:Step name="Find Contours">
       <grip:Input step="1" socket="0"/>
       <grip:Input step="1" socket="1">
         <value>true</value>
       </grip:Input>
-      <grip:Output step="1" socket="0" previewed="false"/>
+      <grip:Output step="1" socket="0" previewed="true"/>
     </grip:Step>
     <grip:Step name="Convex Hulls">
       <grip:Input step="2" socket="0"/>
@@ -99,20 +108,20 @@
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="false"/>
-      <grip:Input step="1" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Output source="1" socket="0" previewed="true"/>
       <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="1" socket="0" previewed="false"/>
+      <grip:Output step="1" socket="0" previewed="true"/>
       <grip:Input step="2" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="2" socket="0" previewed="false"/>
       <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="0" socket="0" previewed="true"/>
+      <grip:Input step="1" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
