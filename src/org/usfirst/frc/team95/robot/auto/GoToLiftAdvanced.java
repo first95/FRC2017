@@ -1,29 +1,25 @@
 package org.usfirst.frc.team95.robot.auto;
 
 import org.usfirst.frc.team95.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GoToLiftAdvanced extends Auto
 	{
 
-		boolean done = false;
-		boolean succeeded = false;
-
-		double lastError;
-
+		// CONSTANTS
 		// Max and Min error that code will take before turning
 		// If Less than -.5 rotate, if greater than .5, rotate.
 		private static final double MAX_DEAD_BAND = 0.5;
 		private static final double MIN_DEAD_BAND = -0.5;
-
 		private static final double MAX_ROTATE_THROTTLE = -0.6;
 		private static final double MAX_DRIVE_THROTTLE = -0.2;
 		private static final double MAX_DRIVE_THROTTLE_WHILE_TURNING = -0.2;
-
 		private static final double MIN_DISTANCE_AWAY_STOP = 14.0;
 
 		private int checkBeforeFail = 0;
+		private boolean done = false;
+		private boolean succeeded = false;
+		private double lastError;
 
 		@Override
 		public void init()
@@ -57,7 +53,6 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void update()
 			{
-				// System.out.println("vision update");
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
@@ -123,7 +118,7 @@ public class GoToLiftAdvanced extends Auto
 				else
 					{
 						checkBeforeFail = 0;
-						
+
 						lastError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
 
 						if (RobotMap.gearLiftFinder.getDistanceFromCamToTarget() <= MIN_DISTANCE_AWAY_STOP)

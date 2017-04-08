@@ -8,15 +8,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DistanceMovePID extends Auto
 	{
-		double left, right, distanceL, errorL, prevErrorL, sumL, slopeL, P, I, D, distanceR, errorR, prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeedL, prevSpeedR;
-		boolean done = false;
-		Timer brakeTimer;
-		boolean brakeRunOnce = true;
+
+		private double mDistanceL, mDistanceR, left, right, errorL, prevErrorL, sumL, slopeL, P, I, D, errorR, prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeedL, prevSpeedR;
+		private boolean done = false;
+		private Timer brakeTimer;
+		private boolean brakeRunOnce = true;
 
 		public DistanceMovePID(double distance)
 			{
-				this.distanceL = distance;
-				this.distanceR = distance;
+				mDistanceL = distance;
+				mDistanceR = distance;
 			}
 
 		@Override
@@ -47,8 +48,8 @@ public class DistanceMovePID extends Auto
 
 				done = false;
 				brakeRunOnce = true;
-				distanceL += (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
-				distanceR -= (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
+				mDistanceL += (RobotMap.left1.getEncPosition() / Constants.ENCODER_TICKS_PER_FOOT);
+				mDistanceR -= (RobotMap.right1.getEncPosition() / Constants.ENCODER_TICKS_PER_FOOT);
 				System.out.println("dist start");
 			}
 
@@ -58,8 +59,8 @@ public class DistanceMovePID extends Auto
 				SmartDashboard.putNumber("errorL", errorL);
 				SmartDashboard.putNumber("errorR", errorR);
 
-				errorL = distanceL - (RobotMap.left1.getEncPosition() / Constants.encoderTickPerFoot);
-				errorR = distanceR + (RobotMap.right1.getEncPosition() / Constants.encoderTickPerFoot);
+				errorL = mDistanceL - (RobotMap.left1.getEncPosition() / Constants.ENCODER_TICKS_PER_FOOT);
+				errorR = mDistanceR + (RobotMap.right1.getEncPosition() / Constants.ENCODER_TICKS_PER_FOOT);
 
 				left = P * errorL;
 				right = P * errorR;
@@ -100,12 +101,12 @@ public class DistanceMovePID extends Auto
 								brakeTimer.start();
 								brakeRunOnce = false;
 							}
-						
+
 						if (brakeTimer.get() > .4)
 							{
 								brakeTimer.stop();
 								done = true;
-								
+
 							}
 
 					}

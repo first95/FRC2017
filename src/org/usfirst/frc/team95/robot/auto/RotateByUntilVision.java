@@ -5,44 +5,46 @@ import org.usfirst.frc.team95.robot.RobotMap;
 
 public class RotateByUntilVision extends Auto
 	{
-		double angle, start, desired, error, P, speed, prevSpeed;
-		boolean done = false;
-		
-		double lastError;
+
+		private double mAngle, start, desired, error, P, speed, prevSpeed;
+		private boolean done = false;
+		private double lastError;
 		private int checkBeforeFail = 0;
-		boolean succeeded = false;
+		private boolean succeeded = false;
 
 		public RotateByUntilVision(double angle)
 			{
-				this.angle = angle;
+				mAngle = angle;
 			}
 
 		@Override
 		public void init()
 			{
-				P = 0.35; // original .35
+				P = 0.35;
 			}
 
 		@Override
 		public void start()
 			{
-				
+
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
 					}
-				
+
 				// Huge Number to confirm that it will work
 				lastError = 5000;
-				
+
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
 					}
-				
-				angle *= 1.35;
-				
-				if (angle >= 0)
+
+				// Leaving This In So It Goes to Far, Allowing Us To Have Vision Stop The Turn
+				// I.E. It Doesn't Stop Short
+				mAngle *= 1.35;
+
+				if (mAngle >= 0)
 					{
 						start = RobotMap.left1.getEncPosition();
 					}
@@ -50,11 +52,11 @@ public class RotateByUntilVision extends Auto
 					{
 						start = RobotMap.right1.getEncPosition();
 					}
-				
-				desired = start + (Constants.encTicksPerRadian * angle);
+
+				desired = start + (Constants.ENCODER_TICKS_PER_RADIAN * mAngle);
 				prevSpeed = 0;
-				
-				if (angle >= 0)
+
+				if (mAngle >= 0)
 					{
 						error = desired - RobotMap.left1.getEncPosition();
 					}
@@ -62,7 +64,7 @@ public class RotateByUntilVision extends Auto
 					{
 						error = desired - RobotMap.right1.getEncPosition();
 					}
-				
+
 				speed = P * error;
 				done = false;
 			}
@@ -70,15 +72,15 @@ public class RotateByUntilVision extends Auto
 		@Override
 		public void update()
 			{
-				
+
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
 					}
-				
+
 				if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done)
 					{
-						
+
 						RobotMap.driveLock = this;
 
 						if (RobotMap.gearLiftFinder.haveValidHeading())
@@ -92,10 +94,10 @@ public class RotateByUntilVision extends Auto
 							}
 						else
 							{
-								
+
 								checkBeforeFail = 0;
-								
-								if (angle >= 0)
+
+								if (mAngle >= 0)
 									{
 										error = desired - RobotMap.left1.getEncPosition();
 									}
@@ -103,15 +105,17 @@ public class RotateByUntilVision extends Auto
 									{
 										error = desired - RobotMap.right1.getEncPosition();
 									}
-								
-								speed = (P * error) / 200;// divide to make speed value reasonable
-								if (speed > .45)
+
+								// divide to make speed value reasonable
+								speed = (P * error) / 200;
+
+								if (speed > .15)
 									{
-										speed = .45;
+										speed = .15;
 									}
-								else if (speed < -.45)
+								else if (speed < -.15)
 									{
-										speed = -.45;
+										speed = -.15;
 									}
 
 								if (speed > (prevSpeed + .08))
@@ -129,12 +133,12 @@ public class RotateByUntilVision extends Auto
 		@Override
 		public void stop()
 			{
-				
+
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.stopVisionProcessing();
 					}
-				
+
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);
@@ -142,18 +146,18 @@ public class RotateByUntilVision extends Auto
 					}
 
 				// DO NOT DELETE PLEASE
-				System.out.println("TESTER");
+				System.out.println("-- Rotate Done --");
+			}
+
+		private double sign(double a)
+			{
+				return a < 0 ? -1 : 1;
 			}
 
 		@Override
 		public boolean isDone()
 			{
 				return done;
-			}
-
-		double sign(double a)
-			{
-				return a < 0 ? -1 : 1;
 			}
 
 		@Override

@@ -4,18 +4,20 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class Constants
 	{
-		public static double joystickDeadbandV = 0.07;
-		public static double joystickDeadbandH = 0.05;
-		public static Joystick driveStick = new Joystick(0);
-		public static Joystick weaponStick = new Joystick(1);
-		public static double poseidonNorthVal = 2.751;
-		public static double encoderTickPerFoot = 1002;
-		public static double encTicksPerRadian = 1110;
-		public static double robotWidth = 34.7;
-		public static double visionLength = 3;
-		public static double FLOOR_INTAKE_THROTTLE = 0.7;
+		
+		public final static double MAX_FLOOR_INTAKE_CURRENT = 2;
+		public final static double JOYSTICK_DEADBAND_V = 0.07;
+		public final static double JOYSTICK_HEADBAND_H = 0.05;
+		public final static Joystick DRIVE_STICK = new Joystick(0);
+		public final static Joystick WEAPON_STICK = new Joystick(1);
+		public final static double POSEIDON_NORTH_VAL = 2.751;
+		public final static double ENCODER_TICKS_PER_FOOT = 1002;
+		public final static double ENCODER_TICKS_PER_RADIAN = 1110;
+		public final static double ROBOT_WIDTH = 34.7;
+		public final static double VISION_LENGTH = 3;
+		public final static double FLOOR_INTAKE_THROTTLE = 0.7;
 
-		public static double RFVoltsToFt(double voltage)
+		public final static double RFVoltsToFt(double voltage)
 			{
 				double distance;
 				// Sonar Range finder based on data sheet almost acurrate

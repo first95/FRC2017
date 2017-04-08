@@ -1,6 +1,5 @@
 package org.usfirst.frc.team95.robot.auto;
 
-import org.usfirst.frc.team95.robot.ADIS16448_IMU;
 import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
 
@@ -9,54 +8,61 @@ public class ScoreFromStart extends SequentialMove
 		// Constants
 		private final static double BOIL_SIDE_DIST1 = (69.68) / 12;
 		private final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 3;
-		private final static double CENTER_DIST1 = ((110.517 - (Constants.robotWidth / 2)) / 12) - 6;
+		private final static double CENTER_DIST1 = ((110.517 - (Constants.ROBOT_WIDTH / 2)) / 12) - 6;
 		private final static double CENTER_DIST2 = 0.0;
 		private final static double HOPPER_SIDE_DIST1 = (70.94 / 12);
 		private final static double HOPPER_SIDE_DIST2 = (65.06 / 12) - 3;
-		private final static double ROTATE_LEFT = (-60 * (Math.PI / 180)); // sign might be wrong
+		private final static double ROTATE_LEFT = (-60 * (Math.PI / 180));
 		private final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
 		private final static double ROTATE_NONE = 0.0;
 
 		// First Distance, Rotate, Second Distance
 		private double dist1, dist2, rotate;
+		
+		private int mPosition;
+		private boolean mRedSide;
 
 		// 0 is far left
-		public ScoreFromStart(boolean redSide, int position, ADIS16448_IMU poseidon)
+		public ScoreFromStart(boolean redSide, int position)
 			{
-				if (redSide)
+
+				mPosition = position;
+				mRedSide = redSide;
+
+				if (mRedSide)
 					{
-						if (position == 0)
+						if (mPosition == 0)
 							{
 								dist1 = HOPPER_SIDE_DIST1;
 								dist2 = HOPPER_SIDE_DIST2;
 								rotate = ROTATE_RIGHT;
 							}
-						else if (position == 1)
+						else if (mPosition == 1)
 							{
 								dist1 = CENTER_DIST1;
 								dist2 = CENTER_DIST2;
 								rotate = ROTATE_NONE;
 							}
-						else if (position == 2)
+						else if (mPosition == 2)
 							{
 								dist1 = BOIL_SIDE_DIST1;
 								dist2 = BOIL_SIDE_DIST2;
 								rotate = ROTATE_LEFT;
 							}
 					}
-				else if (position == 0)
+				else if (mPosition == 0)
 					{
 						dist1 = BOIL_SIDE_DIST1;
 						dist2 = BOIL_SIDE_DIST2;
 						rotate = ROTATE_RIGHT;
 					}
-				else if (position == 1)
+				else if (mPosition == 1)
 					{
 						dist1 = CENTER_DIST1;
 						dist2 = CENTER_DIST2;
 						rotate = ROTATE_NONE;
 					}
-				else if (position == 2)
+				else if (mPosition == 2)
 					{
 						dist1 = HOPPER_SIDE_DIST1;
 						dist2 = HOPPER_SIDE_DIST2;

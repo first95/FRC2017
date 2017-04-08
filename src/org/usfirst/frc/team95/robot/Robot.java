@@ -14,7 +14,9 @@ import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
 import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
 import org.usfirst.frc.team95.robot.auto.Nothing;
+import org.usfirst.frc.team95.robot.auto.RotateAndScoreGear;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
+import org.usfirst.frc.team95.robot.auto.RotateByUntilVision;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
@@ -29,26 +31,25 @@ public class Robot extends IterativeRobot
 	{
 
 		// Variables That Are Used In Auto Pickup Of A Ground Gear
-		Timer gearCurrentTimer;
-		static final double MAX_FLOOR_INTAKE_CURRENT = 2;
-		double lastKnownGearCurrent;
-		boolean gearInGroundLoader = false;
-		boolean autoGearInGroundLoaderJustRan = false;
+		private Timer gearCurrentTimer;
+		private double lastKnownGearCurrent;
+		private boolean gearInGroundLoader = false;
+		private boolean autoGearInGroundLoaderJustRan = false;
 
 		// Other Variables
-		SendableChooser chooser;
-		VariableStore variableStore;
-		ADIS16448_IMU poseidon;
-		PowerDistributionPanel panel;
-		double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
-		AnalogInput artemis;
-		double dist;
-		Double[] angleRec;
-		boolean gotGear, compressorMode;
-		ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper, disableCompressor;
-		Auto move;
-		SendableChooser a, b, c;
-		Timer cycleTimer;
+		private SendableChooser chooser;
+		private VariableStore variableStore;
+		private ADIS16448_IMU poseidon;
+		private PowerDistributionPanel panel;
+		private double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
+		private AnalogInput artemis;
+		private double dist;
+		private Double[] angleRec;
+		private boolean gotGear, compressorMode;
+		private ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper, disableCompressor;
+		private Auto move;
+		private SendableChooser a, b, c;
+		private Timer cycleTimer;
 
 		/**
 		 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -56,11 +57,12 @@ public class Robot extends IterativeRobot
 		public void robotInit()
 			{
 
+				// This Needs To Be Above RobotMap.init()!
+				RobotMap.debugModeEnabled = true;
+
 				RobotMap.init();
 
 				// Vision Debug Mode: This will shows the vision output on SmartDashboard if enabled
-				RobotMap.debugModeEnabled = false;
-
 				if (RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
@@ -83,21 +85,21 @@ public class Robot extends IterativeRobot
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// DRIVE BUTTONS:
-				brakes = new ButtonTracker(Constants.driveStick, 1); // A
-				slowMo = new ButtonTracker(Constants.driveStick, 6); // R Bumber
-				compCal1 = new ButtonTracker(Constants.driveStick, 7); // Select
-				compCalReset = new ButtonTracker(Constants.driveStick, 8); // Start
+				brakes = new ButtonTracker(Constants.DRIVE_STICK, 1); // A
+				slowMo = new ButtonTracker(Constants.DRIVE_STICK, 6); // R Bumber
+				compCal1 = new ButtonTracker(Constants.DRIVE_STICK, 7); // Select
+				compCalReset = new ButtonTracker(Constants.DRIVE_STICK, 8); // Start
 				// changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 
 				// WEAPON BUTTONS:
-				tipHat = new ButtonTracker(Constants.weaponStick, 1); // A
-				autoPickerUpper = new ButtonTracker(Constants.weaponStick, 7);// select
-				poopGear = new ButtonTracker(Constants.weaponStick, 2); // B
-				facePush = new ButtonTracker(Constants.weaponStick, 5); // L Bumber
-				dropGroundLoader = new ButtonTracker(Constants.weaponStick, 6); // R Bumber
-				intakeFloorGear = new ButtonTracker(Constants.weaponStick, 3); // X
-				outFloorGear = new ButtonTracker(Constants.weaponStick, 4); // Y
-				disableCompressor = new ButtonTracker(Constants.weaponStick, 8); // start
+				tipHat = new ButtonTracker(Constants.WEAPON_STICK, 1); // A
+				autoPickerUpper = new ButtonTracker(Constants.WEAPON_STICK, 7);// select
+				poopGear = new ButtonTracker(Constants.WEAPON_STICK, 2); // B
+				facePush = new ButtonTracker(Constants.WEAPON_STICK, 5); // L Bumber
+				dropGroundLoader = new ButtonTracker(Constants.WEAPON_STICK, 6); // R Bumber
+				intakeFloorGear = new ButtonTracker(Constants.WEAPON_STICK, 3); // X
+				outFloorGear = new ButtonTracker(Constants.WEAPON_STICK, 4); // Y
+				disableCompressor = new ButtonTracker(Constants.WEAPON_STICK, 8); // start
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[] { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
@@ -121,16 +123,16 @@ public class Robot extends IterativeRobot
 				// a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
 				// a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
 				// a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision2Enc(-60 * (Math.PI / 180)));
-				// a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear(-60 * (Math.PI / 180)));
-				// a.addObject("Test - Rotate Left With Vision and One Encoder", new RotateByUntilVision(-60 * (Math.PI / 180)));
+				a.addObject("Test - Rotate Right With Vision and GoToLift", new RotateAndScoreGear(60 * (Math.PI / 180)));
+				a.addObject("Test - Rotate Right With Vision and One Encoder", new RotateByUntilVision(60 * (Math.PI / 180)));
 
 				// SCORE GEARS FROM STARTING POSITION:
-				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
-				a.addObject("Red Middle", new ScoreFromStart(true, 1, poseidon));
-				a.addObject("Red Right", new ScoreFromStart(true, 2, poseidon));
-				a.addObject("Blue Left", new ScoreFromStart(false, 0, poseidon));
-				a.addObject("Blue Middle", new ScoreFromStart(false, 1, poseidon));
-				a.addObject("Blue Right", new ScoreFromStart(false, 2, poseidon));
+				a.addObject("Red Left", new ScoreFromStart(true, 0));
+				a.addObject("Red Middle", new ScoreFromStart(true, 1));
+				a.addObject("Red Right", new ScoreFromStart(true, 2));
+				a.addObject("Blue Left", new ScoreFromStart(false, 0));
+				a.addObject("Blue Middle", new ScoreFromStart(false, 1));
+				a.addObject("Blue Right", new ScoreFromStart(false, 2));
 
 				// SENDABLE CHOSER TWO:
 				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo());
@@ -240,12 +242,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right3.enableBrakeMode(true);
 
 				// AFTER AUTO AND VISION IS DONE, SWITCH CAMS -- FRONT TO BACK:
-
 				RobotMap.switchVisionCameras();
-				if (RobotMap.debugModeEnabled)
-					{
-						RobotMap.switchVisionCameras();
-					}
 
 				/*
 				 * This makes sure that the autonomous stops running when / teleop starts running. If you want the autonomous to /
@@ -268,11 +265,11 @@ public class Robot extends IterativeRobot
 				// SLOW MOVE DRIVE:
 				if (slowMo.isPressed())
 					{
-						RobotMap.drive.halfArcade(Constants.driveStick, true);
+						RobotMap.drive.halfArcade(Constants.DRIVE_STICK, true);
 					}
 				else
 					{
-						RobotMap.drive.arcade(Constants.driveStick, true);
+						RobotMap.drive.arcade(Constants.DRIVE_STICK, true);
 					}
 
 				// PNEUMATICS:
@@ -302,7 +299,7 @@ public class Robot extends IterativeRobot
 						gearCurrentTimer.stop();
 					}
 
-				// GROUND GEAR HANDLER:
+				// AUTO GROUND GEAR HANDLER:
 				if (autoPickerUpper.isPressed() && !autoGearInGroundLoaderJustRan)
 					{
 
@@ -310,14 +307,14 @@ public class Robot extends IterativeRobot
 
 						RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 
-						if (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT)
+						if (RobotMap.floorIntake.getOutputCurrent() > Constants.MAX_FLOOR_INTAKE_CURRENT)
 							{
-								if (lastKnownGearCurrent < MAX_FLOOR_INTAKE_CURRENT)
+								if (lastKnownGearCurrent < Constants.MAX_FLOOR_INTAKE_CURRENT)
 									{
 										gearCurrentTimer.reset();
 										gearCurrentTimer.start();
 									}
-								if (gearCurrentTimer.get() > 1.2 && (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT))
+								if (gearCurrentTimer.get() > 1.2 && (RobotMap.floorIntake.getOutputCurrent() > Constants.MAX_FLOOR_INTAKE_CURRENT))
 									{
 										gearInGroundLoader = true;
 										gearCurrentTimer.stop();
@@ -331,6 +328,8 @@ public class Robot extends IterativeRobot
 								RobotMap.lowerFloorLifter.set(false);
 							}
 					}
+
+				// GROUND GEAR HANDLER
 				else
 					{
 
@@ -339,14 +338,14 @@ public class Robot extends IterativeRobot
 
 								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 
-								if (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT)
+								if (RobotMap.floorIntake.getOutputCurrent() > Constants.MAX_FLOOR_INTAKE_CURRENT)
 									{
-										if (lastKnownGearCurrent < MAX_FLOOR_INTAKE_CURRENT)
+										if (lastKnownGearCurrent < Constants.MAX_FLOOR_INTAKE_CURRENT)
 											{
 												gearCurrentTimer.reset();
 												gearCurrentTimer.start();
 											}
-										if (gearCurrentTimer.get() > .8 && (RobotMap.floorIntake.getOutputCurrent() > MAX_FLOOR_INTAKE_CURRENT))
+										if (gearCurrentTimer.get() > .8 && (RobotMap.floorIntake.getOutputCurrent() > Constants.MAX_FLOOR_INTAKE_CURRENT))
 											{
 												gearInGroundLoader = true;
 												gearCurrentTimer.stop();
@@ -358,7 +357,7 @@ public class Robot extends IterativeRobot
 							{
 								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
 
-								if (RobotMap.floorIntake.getOutputCurrent() < MAX_FLOOR_INTAKE_CURRENT)
+								if (RobotMap.floorIntake.getOutputCurrent() < Constants.MAX_FLOOR_INTAKE_CURRENT)
 									{
 										gearInGroundLoader = false;
 									}
@@ -379,11 +378,11 @@ public class Robot extends IterativeRobot
 					}
 
 				// CLIMBER:
-				if (Math.abs(Constants.weaponStick.getY()) > .18)
+				if (Math.abs(Constants.WEAPON_STICK.getY()) > .18)
 
 					{
-						RobotMap.winchRight.set(Constants.weaponStick.getY());
-						RobotMap.winchLeft.set(-Constants.weaponStick.getY());
+						RobotMap.winchRight.set(Constants.WEAPON_STICK.getY());
+						RobotMap.winchLeft.set(-Constants.WEAPON_STICK.getY());
 					}
 				else
 					{
@@ -391,36 +390,23 @@ public class Robot extends IterativeRobot
 						RobotMap.winchLeft.set(0);
 					}
 
+				// DISABLE COMPRESSOR:
 				if (disableCompressor.wasJustPressed())
 					{
-						// System.out.println("Compressor Button PRESSED!");
 						compressorMode = !compressorMode;
 					}
-
 				if (compressorMode)
 					{
-						// System.out.println("Attempting To Enable");
 						if (!RobotMap.compressor.enabled())
 							{
 								RobotMap.compressor.start();
-								// System.out.println("Compressor Enabled");
-							}
-						else
-							{
-								// System.out.println("Compressor Already On");
 							}
 					}
 				else
 					{
-						System.out.println("Attempting To Disable Compressor");
 						if (RobotMap.compressor.enabled())
 							{
 								RobotMap.compressor.stop();
-								System.out.println("Compressor Disabled");
-							}
-						else
-							{
-								System.out.println("Compressor Already Off");
 							}
 					}
 
@@ -433,9 +419,7 @@ public class Robot extends IterativeRobot
 		 */
 		public void testPeriodic()
 			{
-
 				LiveWindow.run();
-
 			}
 
 		/*
@@ -462,8 +446,6 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
 				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
-
-				// System.out.println(RobotMap.compressor.enabled());
 
 				/*
 				 * Compass calibration. button tracker is disabled (not updated)

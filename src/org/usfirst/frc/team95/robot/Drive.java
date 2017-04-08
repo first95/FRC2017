@@ -5,19 +5,20 @@ import edu.wpi.first.wpilibj.SpeedController;
 
 public class Drive
 	{
-		SpeedController left;
-		SpeedController right;
+
+		private SpeedController mLeft;
+		private SpeedController mRight;
 
 		public Drive(SpeedController left, SpeedController right)
 			{
-				this.left = left;
-				this.right = right;
+				mLeft = left;
+				mRight = right;
 			}
 
 		public void tank(double leftsp, double rightsp)
 			{
-				left.set(-leftsp);
-				right.set(rightsp);
+				mLeft.set(-leftsp);
+				mRight.set(rightsp);
 			}
 
 		public void arcade(double forward, double spin)
@@ -43,12 +44,12 @@ public class Drive
 						x = stick.getX();
 					}
 
-				if (Math.abs(y) <= Constants.joystickDeadbandV)
+				if (Math.abs(y) <= Constants.JOYSTICK_DEADBAND_V)
 					{
 						y = 0;
 					}
 
-				if (Math.abs(x) <= Constants.joystickDeadbandH)
+				if (Math.abs(x) <= Constants.JOYSTICK_HEADBAND_H)
 					{
 						x = 0;
 					}
@@ -72,12 +73,12 @@ public class Drive
 					{
 						x = stick.getX();
 					}
-				if (Math.abs(y) <= Constants.joystickDeadbandV)
+				if (Math.abs(y) <= Constants.JOYSTICK_DEADBAND_V)
 					{
 						y = 0;
 					}
 
-				if (Math.abs(x) <= Constants.joystickDeadbandH)
+				if (Math.abs(x) <= Constants.JOYSTICK_HEADBAND_H)
 					{
 						x = 0;
 					}

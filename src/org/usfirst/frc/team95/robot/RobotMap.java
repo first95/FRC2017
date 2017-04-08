@@ -34,6 +34,8 @@ public class RobotMap
 		public static boolean firstCamOn = false;
 		public static boolean secondCamOn = false;
 
+		private static boolean debugOverride = false;
+
 		// Autonomous moves wishing to control the robot's drive base
 		// should set the driveLock object to "this" (that is, themselves).
 		// They should also check that the driveLock object is null prior to
@@ -86,9 +88,9 @@ public class RobotMap
 				// shooter = new CANTalon(11);
 
 				compressor = new Compressor();
-				
 				floorIntake = new CANTalon(9);
 				drive = new Drive(left1, right1);
+
 				left2.changeControlMode(CANTalon.TalonControlMode.Follower);
 				left2.set(1);
 				left3.changeControlMode(CANTalon.TalonControlMode.Follower);
@@ -123,7 +125,7 @@ public class RobotMap
 				right2.enableBrakeMode(true);
 				right3.enableBrakeMode(true);
 				// winchRight.enableBrakeMode(true);
-				
+
 			}
 
 		public static void switchVisionCameras()
@@ -133,7 +135,21 @@ public class RobotMap
 				System.out.println("- Attempting To Switch Cameras -");
 				System.out.println("--------------------------------");
 
-				if (firstCamOn == true)
+				if (debugModeEnabled)
+					{
+						System.out.println("--------------------------------------");
+						System.out.println("- Attempting To Enable Second Camera -");
+						System.out.println("--------------------------------------");
+
+						myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video0");
+						myCam2.setFPS(0);
+						myCam2.setResolution(0, 0);
+						
+						System.out.println("----------------------");
+						System.out.println("- Second Cam Enabled -");
+						System.out.println("----------------------");
+					}
+				else if (firstCamOn == true)
 					{
 						myCam.setFPS(0);
 						myCam.setResolution(0, 0);
@@ -156,6 +172,7 @@ public class RobotMap
 								System.out.println("- Second Cam Enabled -");
 								System.out.println("---------------------");
 							}
+						
 						myCam2.setFPS(30);
 						myCam2.setResolution(640, 480);
 						secondCamOn = true;

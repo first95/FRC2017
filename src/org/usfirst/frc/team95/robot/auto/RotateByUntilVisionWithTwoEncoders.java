@@ -6,24 +6,24 @@ import org.usfirst.frc.team95.robot.RobotMap;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class RotateByUntilVision2Enc extends Auto
+public class RotateByUntilVisionWithTwoEncoders extends Auto
 	{
-		double angle, startL, startR, desiredL, desiredR, errorL, errorR, P, speedL, speedR, prevSpeedL, prevSpeedR;
-		boolean done = false;
 
-		double lastError;
+		private double mAngle, startL, startR, desiredL, desiredR, errorL, errorR, P, speedL, speedR, prevSpeedL, prevSpeedR;
+		private boolean done = false;
+		private double lastError;
 		private int checkBeforeFail = 0;
-		boolean succeeded = false;
+		private boolean succeeded = false;
 
-		public RotateByUntilVision2Enc(double angle)
+		public RotateByUntilVisionWithTwoEncoders(double angle)
 			{
-				this.angle = angle;
+				mAngle = angle;
 			}
 
 		@Override
 		public void init()
 			{
-				P = 0.35; // original .35
+				P = 0.35;
 			}
 
 		@Override
@@ -46,8 +46,8 @@ public class RotateByUntilVision2Enc extends Auto
 				startL = RobotMap.left1.getEncPosition();
 				startR = RobotMap.right1.getEncPosition();
 
-				desiredL = startL - (Constants.encTicksPerRadian * angle);
-				desiredR = startR + (Constants.encTicksPerRadian * angle);
+				desiredL = startL - (Constants.ENCODER_TICKS_PER_RADIAN * mAngle);
+				desiredR = startR + (Constants.ENCODER_TICKS_PER_RADIAN * mAngle);
 
 				prevSpeedL = 0;
 				prevSpeedR = 0;
@@ -103,7 +103,8 @@ public class RotateByUntilVision2Enc extends Auto
 								errorL = desiredL + RobotMap.left1.getEncPosition();
 								errorR = desiredR - RobotMap.right1.getEncPosition();
 
-								speedL = (P * errorL) / 200;// divide to make speed value reasonable
+								// divide to make speed value reasonable
+								speedL = (P * errorL) / 200;
 								speedR = (P * errorR) / 200;
 
 								if (speedL > .45)
@@ -160,18 +161,18 @@ public class RotateByUntilVision2Enc extends Auto
 					}
 
 				// DO NOT DELETE PLEASE
-				System.out.println("TESTER");
+				System.out.println("-- Rotate Done --");
+			}
+
+		private double sign(double a)
+			{
+				return a < 0 ? -1 : 1;
 			}
 
 		@Override
 		public boolean isDone()
 			{
 				return done;
-			}
-
-		double sign(double a)
-			{
-				return a < 0 ? -1 : 1;
 			}
 
 		@Override

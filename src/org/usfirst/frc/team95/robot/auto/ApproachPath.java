@@ -6,32 +6,33 @@ import org.usfirst.frc.team95.robot.RobotMap;
 
 public class ApproachPath extends Auto
 	{
-		boolean done = false;
-		double idealToRobo, roboToNorth, roboToPeg, idealToNorth, startHeading, north, idealHeading, perpIdeal;
-		ADIS16448_IMU compass;
+
+		private boolean done = false;
+		private double mIdealHeading, idealToRobo, roboToNorth, roboToPeg, idealToNorth, startHeading, north, perpIdeal;
+		private ADIS16448_IMU mCompass;
 
 		public ApproachPath(ADIS16448_IMU poseidon, double idealHeading)
 			{
-				this.compass = poseidon;
-				this.idealHeading = idealHeading;
+				mCompass = poseidon;
+				mIdealHeading = idealHeading;
 			}
 
 		@Override
 		public void init()
 			{
 				done = false;
-				north = Constants.poseidonNorthVal;
+				north = Constants.POSEIDON_NORTH_VAL;
 			}
 
 		@Override
 		public void start()
 			{
-				startHeading = compass.getHeading();
+				startHeading = mCompass.getHeading();
 				roboToNorth = north - startHeading;
 				roboToPeg = RobotMap.gearLiftFinder.getHeadingToTargetDegrees() * (Math.PI / 180);
-				idealToNorth = idealHeading - north;
+				idealToNorth = mIdealHeading - north;
 				idealToRobo = roboToNorth + idealToNorth - roboToPeg;
-				perpIdeal = idealHeading + Math.PI / 2;
+				perpIdeal = mIdealHeading + Math.PI / 2;
 			}
 
 		@Override

@@ -7,18 +7,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RotateByWithTwoEncoders extends Auto
 	{
-		double angle, startL, startR, desiredL, desiredR, errorL, errorR, P, speedL, speedR, prevSpeedL, prevSpeedR;
-		boolean done = false;
+
+		// THIS CLASS IS ON THE FRITZ AGAIN
+
+		private double mAngle, startL, startR, desiredL, desiredR, errorL, errorR, P, speedL, speedR, prevSpeedL, prevSpeedR;
+		private boolean done = false;
 
 		public RotateByWithTwoEncoders(double angle)
 			{
-				this.angle = angle;
+				mAngle = angle;
 			}
 
 		@Override
 		public void init()
 			{
-				P = 0.35; // original .35
+				P = 0.35;
 			}
 
 		@Override
@@ -29,13 +32,11 @@ public class RotateByWithTwoEncoders extends Auto
 						RobotMap.driveLock = this;
 					}
 
-				// angle *= 1.35;
-
 				startL = RobotMap.left1.getEncPosition();
 				startR = RobotMap.right1.getEncPosition();
 
-				desiredL = startL - (Constants.encTicksPerRadian * angle);
-				desiredR = startR + (Constants.encTicksPerRadian * angle);
+				desiredL = startL - (Constants.ENCODER_TICKS_PER_RADIAN * mAngle);
+				desiredR = startR + (Constants.ENCODER_TICKS_PER_RADIAN * mAngle);
 
 				prevSpeedL = 0;
 				prevSpeedR = 0;
@@ -59,11 +60,12 @@ public class RotateByWithTwoEncoders extends Auto
 				if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done)
 					{
 						RobotMap.driveLock = this;
-						if (Math.abs(errorL) <= Constants.encTicksPerRadian * .04 && Math.abs(errorR) <= Constants.encTicksPerRadian * .04)
+
+						if (Math.abs(errorL) <= Constants.ENCODER_TICKS_PER_RADIAN * .04 && Math.abs(errorR) <= Constants.ENCODER_TICKS_PER_RADIAN * .04)
 							{
 								done = true;
 							}
-						else if (Math.abs(errorL) <= Constants.encTicksPerRadian * .04)
+						else if (Math.abs(errorL) <= Constants.ENCODER_TICKS_PER_RADIAN * .04)
 							{
 
 								errorR = desiredR - RobotMap.right1.getEncPosition();
@@ -91,11 +93,12 @@ public class RotateByWithTwoEncoders extends Auto
 								prevSpeedR = speedR;
 
 							}
-						else if (Math.abs(errorR) <= Constants.encTicksPerRadian * .04)
+						else if (Math.abs(errorR) <= Constants.ENCODER_TICKS_PER_RADIAN * .04)
 							{
 								errorL = desiredL + RobotMap.left1.getEncPosition();
 
-								speedL = (P * errorL) / 200;// divide to make speed value reasonable
+								// divide to make speed value reasonable
+								speedL = (P * errorL) / 200;
 
 								if (speedL > .3)
 									{
@@ -106,19 +109,16 @@ public class RotateByWithTwoEncoders extends Auto
 										speedL = -.3;
 									}
 
-
 								if (speedL > (prevSpeedL + .08))
 									{
 										speedL = prevSpeedL + .08;
 									}
-
 
 								SmartDashboard.putNumber("speedL", speedL);
 
 								RobotMap.drive.tank(speedL, 0);
 
 								prevSpeedL = speedL;
-							
 
 							}
 						else
@@ -126,7 +126,8 @@ public class RotateByWithTwoEncoders extends Auto
 								errorL = desiredL + RobotMap.left1.getEncPosition();
 								errorR = desiredR - RobotMap.right1.getEncPosition();
 
-								speedL = (P * errorL) / 200;// divide to make speed value reasonable
+								// divide to make speed value reasonable
+								speedL = (P * errorL) / 200;
 								speedR = (P * errorR) / 200;
 
 								if (speedL > .3)
@@ -172,9 +173,12 @@ public class RotateByWithTwoEncoders extends Auto
 		@Override
 		public void stop()
 			{
-				
-				RobotMap.stopVisionProcessing();
-				
+
+				if (!RobotMap.debugModeEnabled)
+					{
+						RobotMap.stopVisionProcessing();
+					}
+
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);
@@ -182,18 +186,18 @@ public class RotateByWithTwoEncoders extends Auto
 					}
 
 				// DO NOT DELETE PLEASE
-				System.out.println("TESTER");
+				System.out.println("--- Rotate Done ---");
+			}
+
+		private double sign(double a)
+			{
+				return a < 0 ? -1 : 1;
 			}
 
 		@Override
 		public boolean isDone()
 			{
 				return done;
-			}
-
-		double sign(double a)
-			{
-				return a < 0 ? -1 : 1;
 			}
 
 		@Override
