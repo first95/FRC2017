@@ -13,13 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
 import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
-import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
-import org.usfirst.frc.team95.robot.auto.RotateByUntilVision;
-import org.usfirst.frc.team95.robot.auto.RotateByWithTwoEncoders;
-import org.usfirst.frc.team95.robot.auto.RotateByUntilVision2Enc;
-import org.usfirst.frc.team95.robot.auto.RotateAndScoreGear;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
@@ -40,6 +35,7 @@ public class Robot extends IterativeRobot
 		boolean gearInGroundLoader = false;
 		boolean autoGearInGroundLoaderJustRan = false;
 
+		// Other Variables
 		SendableChooser chooser;
 		VariableStore variableStore;
 		ADIS16448_IMU poseidon;
@@ -60,19 +56,20 @@ public class Robot extends IterativeRobot
 		public void robotInit()
 			{
 
-				RobotMap.debugModeEnabled = false;
-
-				gearCurrentTimer = new Timer();
-
-				alpha = 0;
-				beta = 0;
-
 				RobotMap.init();
+
+				// Vision Debug Mode: This will shows the vision output on SmartDashboard if enabled
+				RobotMap.debugModeEnabled = false;
 
 				if (RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
 					}
+
+				gearCurrentTimer = new Timer();
+
+				alpha = 0;
+				beta = 0;
 
 				chooser = new SendableChooser();
 				SmartDashboard.putData("Auto mode", chooser);
@@ -119,12 +116,13 @@ public class Robot extends IterativeRobot
 				a.addObject("Turn 60 Right", new RotateBy((Math.PI / 180) * 60));
 				a.addObject("Turn 60 left", new RotateBy((Math.PI / 180) * -60));
 
-				a.addObject("Test - Go Forward", new DistanceMovePID((69.68) / 12));
-				a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
-				a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
-				a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision2Enc(-60 * (Math.PI / 180)));
-				a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear(-60 * (Math.PI / 180)));
-				a.addObject("Test - Rotate Left With Vision and One Encoder", new RotateByUntilVision(-60 * (Math.PI / 180)));
+				// TEST MOVES:
+				// a.addObject("Test - Go Forward", new DistanceMovePID((69.68) / 12));
+				// a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
+				// a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
+				// a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision2Enc(-60 * (Math.PI / 180)));
+				// a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear(-60 * (Math.PI / 180)));
+				// a.addObject("Test - Rotate Left With Vision and One Encoder", new RotateByUntilVision(-60 * (Math.PI / 180)));
 
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
@@ -135,7 +133,7 @@ public class Robot extends IterativeRobot
 				a.addObject("Blue Right", new ScoreFromStart(false, 2, poseidon));
 
 				// SENDABLE CHOSER TWO:
-				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo(poseidon));
+				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo());
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
@@ -451,7 +449,7 @@ public class Robot extends IterativeRobot
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
 						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 					}
-				
+
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
 				SmartDashboard.putBoolean("Compressor", compressorMode);

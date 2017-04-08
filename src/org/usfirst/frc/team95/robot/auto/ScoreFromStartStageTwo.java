@@ -1,14 +1,11 @@
 package org.usfirst.frc.team95.robot.auto;
 
-import org.usfirst.frc.team95.robot.ADIS16448_IMU;
-import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
 
 public class ScoreFromStartStageTwo extends SequentialMove
 	{
 
-		// 0 is far left
-		public ScoreFromStartStageTwo(ADIS16448_IMU poseidon)
+		public ScoreFromStartStageTwo()
 			{
 
 				super.SetMoves(new Auto[]
