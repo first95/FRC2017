@@ -24,6 +24,7 @@ public class RobotMap
 		public static UsbCamera myCam2 = null;
 		public static CvSource smartDashboardVideoOutput = null;
 		public static CvSink cvSink = null;
+		public static boolean debugModeEnabled = false;
 
 		// Vision Checks
 		public static boolean visionProcessingActive = false;
@@ -52,7 +53,7 @@ public class RobotMap
 					{
 						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video1");
 						myCam.setResolution(640, 480);
-						myCam.setExposureManual(35);
+						myCam.setExposureManual(16);
 						myCam.setFPS(30);
 						firstCamOn = true;
 

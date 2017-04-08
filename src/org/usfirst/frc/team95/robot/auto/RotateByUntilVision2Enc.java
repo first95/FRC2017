@@ -3,16 +3,19 @@ package org.usfirst.frc.team95.robot.auto;
 import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
 
-public class RotateByUntilVision extends Auto
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class RotateByUntilVision2Enc extends Auto
 	{
-		double angle, start, desired, error, P, speed, prevSpeed;
+		double angle, startL, startR, desiredL, desiredR, errorL, errorR, P, speedL, speedR, prevSpeedL, prevSpeedR;
 		boolean done = false;
-		
+
 		double lastError;
 		private int checkBeforeFail = 0;
 		boolean succeeded = false;
 
-		public RotateByUntilVision(double angle)
+		public RotateByUntilVision2Enc(double angle)
 			{
 				this.angle = angle;
 			}
@@ -26,64 +29,66 @@ public class RotateByUntilVision extends Auto
 		@Override
 		public void start()
 			{
-				
+
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
 					}
-				
+
 				// Huge Number to confirm that it will work
 				lastError = 5000;
-				
+
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
 					}
-				
-				angle *= 1.35;
-				
-				if (angle >= 0)
-					{
-						start = RobotMap.left1.getEncPosition();
-					}
-				else
-					{
-						start = RobotMap.right1.getEncPosition();
-					}
-				
-				desired = start + (Constants.encTicksPerRadian * angle);
-				prevSpeed = 0;
-				
-				if (angle >= 0)
-					{
-						error = desired - RobotMap.left1.getEncPosition();
-					}
-				else
-					{
-						error = desired - RobotMap.right1.getEncPosition();
-					}
-				
-				speed = P * error;
+
+				startL = RobotMap.left1.getEncPosition();
+				startR = RobotMap.right1.getEncPosition();
+
+				desiredL = startL - (Constants.encTicksPerRadian * angle);
+				desiredR = startR + (Constants.encTicksPerRadian * angle);
+
+				prevSpeedL = 0;
+				prevSpeedR = 0;
+
+				errorL = desiredL + RobotMap.left1.getEncPosition();
+				errorR = desiredR - RobotMap.right1.getEncPosition();
+
+				speedL = P * errorL;
+				speedR = P * errorR;
+
 				done = false;
 			}
 
 		@Override
 		public void update()
 			{
-				
+
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
 					}
-				
+
+				SmartDashboard.putNumber("errorL", errorL);
+				SmartDashboard.putNumber("errorR", errorR);
+
 				if ((RobotMap.driveLock == this || RobotMap.driveLock == null) && !done)
 					{
-						
 						RobotMap.driveLock = this;
 
 						if (RobotMap.gearLiftFinder.haveValidHeading())
 							{
 								checkBeforeFail++;
+
+								if (Math.abs(lastError) < 15)
+									{
+										succeeded = true;
+									}
+								else
+									{
+										succeeded = false;
+									}
 
 								if (checkBeforeFail >= 3)
 									{
@@ -92,49 +97,62 @@ public class RotateByUntilVision extends Auto
 							}
 						else
 							{
-								
-								checkBeforeFail = 0;
-								
-								if (angle >= 0)
+
+								lastError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
+
+								errorL = desiredL + RobotMap.left1.getEncPosition();
+								errorR = desiredR - RobotMap.right1.getEncPosition();
+
+								speedL = (P * errorL) / 200;// divide to make speed value reasonable
+								speedR = (P * errorR) / 200;
+
+								if (speedL > .45)
 									{
-										error = desired - RobotMap.left1.getEncPosition();
+										speedL = .45;
 									}
-								else
+								else if (speedL < -.45)
 									{
-										error = desired - RobotMap.right1.getEncPosition();
-									}
-								
-								speed = (P * error) / 200;// divide to make speed value reasonable
-								if (speed > .5)
-									{
-										speed = .5;
-									}
-								else if (speed < -.5)
-									{
-										speed = -.5;
+										speedL = -.45;
 									}
 
-								if (speed > (prevSpeed + .08))
+								if (speedR > .45)
 									{
-										speed = prevSpeed + .08;
+										speedR = .45;
+									}
+								else if (speedR < -.45)
+									{
+										speedR = -.45;
 									}
 
-								RobotMap.drive.tank(-speed, speed);
+								if (speedL > (prevSpeedL + .08))
+									{
+										speedL = prevSpeedL + .08;
+									}
 
-								prevSpeed = speed;
+								if (speedR > (prevSpeedR + .08))
+									{
+										speedR = prevSpeedR + .08;
+									}
+
+								RobotMap.drive.tank(speedL, speedR);
+
+								prevSpeedL = speedL;
+								prevSpeedR = speedR;
 							}
+
 					}
+
 			}
 
 		@Override
 		public void stop()
 			{
-				
+
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.stopVisionProcessing();
 					}
-				
+
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);

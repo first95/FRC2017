@@ -16,8 +16,9 @@ import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
 import org.usfirst.frc.team95.robot.auto.GoToLiftAdvanced;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
-import org.usfirst.frc.team95.robot.auto.RotateByWithTwoEncoders;
 import org.usfirst.frc.team95.robot.auto.RotateByUntilVision;
+import org.usfirst.frc.team95.robot.auto.RotateByWithTwoEncoders;
+import org.usfirst.frc.team95.robot.auto.RotateByUntilVision2Enc;
 import org.usfirst.frc.team95.robot.auto.RotateAndScoreGear;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
@@ -58,14 +59,20 @@ public class Robot extends IterativeRobot
 		 */
 		public void robotInit()
 			{
+
+				RobotMap.debugModeEnabled = false;
+
 				gearCurrentTimer = new Timer();
 
 				alpha = 0;
 				beta = 0;
 
 				RobotMap.init();
-				
-				//RobotMap.visionProcessingInit();
+
+				if (RobotMap.debugModeEnabled)
+					{
+						RobotMap.visionProcessingInit();
+					}
 
 				chooser = new SendableChooser();
 				SmartDashboard.putData("Auto mode", chooser);
@@ -115,8 +122,9 @@ public class Robot extends IterativeRobot
 				a.addObject("Test - Go Forward", new DistanceMovePID((69.68) / 12));
 				a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
 				a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
-				a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision(-60 * (Math.PI / 180)));
+				a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision2Enc(-60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Left With Vision and GoToLift", new RotateAndScoreGear(-60 * (Math.PI / 180)));
+				a.addObject("Test - Rotate Left With Vision and One Encoder", new RotateByUntilVision(-60 * (Math.PI / 180)));
 
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0, poseidon));
@@ -234,7 +242,12 @@ public class Robot extends IterativeRobot
 				RobotMap.right3.enableBrakeMode(true);
 
 				// AFTER AUTO AND VISION IS DONE, SWITCH CAMS -- FRONT TO BACK:
+
 				RobotMap.switchVisionCameras();
+				if (RobotMap.debugModeEnabled)
+					{
+						RobotMap.switchVisionCameras();
+					}
 
 				/*
 				 * This makes sure that the autonomous stops running when / teleop starts running. If you want the autonomous to /
@@ -382,21 +395,21 @@ public class Robot extends IterativeRobot
 
 				if (disableCompressor.wasJustPressed())
 					{
-						//System.out.println("Compressor Button PRESSED!");
+						// System.out.println("Compressor Button PRESSED!");
 						compressorMode = !compressorMode;
 					}
 
 				if (compressorMode)
 					{
-						//System.out.println("Attempting To Enable");
+						// System.out.println("Attempting To Enable");
 						if (!RobotMap.compressor.enabled())
 							{
 								RobotMap.compressor.start();
-								//System.out.println("Compressor Enabled");
+								// System.out.println("Compressor Enabled");
 							}
 						else
 							{
-								//System.out.println("Compressor Already On");
+								// System.out.println("Compressor Already On");
 							}
 					}
 				else
@@ -432,10 +445,13 @@ public class Robot extends IterativeRobot
 		 */
 		public void commonPeriodic()
 			{
-				
-				//RoobotMap.gearLiftFinder.computeHeadingToTarget();
-				//RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 
+				if (RobotMap.debugModeEnabled)
+					{
+						RobotMap.gearLiftFinder.computeHeadingToTarget();
+						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+					}
+				
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
 				SmartDashboard.putBoolean("Compressor", compressorMode);

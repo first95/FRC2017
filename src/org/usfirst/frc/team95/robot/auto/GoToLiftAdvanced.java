@@ -35,7 +35,11 @@ public class GoToLiftAdvanced extends Auto
 		public void start()
 			{
 				System.out.println("vision start");
-				RobotMap.visionProcessingInit();
+
+				if (!RobotMap.debugModeEnabled)
+					{
+						RobotMap.visionProcessingInit();
+					}
 
 				done = false;
 				succeeded = false;
@@ -54,7 +58,10 @@ public class GoToLiftAdvanced extends Auto
 		public void update()
 			{
 				// System.out.println("vision update");
-				RobotMap.gearLiftFinder.computeHeadingToTarget();
+				if (!RobotMap.debugModeEnabled)
+					{
+						RobotMap.gearLiftFinder.computeHeadingToTarget();
+					}
 
 				// Should be printed by SmartDashboard
 				SmartDashboard.putNumber("Degree Offset (X)", RobotMap.gearLiftFinder.getHeadingToTargetDegrees());
@@ -115,6 +122,8 @@ public class GoToLiftAdvanced extends Auto
 					}
 				else
 					{
+						checkBeforeFail = 0;
+						
 						lastError = RobotMap.gearLiftFinder.getHeadingToTargetDegrees();
 
 						if (RobotMap.gearLiftFinder.getDistanceFromCamToTarget() <= MIN_DISTANCE_AWAY_STOP)
@@ -133,7 +142,10 @@ public class GoToLiftAdvanced extends Auto
 				RobotMap.driveLock = null;
 
 				// Call that deactivates vision so we don't get lag
-				RobotMap.stopVisionProcessing();
+				if (!RobotMap.debugModeEnabled)
+					{
+						RobotMap.stopVisionProcessing();
+					}
 			}
 
 		@Override
