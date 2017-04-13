@@ -12,7 +12,7 @@ public class Constants
 		public final static Joystick WEAPON_STICK = new Joystick(1);
 		public final static double POSEIDON_NORTH_VAL = 2.751;
 		public final static double ENCODER_TICKS_PER_FOOT = 1002;
-		public final static double ENCODER_TICKS_PER_RADIAN = 1110;
+		public final static double ENCODER_TICKS_PER_RADIAN = 1637.39265;//1100
 		public final static double ROBOT_WIDTH = 34.7;
 		public final static double VISION_LENGTH = 3;
 		public final static double FLOOR_INTAKE_THROTTLE = 0.7;

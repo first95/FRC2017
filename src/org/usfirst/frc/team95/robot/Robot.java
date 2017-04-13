@@ -125,7 +125,8 @@ public class Robot extends IterativeRobot
 				// a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision2Enc(-60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Right With Vision and GoToLift", new RotateAndScoreGear(60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Right With Vision and One Encoder", new RotateByUntilVision(60 * (Math.PI / 180)));
-
+				a.addObject("rotate 90", new RotateBy(Math.PI /2));
+				a.addObject("rotate -90", new RotateBy(-Math.PI /2));
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1));
@@ -428,11 +429,11 @@ public class Robot extends IterativeRobot
 		public void commonPeriodic()
 			{
 
-				if (RobotMap.debugModeEnabled)
+				/*-if (RobotMap.debugModeEnabled)
 					{
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
 						RobotMap.smartDashboardVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-					}
+					}*/
 
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);

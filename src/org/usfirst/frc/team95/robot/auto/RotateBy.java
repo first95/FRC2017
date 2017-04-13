@@ -3,6 +3,8 @@ package org.usfirst.frc.team95.robot.auto;
 import org.usfirst.frc.team95.robot.Constants;
 import org.usfirst.frc.team95.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class RotateBy extends Auto
 	{
 
@@ -29,7 +31,7 @@ public class RotateBy extends Auto
 					}
 
 				// Rotate Angle Is Multiplied
-				mAngle *= 1.35;
+			//	mAngle *= 1.35;
 
 				if (mAngle >= 0)
 					{
@@ -73,6 +75,8 @@ public class RotateBy extends Auto
 									{
 										error = desired - RobotMap.right1.getEncPosition();
 									}
+								
+								SmartDashboard.putNumber("error", error);
 
 								speed = (P * error) / 200;// divide to make speed value reasonable
 								if (speed > .5)

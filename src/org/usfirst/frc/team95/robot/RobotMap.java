@@ -51,7 +51,7 @@ public class RobotMap
 		public static void init()
 			{
 
-				if (startFirstCam)
+				/*if (startFirstCam)
 					{
 						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video1");
 						myCam.setResolution(640, 480);
@@ -71,7 +71,7 @@ public class RobotMap
 						System.out.println("- This Mean Vision Could Not Start                -");
 						System.out.println("- Plug In Cam And Restart Or Vision Will Not Work -");
 						System.out.println("---------------------------------------------------");
-					}
+					}*/
 
 				// DRIVE MOTERS:
 				left1 = new AdjustedTalon(1);
