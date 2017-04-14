@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DistanceMovePID extends Auto
 	{
 
-		private double mDistanceL, mDistanceR, left, right, errorL, prevErrorL, sumL, slopeL, P, I, D, errorR, prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeedL, prevSpeedR;
+		private double mDistanceL, mDistanceR, left, right, errorL, prevErrorL, sumL, slopeL, P, I, D, 
+		errorR, prevErrorR, sumR, slopeR, prevTime, newTime, prevSpeedL, prevSpeedR;
 		private boolean done = false;
 		private Timer brakeTimer;
 		private boolean brakeRunOnce = true;
