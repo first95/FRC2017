@@ -39,8 +39,10 @@ public class RotateBy extends Auto
 					{
 						start = RobotMap.right1.getEncPosition();
 					}
+				
 				desired = start + (Constants.ENCODER_TICKS_PER_RADIAN * mAngle);
 				prevSpeed = 0;
+				
 				if (mAngle >= 0)
 					{
 						error = desired - RobotMap.left1.getEncPosition();
@@ -49,6 +51,7 @@ public class RotateBy extends Auto
 					{
 						error = desired - RobotMap.right1.getEncPosition();
 					}
+				
 				speed = P * error;
 				done = false;
 			}

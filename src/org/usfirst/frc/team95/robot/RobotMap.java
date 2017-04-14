@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public class RobotMap
 	{
+		
 		public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight, floorIntake;
 		public static Drive drive;
 
@@ -22,7 +23,7 @@ public class RobotMap
 		public static VisualGearLiftFinder gearLiftFinder = null;
 		public static UsbCamera myCam = null;
 		public static UsbCamera myCam2 = null;
-		public static CvSource smartDashboardVideoOutput = null;
+		public static CvSource smartDashboardDebugVideoOutput = null;
 		public static CvSink cvSink = null;
 		public static boolean debugModeEnabled = false;
 
@@ -59,7 +60,7 @@ public class RobotMap
 						myCam.setFPS(30);
 						firstCamOn = true;
 
-						smartDashboardVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+						smartDashboardDebugVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
 						cvSink = CameraServer.getInstance().getVideo();
 
 						visionCamerasOn = true;
@@ -118,6 +119,7 @@ public class RobotMap
 				left1.setEncPosition(0);
 				right1.setEncPosition(0);
 				winchRight.setEncPosition(0);
+				
 				left1.enableBrakeMode(true);
 				left2.enableBrakeMode(true);
 				left3.enableBrakeMode(true);
