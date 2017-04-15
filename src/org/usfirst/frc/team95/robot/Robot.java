@@ -48,7 +48,9 @@ public class Robot extends IterativeRobot
 		private double dist;
 		private Double[] angleRec;
 		private boolean gotGear, compressorMode;
-		private ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper, disableCompressor;
+		private ButtonTracker compCal1, compCalReset, slowMo, brakes, 
+		tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, 
+		outFloorGear, autoPickerUpper, disableCompressor;
 		private Auto move;
 		private SendableChooser a, b, c;
 		private Timer cycleTimer;
