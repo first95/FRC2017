@@ -16,6 +16,20 @@ public class Constants
 		public final static double ROBOT_WIDTH = 34.7;
 		public final static double VISION_LENGTH = 3;
 		public final static double FLOOR_INTAKE_THROTTLE = 0.7;
+		
+		// Constants
+		public final static double BOIL_SIDE_DIST1 = (69.68) / 12;
+		public final static double BOIL_SIDE_DIST2 = (67.34 / 12) - 3;
+		public final static double BOIL_SIDE_DIST1_STAGE_ALT = (-70 / 12);
+		public final static double BOIL_SIDE_DIST2_STAGE_ALT = (-67.34 / 12);
+		public final static double CENTER_DIST1 = ((110.517 - (Constants.ROBOT_WIDTH / 2)) / 12) - 6;
+		public final static double CENTER_DIST2 = 0.0;
+		public final static double HOPPER_SIDE_DIST1 = (70.94 / 12);
+		public final static double HOPPER_SIDE_DIST2 = (65.06 / 12) - 3;
+		public final static double ROTATE_LEFT = (-60 * (Math.PI / 180));
+		public final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
+		public final static double ROTATE_LEFT_STAGE_ALT = (-20 * (Math.PI / 180));
+		public final static double ROTATE_NONE = 0.0;
 
 		public final static double RFVoltsToFt(double voltage)
 			{

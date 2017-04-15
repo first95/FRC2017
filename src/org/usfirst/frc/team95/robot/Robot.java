@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team95.robot.auto.AlternateScoreGearFromStartStageTwo;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
 import org.usfirst.frc.team95.robot.auto.DistanceMovePID;
+import org.usfirst.frc.team95.robot.auto.MagicMotionAuto;
 import org.usfirst.frc.team95.robot.auto.Nothing;
 import org.usfirst.frc.team95.robot.auto.RotateAndScoreGear;
 import org.usfirst.frc.team95.robot.auto.RotateBy;
@@ -125,9 +127,10 @@ public class Robot extends IterativeRobot
 				// a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision2Enc(-60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Right With Vision and GoToLift", new RotateAndScoreGear(60 * (Math.PI / 180)));
 				a.addObject("Test - Rotate Right With Vision and One Encoder", new RotateByUntilVision(60 * (Math.PI / 180)));
-				a.addObject("rotate 90", new RotateBy(Math.PI /2));
-				a.addObject("rotate -90", new RotateBy(-Math.PI /2));
+				a.addObject("rotate 90", new RotateBy(Math.PI / 2));
+				a.addObject("rotate -90", new RotateBy(-Math.PI / 2));
 				a.addObject("go 5 feet", new DistanceMovePID(5));
+				a.addObject("Motion Profile Stright", new MagicMotionAuto(5));
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1));
@@ -138,6 +141,7 @@ public class Robot extends IterativeRobot
 
 				// SENDABLE CHOSER TWO:
 				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo());
+				b.addObject("Score Gear Stage Two Alternate", new AlternateScoreGearFromStartStageTwo());
 				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));

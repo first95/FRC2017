@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public class RobotMap
 	{
-		
+
 		public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight, floorIntake;
 		public static Drive drive;
 
@@ -119,7 +119,7 @@ public class RobotMap
 				left1.setEncPosition(0);
 				right1.setEncPosition(0);
 				winchRight.setEncPosition(0);
-				
+
 				left1.enableBrakeMode(true);
 				left2.enableBrakeMode(true);
 				left3.enableBrakeMode(true);
@@ -146,7 +146,7 @@ public class RobotMap
 						myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video0");
 						myCam2.setFPS(0);
 						myCam2.setResolution(0, 0);
-						
+
 						System.out.println("----------------------");
 						System.out.println("- Second Cam Enabled -");
 						System.out.println("----------------------");
@@ -174,7 +174,7 @@ public class RobotMap
 								System.out.println("- Second Cam Enabled -");
 								System.out.println("---------------------");
 							}
-						
+
 						myCam2.setFPS(30);
 						myCam2.setResolution(640, 480);
 						secondCamOn = true;
