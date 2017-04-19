@@ -438,8 +438,8 @@ public class Robot extends IterativeRobot
 
 				if (RobotMap.debugModeEnabled)
 					{
-						RobotMap.gearLiftFinder.computeHeadingToTarget();
-						RobotMap.smartDashboardDebugVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+					//	RobotMap.gearLiftFinder.computeHeadingToTarget();
+						//RobotMap.smartDashboardDebugVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 					}
 
 				// SMART DAHSBOARD OUTPUT:
@@ -454,6 +454,10 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
 				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
+				
+				SmartDashboard.putNumber("RPMs For Left", RobotMap.left1.getSpeed());
+				SmartDashboard.putNumber("RPMs For Right", RobotMap.right1.getSpeed());
+				//System.out.println(RobotMap.left1.getSpeed());
 
 				/*
 				 * Compass calibration. button tracker is disabled (not updated)

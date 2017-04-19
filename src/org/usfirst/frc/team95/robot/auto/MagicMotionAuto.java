@@ -21,12 +21,12 @@ public class MagicMotionAuto extends Auto
 			{
 
 				done = false;
-
-				RobotMap.left1.setProfile(0);
-				RobotMap.left1.setProfile(0);
 				
-				RobotMap.left1.setF(50);
-				RobotMap.right1.setF(50);
+				RobotMap.left1.setProfile(0);
+				RobotMap.right1.setProfile(0);
+				
+				RobotMap.left1.setF(2);
+				RobotMap.right1.setF(2);
 				
 				RobotMap.left1.setP(0);
 				RobotMap.left1.setI(0);
@@ -38,11 +38,11 @@ public class MagicMotionAuto extends Auto
 				RobotMap.left1.changeControlMode(TalonControlMode.MotionMagic);
 				RobotMap.right1.changeControlMode(TalonControlMode.MotionMagic);
 
-				RobotMap.left1.setMotionMagicAcceleration(10);
-				RobotMap.left1.setMotionMagicCruiseVelocity(50);
+				RobotMap.left1.setMotionMagicAcceleration(50);
+				RobotMap.left1.setMotionMagicCruiseVelocity(100);
 
-				RobotMap.right1.setMotionMagicAcceleration(10);
-				RobotMap.right1.setMotionMagicCruiseVelocity(50);	
+				RobotMap.right1.setMotionMagicAcceleration(50);
+				RobotMap.right1.setMotionMagicCruiseVelocity(-100);	
 			}
 
 		@Override
@@ -61,11 +61,15 @@ public class MagicMotionAuto extends Auto
 			{
 				
 				
-				
+				RobotMap.right1.set(-mDistance * Constants.ENCODER_TICKS_PER_FOOT);
 				RobotMap.left1.set(mDistance * Constants.ENCODER_TICKS_PER_FOOT);
-				RobotMap.right1.set(mDistance * Constants.ENCODER_TICKS_PER_FOOT);
+				
 
 				if (RobotMap.left1.getEncPosition() > (mDistance * Constants.ENCODER_TICKS_PER_FOOT))
+					{
+						done = true;
+					}
+				if (RobotMap.right1.getEncPosition() > (mDistance * Constants.ENCODER_TICKS_PER_FOOT))
 					{
 						done = true;
 					}
