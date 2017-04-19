@@ -71,14 +71,14 @@ public class MagicMotionAuto extends Auto
 		public void update()
 			{
 
-				if (time.get() > 2)
-					{
-
-						if (RobotMap.left1.getSpeed() == 0)
-							{
-								done = true;
-							}
-					}
+//				if (time.get() > 2)
+//					{
+//
+//						if (RobotMap.left1.getSpeed() == 0)
+//							{
+//								done = true;
+//							}
+//					}
 
 			}
 
