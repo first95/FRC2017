@@ -43,11 +43,11 @@ public class MagicMotionAuto extends Auto
 				RobotMap.left1.changeControlMode(TalonControlMode.MotionMagic);
 				RobotMap.right1.changeControlMode(TalonControlMode.MotionMagic);
 
-				RobotMap.left1.setMotionMagicAcceleration(50);
-				RobotMap.left1.setMotionMagicCruiseVelocity(100);
+				RobotMap.left1.setMotionMagicAcceleration(200);
+				RobotMap.left1.setMotionMagicCruiseVelocity(200);
 
-				RobotMap.right1.setMotionMagicAcceleration(50);
-				RobotMap.right1.setMotionMagicCruiseVelocity(100);
+				RobotMap.right1.setMotionMagicAcceleration(200);
+				RobotMap.right1.setMotionMagicCruiseVelocity(200);
 			}
 
 		@Override
@@ -61,8 +61,8 @@ public class MagicMotionAuto extends Auto
 				time.reset();
 				time.start();
 
-				RobotMap.right1.set(-mDistance * Constants.ENCODER_TICKS_PER_FOOT);
-				RobotMap.left1.set(mDistance * Constants.ENCODER_TICKS_PER_FOOT);
+				RobotMap.right1.set(mDistance * Constants.ENCODER_TICKS_PER_FOOT * 100);
+				RobotMap.left1.set(-mDistance * Constants.ENCODER_TICKS_PER_FOOT * 100);
 
 				done = false;
 			}
@@ -70,6 +70,8 @@ public class MagicMotionAuto extends Auto
 		@Override
 		public void update()
 			{
+			System.out.println("left" + RobotMap.left1.get());
+			System.out.println("right" + RobotMap.right1.get());
 
 //				if (time.get() > 2)
 //					{
@@ -104,7 +106,7 @@ public class MagicMotionAuto extends Auto
 		@Override
 		public boolean succeeded()
 			{
-				return false;
+				return true;
 			}
 
 	}

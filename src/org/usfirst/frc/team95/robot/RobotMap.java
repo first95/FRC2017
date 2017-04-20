@@ -52,27 +52,27 @@ public class RobotMap
 		public static void init()
 			{
 
-//				if (startFirstCam)
-//					{
-//						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video1");
-//						myCam.setResolution(640, 480);
-//						myCam.setExposureManual(16);
-//						myCam.setFPS(30);
-//						firstCamOn = true;
-//
-//						smartDashboardDebugVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
-//						cvSink = CameraServer.getInstance().getVideo();
-//
-//						visionCamerasOn = true;
-//					}
-//				else
-//					{
-//						System.out.println("---------------------------------------------------");
-//						System.out.println("- startVisionCameras is false!                    -");
-//						System.out.println("- This Mean Vision Could Not Start                -");
-//						System.out.println("- Plug In Cam And Restart Or Vision Will Not Work -");
-//						System.out.println("---------------------------------------------------");
-//					}
+				if (startFirstCam)
+					{
+						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video1");
+						myCam.setResolution(640, 480);
+						myCam.setExposureManual(16);
+						myCam.setFPS(30);
+						firstCamOn = true;
+
+						smartDashboardDebugVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
+						cvSink = CameraServer.getInstance().getVideo();
+
+						visionCamerasOn = true;
+					}
+				else
+					{
+						System.out.println("---------------------------------------------------");
+						System.out.println("- startVisionCameras is false!                    -");
+						System.out.println("- This Mean Vision Could Not Start                -");
+						System.out.println("- Plug In Cam And Restart Or Vision Will Not Work -");
+						System.out.println("---------------------------------------------------");
+					}
 
 				// DRIVE MOTERS:
 				left1 = new AdjustedTalon(1);
