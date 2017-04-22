@@ -30,18 +30,12 @@ public class Constants
 		public final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
 		public final static double ROTATE_LEFT_STAGE_ALT = (-20 * (Math.PI / 180));
 		public final static double ROTATE_NONE = 0.0;
-
-		public final static double RFVoltsToFt(double voltage)
-			{
-				double distance;
-				// Sonar Range finder based on data sheet almost acurrate
-				// distance = (voltage * 100) / .977; //mV to mm
-
-				// sonar based on experimentation (in cm)
-				distance = (voltage * 107.96) - 3.0219;
-
-				// convert from cm to ft
-				distance = distance * 0.0328084;
-				return distance;
-			}
-	}
+		
+		public final static double HOPPER_TIME1 = 1.7;
+		public final static double HOPPER_TIME2 = 0;
+		public final static double BOIL_TIME1 = 1.7;
+		public final static double BOIL_TIME2 = 0;
+		public final static double CENTER_TIME1 = 1;
+		public final static double CENTER_TIME2 = 0;
+		public final static double ROTATE_TIME = 1.15;
+}

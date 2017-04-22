@@ -53,6 +53,7 @@ public class TimedMove extends Auto
 						RobotMap.drive.tank(0, 0);
 						RobotMap.driveLock = null;
 					}
+				timer.stop();
 			}
 
 		@Override

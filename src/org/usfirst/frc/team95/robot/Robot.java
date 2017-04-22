@@ -21,6 +21,8 @@ import org.usfirst.frc.team95.robot.auto.RotateBy;
 import org.usfirst.frc.team95.robot.auto.RotateByUntilVision;
 import org.usfirst.frc.team95.robot.auto.ScoreGear;
 import org.usfirst.frc.team95.robot.auto.SequentialMove;
+import org.usfirst.frc.team95.robot.auto.TimedMove;
+import org.usfirst.frc.team95.robot.auto.TimedScoreFromStart;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStart;
 import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
 
@@ -132,7 +134,7 @@ public class Robot extends IterativeRobot
 				a.addObject("rotate 90", new RotateBy(Math.PI / 2));
 				a.addObject("rotate -90", new RotateBy(-Math.PI / 2));
 				a.addObject("go 5 feet", new DistanceMovePID(5));
-				a.addObject("Motion Profile Stright", new MagicMotionAuto(5));
+				a.addObject("Timed testing", new TimedMove(.3, -.3, 1.15));
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1));
@@ -140,6 +142,13 @@ public class Robot extends IterativeRobot
 				a.addObject("Blue Left", new ScoreFromStart(false, 0));
 				a.addObject("Blue Middle", new ScoreFromStart(false, 1));
 				a.addObject("Blue Right", new ScoreFromStart(false, 2));
+				
+				a.addObject("Timed Red Left",   new TimedScoreFromStart(true, 0));
+				a.addObject("Timed Red Middle", new TimedScoreFromStart(true, 1));
+				a.addObject("Timed Red Right",  new TimedScoreFromStart(true, 2));
+				a.addObject("Timed Blue Left",  new TimedScoreFromStart(false, 0));
+				a.addObject("Timed Blue Middle",new TimedScoreFromStart(false, 1));
+				a.addObject("Timed Blue Right", new TimedScoreFromStart(false, 2));
 
 				// SENDABLE CHOSER TWO:
 				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo());
