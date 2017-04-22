@@ -32,10 +32,10 @@ public class Constants
 		public final static double ROTATE_NONE = 0.0;
 		
 		public final static double HOPPER_TIME1 = 1.7;
-		public final static double HOPPER_TIME2 = 0;
+		public final static double HOPPER_TIME2 = .7;
 		public final static double BOIL_TIME1 = 1.7;
-		public final static double BOIL_TIME2 = 0;
-		public final static double CENTER_TIME1 = 1;
+		public final static double BOIL_TIME2 = .7;
+		public final static double CENTER_TIME1 = .7;
 		public final static double CENTER_TIME2 = 0;
 		public final static double ROTATE_TIME = 1.15;
 }
