@@ -43,16 +43,16 @@ public class Robot extends IterativeRobot
 		// Other Variables
 		private SendableChooser chooser;
 		private VariableStore variableStore;
-		private ADIS16448_IMU poseidon;
+
+		// private ADIS16448_IMU poseidon;
+
 		private PowerDistributionPanel panel;
 		private double ymin, ymax, zmin, zmax, alpha, beta, tempy, tempz;
 		private AnalogInput artemis;
 		private double dist;
 		private Double[] angleRec;
 		private boolean gotGear, compressorMode;
-		private ButtonTracker compCal1, compCalReset, slowMo, brakes, 
-		tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, 
-		outFloorGear, autoPickerUpper, disableCompressor;
+		private ButtonTracker compCal1, compCalReset, slowMo, brakes, tipHat, facePush, poopGear, dropGroundLoader, intakeFloorGear, outFloorGear, autoPickerUpper, disableCompressor;
 		private Auto move;
 		private SendableChooser a, b, c;
 		private Timer cycleTimer;
@@ -64,7 +64,7 @@ public class Robot extends IterativeRobot
 			{
 
 				// This Needs To Be Above RobotMap.init()!
-				RobotMap.debugModeEnabled = true;
+				RobotMap.debugModeEnabled = false;
 
 				RobotMap.init();
 
@@ -84,7 +84,9 @@ public class Robot extends IterativeRobot
 
 				artemis = new AnalogInput(0);
 				variableStore = new VariableStore();
-				poseidon = new ADIS16448_IMU(variableStore);
+
+				// poseidon = new ADIS16448_IMU(variableStore);
+
 				panel = new PowerDistributionPanel();
 				gotGear = false;
 				compressorMode = true;
@@ -129,12 +131,13 @@ public class Robot extends IterativeRobot
 				// a.addObject("Test - RotateBy Left", new RotateBy(-60 * (Math.PI / 180)));
 				// a.addObject("Test - Two Encoder Rotate Left", new RotateByWithTwoEncoders(-60 * (Math.PI / 180)));
 				// a.addObject("Test - Rotate Left With Vision", new RotateByUntilVision2Enc(-60 * (Math.PI / 180)));
-				a.addObject("Test - Rotate Right With Vision and GoToLift", new RotateAndScoreGear(60 * (Math.PI / 180)));
-				a.addObject("Test - Rotate Right With Vision and One Encoder", new RotateByUntilVision(60 * (Math.PI / 180)));
-				a.addObject("rotate 90", new RotateBy(Math.PI / 2));
-				a.addObject("rotate -90", new RotateBy(-Math.PI / 2));
-				a.addObject("go 5 feet", new DistanceMovePID(5));
-				a.addObject("Timed testing", new TimedMove(.3, -.3, 1.15));
+				// a.addObject("Test - Rotate Right With Vision and GoToLift", new RotateAndScoreGear(60 * (Math.PI / 180)));
+				// a.addObject("Test - Rotate Right With Vision and One Encoder", new RotateByUntilVision(60 * (Math.PI / 180)));
+				// a.addObject("rotate 90", new RotateBy(Math.PI / 2));
+				// a.addObject("rotate -90", new RotateBy(-Math.PI / 2));
+				// a.addObject("go 5 feet", new DistanceMovePID(5));
+				// a.addObject("Timed testing", new TimedMove(.3, -.3, 1.15));
+				
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1));
@@ -142,18 +145,18 @@ public class Robot extends IterativeRobot
 				a.addObject("Blue Left", new ScoreFromStart(false, 0));
 				a.addObject("Blue Middle", new ScoreFromStart(false, 1));
 				a.addObject("Blue Right", new ScoreFromStart(false, 2));
-				
-				a.addObject("Timed Red Left",   new TimedScoreFromStart(true, 0));
+
+				a.addObject("Timed Red Left", new TimedScoreFromStart(true, 0));
 				a.addObject("Timed Red Middle", new TimedScoreFromStart(true, 1));
-				a.addObject("Timed Red Right",  new TimedScoreFromStart(true, 2));
-				a.addObject("Timed Blue Left",  new TimedScoreFromStart(false, 0));
-				a.addObject("Timed Blue Middle",new TimedScoreFromStart(false, 1));
+				a.addObject("Timed Red Right", new TimedScoreFromStart(true, 2));
+				a.addObject("Timed Blue Left", new TimedScoreFromStart(false, 0));
+				a.addObject("Timed Blue Middle", new TimedScoreFromStart(false, 1));
 				a.addObject("Timed Blue Right", new TimedScoreFromStart(false, 2));
 
 				// SENDABLE CHOSER TWO:
+				b.addDefault("None", new Nothing());
 				b.addObject("Score Gear Stage Two", new ScoreFromStartStageTwo());
 				b.addObject("Score Gear Stage Two Alternate", new AlternateScoreGearFromStartStageTwo());
-				b.addDefault("None", new Nothing());
 				b.addObject("Go Forward", new DistanceMove(0.1, 0, 1));
 				b.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
@@ -447,14 +450,16 @@ public class Robot extends IterativeRobot
 
 				if (RobotMap.debugModeEnabled)
 					{
-					//	RobotMap.gearLiftFinder.computeHeadingToTarget();
-						//RobotMap.smartDashboardDebugVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+						// RobotMap.gearLiftFinder.computeHeadingToTarget();
+						// RobotMap.smartDashboardDebugVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 					}
 
 				// SMART DAHSBOARD OUTPUT:
 				SmartDashboard.putBoolean("Ground Loaded Gear", gotGear);
 				SmartDashboard.putBoolean("Compressor", compressorMode);
-				SmartDashboard.putNumber("Heading", poseidon.getHeading());
+
+				// SmartDashboard.putNumber("Heading", poseidon.getHeading());
+
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
@@ -463,52 +468,52 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putNumber("CurrentR", RobotMap.right1.getOutputCurrent());
 				SmartDashboard.putNumber("CurrentL", RobotMap.left1.getOutputCurrent());
 				SmartDashboard.putNumber("Current Floor Intake", RobotMap.floorIntake.getOutputCurrent());
-				
+
 				SmartDashboard.putNumber("RPMs For Left", RobotMap.left1.getSpeed());
 				SmartDashboard.putNumber("RPMs For Right", RobotMap.right1.getSpeed());
-				//System.out.println(RobotMap.left1.getSpeed());
+				// System.out.println(RobotMap.left1.getSpeed());
 
 				/*
 				 * Compass calibration. button tracker is disabled (not updated)
 				 */
-				if (compCal1.isPressed())
-					{// && compCal2.Pressedp()) {
-						// AUTO CAL
-						tempy = poseidon.getMagX();
-						tempz = poseidon.getMagZ();
-						if (compCal1.wasJustPressed())
-							{// &&
-								// compCal2.justPressedp())
-								// {
-								ymax = tempy;
-								ymin = tempy;
-								zmax = tempz;
-								zmin = tempz;
-							}
-						if (tempy > ymax)
-							{
-								ymax = tempy;
-							}
-						else if (tempy < ymin)
-							{
-								ymin = tempy;
-							}
-
-						if (tempz > zmax)
-							{
-								zmax = tempz;
-							}
-						else if (tempz < zmin)
-							{
-								zmin = tempz;
-							}
-
-						alpha = (ymax + ymin) / 2;
-						beta = (zmax + zmin) / 2;
-
-						poseidon.compCal(alpha, beta);
-
-					}
+				// if (compCal1.isPressed())
+				// {// && compCal2.Pressedp()) {
+				// // AUTO CAL
+				// tempy = poseidon.getMagX();
+				// tempz = poseidon.getMagZ();
+				// if (compCal1.wasJustPressed())
+				// {// &&
+				// // compCal2.justPressedp())
+				// // {
+				// ymax = tempy;
+				// ymin = tempy;
+				// zmax = tempz;
+				// zmin = tempz;
+				// }
+				// if (tempy > ymax)
+				// {
+				// ymax = tempy;
+				// }
+				// else if (tempy < ymin)
+				// {
+				// ymin = tempy;
+				// }
+				//
+				// if (tempz > zmax)
+				// {
+				// zmax = tempz;
+				// }
+				// else if (tempz < zmin)
+				// {
+				// zmin = tempz;
+				// }
+				//
+				// alpha = (ymax + ymin) / 2;
+				// beta = (zmax + zmin) / 2;
+				//
+				// poseidon.compCal(alpha, beta);
+				//
+				// }
 
 				// Display if Gear In In Ground Loader:
 				SmartDashboard.putBoolean("Gear In Ground Loader", gearInGroundLoader);
