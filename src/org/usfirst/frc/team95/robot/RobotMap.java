@@ -56,7 +56,7 @@ public class RobotMap
 					{
 						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video1");
 						myCam.setResolution(640, 480);
-						myCam.setExposureManual(16);
+						myCam.setExposureManual(17);
 						myCam.setFPS(30);
 						firstCamOn = true;
 

@@ -450,8 +450,8 @@ public class Robot extends IterativeRobot
 
 				if (RobotMap.debugModeEnabled)
 					{
-						// RobotMap.gearLiftFinder.computeHeadingToTarget();
-						// RobotMap.smartDashboardDebugVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
+						RobotMap.gearLiftFinder.computeHeadingToTarget();
+						RobotMap.smartDashboardDebugVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
 					}
 
 				// SMART DAHSBOARD OUTPUT:
