@@ -12,6 +12,6 @@ public class RotateAndScoreGear extends SequentialMove
 				
 				// Rotates Specific Angle and Then Scores
 				super.SetMoves(new Auto[]
-					{ new RotateByUntilVision(mRotateAngle), new ScoreGear()});
+					{ new RotateBy(mRotateAngle), new ScoreGear()});
 			}
 	}

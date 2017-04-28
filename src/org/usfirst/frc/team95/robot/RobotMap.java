@@ -1,5 +1,7 @@
 package org.usfirst.frc.team95.robot;
 
+import java.io.IOException;
+
 import com.ctre.CANTalon;
 
 import edu.wpi.cscore.CvSink;
@@ -8,6 +10,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into to a variable name. This provides flexibility
@@ -16,6 +19,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class RobotMap
 	{
 
+		public static SystemLogger sL;
+		public static Timer systemLoggerTimer;
+		
 		public static CANTalon left1, left2, left3, right1, right2, right3, winchLeft, winchRight, floorIntake;
 		public static Drive drive;
 
@@ -52,12 +58,23 @@ public class RobotMap
 		public static void init()
 			{
 
+				
+				
+				try
+					{
+						sL = new SystemLogger();
+					}
+				catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+				
 				if (startFirstCam)
 					{
 						myCam = CameraServer.getInstance().startAutomaticCapture("Hephaestus", "/dev/video1");
 						myCam.setResolution(640, 480);
 						myCam.setExposureManual(17);
-						myCam.setFPS(30);
+						myCam.setFPS(25);
 						firstCamOn = true;
 
 						smartDashboardDebugVideoOutput = CameraServer.getInstance().putVideo("Debug", 640, 480);
@@ -167,16 +184,16 @@ public class RobotMap
 								System.out.println("-------------------------------------");
 
 								myCam2 = CameraServer.getInstance().startAutomaticCapture("Theia", "/dev/video0");
-								myCam2.setResolution(640, 480);
-								myCam2.setFPS(30);
+								myCam2.setResolution(0, 0);
+								myCam2.setFPS(0);
 
 								System.out.println("---------------------");
 								System.out.println("- Second Cam Enabled -");
 								System.out.println("---------------------");
 							}
 
-						myCam2.setFPS(30);
-						myCam2.setResolution(640, 480);
+						myCam2.setFPS(0);
+						myCam2.setResolution(0, 0);
 						secondCamOn = true;
 
 						System.out.println("---------------------");
@@ -192,8 +209,8 @@ public class RobotMap
 						System.out.println("- Second Cam Disabled -");
 						System.out.println("-----------------------");
 
-						myCam.setFPS(30);
-						myCam.setResolution(640, 480);
+						myCam.setFPS(0);
+						myCam.setResolution(0, 0);
 						firstCamOn = true;
 						System.out.println("---------------------");
 						System.out.println("- First Cam Enabled -");

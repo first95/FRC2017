@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.io.IOException;
+
 import org.usfirst.frc.team95.robot.auto.AlternateScoreGearFromStartStageTwo;
 import org.usfirst.frc.team95.robot.auto.Auto;
 import org.usfirst.frc.team95.robot.auto.DistanceMove;
@@ -33,6 +35,8 @@ import org.usfirst.frc.team95.robot.auto.ScoreFromStartStageTwo;
  */
 public class Robot extends IterativeRobot
 	{
+
+		private String autoMovePicked;
 
 		// Variables That Are Used In Auto Pickup Of A Ground Gear
 		private Timer gearCurrentTimer;
@@ -63,33 +67,52 @@ public class Robot extends IterativeRobot
 		public void robotInit()
 			{
 
+				RobotMap.systemLoggerTimer = new Timer();
+				RobotMap.systemLoggerTimer.reset();
+				RobotMap.systemLoggerTimer.start();
+
 				// This Needs To Be Above RobotMap.init()!
 				RobotMap.debugModeEnabled = false;
 
 				RobotMap.init();
 
+				RobotMap.sL.SystemLoggerWriteRAW("Robot_Init");
+
+				if (RobotMap.debugModeEnabled)
+					{
+						RobotMap.sL.SystemLoggerWriteRAW("Vision_Debug_Mode_Active");
+					}
+
 				// Vision Debug Mode: This will shows the vision output on SmartDashboard if enabled
 				if (RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
+						RobotMap.sL.SystemLoggerWriteRAW("Starting Vision Processing");
 					}
 
 				gearCurrentTimer = new Timer();
+				RobotMap.sL.SystemLoggerWriteRAW("gearCurrentTimer_Created");
 
 				alpha = 0;
 				beta = 0;
 
 				chooser = new SendableChooser();
+				RobotMap.sL.SystemLoggerWriteRAW("SendableChooser_Created");
 				SmartDashboard.putData("Auto mode", chooser);
 
 				artemis = new AnalogInput(0);
+				RobotMap.sL.SystemLoggerWriteRAW("artemis_Created");
 				variableStore = new VariableStore();
+				RobotMap.sL.SystemLoggerWriteRAW("variableStore_Created");
 
 				// poseidon = new ADIS16448_IMU(variableStore);
 
 				panel = new PowerDistributionPanel();
+				RobotMap.sL.SystemLoggerWriteRAW("PowerDistributionPanel_Created");
 				gotGear = false;
+				RobotMap.sL.SystemLoggerWriteRAW("gotGear_Set_To_False");
 				compressorMode = true;
+				RobotMap.sL.SystemLoggerWriteRAW("compressorMode_Set_To_True");
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// DRIVE BUTTONS:
@@ -97,6 +120,7 @@ public class Robot extends IterativeRobot
 				slowMo = new ButtonTracker(Constants.DRIVE_STICK, 6); // R Bumber
 				compCal1 = new ButtonTracker(Constants.DRIVE_STICK, 7); // Select
 				compCalReset = new ButtonTracker(Constants.DRIVE_STICK, 8); // Start
+				RobotMap.sL.SystemLoggerWriteRAW("Drive_Button_Created");
 				// changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 
 				// WEAPON BUTTONS:
@@ -108,6 +132,7 @@ public class Robot extends IterativeRobot
 				intakeFloorGear = new ButtonTracker(Constants.WEAPON_STICK, 3); // X
 				outFloorGear = new ButtonTracker(Constants.WEAPON_STICK, 4); // Y
 				disableCompressor = new ButtonTracker(Constants.WEAPON_STICK, 8); // start
+				RobotMap.sL.SystemLoggerWriteRAW("Weapon_Buttons_Created");
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[] { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
@@ -137,7 +162,7 @@ public class Robot extends IterativeRobot
 				// a.addObject("rotate -90", new RotateBy(-Math.PI / 2));
 				// a.addObject("go 5 feet", new DistanceMovePID(5));
 				// a.addObject("Timed testing", new TimedMove(.3, -.3, 1.15));
-				
+
 				// SCORE GEARS FROM STARTING POSITION:
 				a.addObject("Red Left", new ScoreFromStart(true, 0));
 				a.addObject("Red Middle", new ScoreFromStart(true, 1));
@@ -228,6 +253,9 @@ public class Robot extends IterativeRobot
 				picked += am.getClass().getName() + ", ";
 				picked += bm.getClass().getName() + ", ";
 				picked += cm.getClass().getName();
+
+				autoMovePicked = picked;
+
 				DriverStation.reportError(picked, false);
 				Auto[] m =
 					{ am, bm, cm };
@@ -447,6 +475,26 @@ public class Robot extends IterativeRobot
 		 */
 		public void commonPeriodic()
 			{
+
+				// 11 Doubles
+				// 2 Booleans
+				// 4 Solenoids
+				// 1 String
+
+				try
+					{
+						Double[] doubleArray =
+							{ RobotMap.systemLoggerTimer.get(), RobotMap.right1.getOutputCurrent(), RobotMap.left1.getOutputCurrent(), RobotMap.right1.getOutputVoltage(), RobotMap.left1.getOutputVoltage(), (double) RobotMap.right1.getEncPosition(), (double) RobotMap.left1.getEncPosition(), RobotMap.right1.getSpeed(), RobotMap.left1.getSpeed(), RobotMap.sL.pixHeight, RobotMap.sL.pixDis };
+						Boolean[] booleanArray =
+							{ compressorMode, gearInGroundLoader };
+
+						RobotMap.sL.SystemLoggerNullCheck(doubleArray, booleanArray, autoMovePicked);
+						RobotMap.sL.SystemLoggerWrite(RobotMap.systemLoggerTimer.get() + "," + RobotMap.right1.getOutputCurrent() + "," + RobotMap.left1.getOutputCurrent() + "," + RobotMap.right1.getOutputVoltage() + "," + RobotMap.left1.getOutputVoltage() + "," + RobotMap.right1.getEncPosition() + "," + RobotMap.left1.getEncPosition() + "," + RobotMap.right1.getSpeed() + "," + RobotMap.left1.getSpeed() + "," + RobotMap.sL.pixHeight + "," + RobotMap.sL.pixDis + "," + compressorMode + "," + gearInGroundLoader + "," + RobotMap.brakes.get() + "," + RobotMap.pushFaceOut.get() + "," + RobotMap.hatTip.get() + "," + RobotMap.gearPooper.get() + "," + autoMovePicked);
+					}
+				catch (Exception e)
+					{
+						e.printStackTrace();
+					}
 
 				if (RobotMap.debugModeEnabled)
 					{
