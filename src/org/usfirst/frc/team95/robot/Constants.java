@@ -27,7 +27,7 @@ public class Constants
 		public final static double HOPPER_SIDE_DIST1 = (70.94 / 12);
 		public final static double HOPPER_SIDE_DIST2 = (65.06 / 12) - 3;
 		public final static double ROTATE_LEFT = (-60 * (Math.PI / 180));
-		public final static double ROTATE_RIGHT = 70 * (Math.PI / 180);
+		public final static double ROTATE_RIGHT = 75 * (Math.PI / 180);
 		public final static double ROTATE_LEFT_STAGE_ALT = (-20 * (Math.PI / 180));
 		public final static double ROTATE_NONE = 0.0;
 		

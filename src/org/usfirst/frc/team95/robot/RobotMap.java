@@ -58,8 +58,6 @@ public class RobotMap
 		public static void init()
 			{
 
-				
-				
 				try
 					{
 						sL = new SystemLogger();
@@ -150,12 +148,18 @@ public class RobotMap
 		public static void switchVisionCameras()
 			{
 
+				
+				RobotMap.sL.SystemLoggerWriteRAW("Attempting_To_Switch_Cameras");
+				
 				System.out.println("--------------------------------");
 				System.out.println("- Attempting To Switch Cameras -");
 				System.out.println("--------------------------------");
 
 				if (debugModeEnabled)
 					{
+						
+						RobotMap.sL.SystemLoggerWriteRAW("Attempting_To_Enable_Camera");
+						
 						System.out.println("--------------------------------------");
 						System.out.println("- Attempting To Enable Second Camera -");
 						System.out.println("--------------------------------------");
@@ -164,6 +168,8 @@ public class RobotMap
 						myCam2.setFPS(0);
 						myCam2.setResolution(0, 0);
 
+						RobotMap.sL.SystemLoggerWriteRAW("Second_Cam_Enabled");
+						
 						System.out.println("----------------------");
 						System.out.println("- Second Cam Enabled -");
 						System.out.println("----------------------");
@@ -173,12 +179,15 @@ public class RobotMap
 						myCam.setFPS(0);
 						myCam.setResolution(0, 0);
 
+						RobotMap.sL.SystemLoggerWriteRAW("First_Cam_Disabled");
 						System.out.println("----------------------");
 						System.out.println("- First Cam Disabled -");
 						System.out.println("----------------------");
 
 						if (secondCamOn == false)
 							{
+								
+								RobotMap.sL.SystemLoggerWriteRAW("Attempting_To_Activate_Second_Camera");
 								System.out.println("-------------------------------------");
 								System.out.println("- Attempting To Activate Second Cam -");
 								System.out.println("-------------------------------------");
@@ -187,6 +196,7 @@ public class RobotMap
 								myCam2.setResolution(0, 0);
 								myCam2.setFPS(0);
 
+								RobotMap.sL.SystemLoggerWriteRAW("Second_Cam_Enabled");
 								System.out.println("---------------------");
 								System.out.println("- Second Cam Enabled -");
 								System.out.println("---------------------");
@@ -196,6 +206,7 @@ public class RobotMap
 						myCam2.setResolution(0, 0);
 						secondCamOn = true;
 
+						RobotMap.sL.SystemLoggerWriteRAW("Second_Cam_Enabled");
 						System.out.println("---------------------");
 						System.out.println("- Second Cam Enabled -");
 						System.out.println("---------------------");
@@ -205,6 +216,8 @@ public class RobotMap
 						myCam2.setFPS(0);
 						myCam2.setResolution(0, 0);
 						secondCamOn = false;
+						
+						RobotMap.sL.SystemLoggerWriteRAW("Second_Cam_Disabled");
 						System.out.println("-----------------------");
 						System.out.println("- Second Cam Disabled -");
 						System.out.println("-----------------------");
