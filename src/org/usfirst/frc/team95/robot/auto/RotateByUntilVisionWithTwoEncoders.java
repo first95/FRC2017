@@ -23,13 +23,14 @@ public class RotateByUntilVisionWithTwoEncoders extends Auto
 		@Override
 		public void init()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVisionWithTwoEncoders_Init");
 				P = 0.35;
 			}
 
 		@Override
 		public void start()
 			{
-
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVisionWithTwoEncoders_Start");
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
@@ -64,7 +65,6 @@ public class RotateByUntilVisionWithTwoEncoders extends Auto
 		@Override
 		public void update()
 			{
-
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
@@ -148,7 +148,7 @@ public class RotateByUntilVisionWithTwoEncoders extends Auto
 		@Override
 		public void stop()
 			{
-
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVisionWithTwoEncoders_Stop");
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.stopVisionProcessing();
@@ -178,6 +178,7 @@ public class RotateByUntilVisionWithTwoEncoders extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVisionWithTwoEncoders_Succeeded");
 				return true;
 			}
 	}

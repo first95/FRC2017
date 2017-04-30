@@ -8,13 +8,15 @@ public class ScoreFromStart extends SequentialMove
 
 		// First Distance, Rotate, Second Distance
 		private double dist1, dist2, rotate;
-		
+
 		private int mPosition;
 		private boolean mRedSide;
 
 		// 0 is far left
 		public ScoreFromStart(boolean redSide, int position)
 			{
+
+				RobotMap.sL.SystemLoggerWriteTimeline("ScoreFromStart_Activie");
 
 				mPosition = position;
 				mRedSide = redSide;
@@ -62,6 +64,8 @@ public class ScoreFromStart extends SequentialMove
 				RobotMap.autoDist1 = dist1;
 				RobotMap.autoDist2 = dist2;
 				RobotMap.autoRotate = rotate;
+
+				RobotMap.sL.SystemLoggerWriteTimeline("Side_Picked_" + mPosition);
 
 				super.SetMoves(new Auto[]
 					{ new DistanceMovePID(dist1), new RotateAndScoreGear(rotate) });

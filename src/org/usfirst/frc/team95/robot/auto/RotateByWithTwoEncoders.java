@@ -21,12 +21,14 @@ public class RotateByWithTwoEncoders extends Auto
 		@Override
 		public void init()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByWithTwoEncoders_Init");
 				P = 0.35;
 			}
 
 		@Override
 		public void start()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByWithTwoEncoders_Start");
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
@@ -173,7 +175,7 @@ public class RotateByWithTwoEncoders extends Auto
 		@Override
 		public void stop()
 			{
-
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByWithTwoEncoders_Stop");
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.stopVisionProcessing();
@@ -203,6 +205,7 @@ public class RotateByWithTwoEncoders extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByWithTwoEncoder_Succeeded");
 				return true;
 			}
 	}

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team95.robot.auto;
 
+import org.usfirst.frc.team95.robot.RobotMap;
+
 public class RotateAndScoreGear extends SequentialMove
 	{
 		
@@ -7,7 +9,7 @@ public class RotateAndScoreGear extends SequentialMove
 		
 		public RotateAndScoreGear(double rotateAngle)
 			{
-				
+				RobotMap.sL.SystemLoggerWriteTimeline("Rotate_And_ScoreGear_Active");
 				mRotateAngle = rotateAngle;
 				
 				// Rotates Specific Angle and Then Scores

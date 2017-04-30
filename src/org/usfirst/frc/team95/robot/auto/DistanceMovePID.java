@@ -24,6 +24,8 @@ public class DistanceMovePID extends Auto
 		@Override
 		public void init()
 			{
+				
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_MovePID_Init");
 				brakeTimer = new Timer();
 				done = false;
 				P = .35;
@@ -42,6 +44,7 @@ public class DistanceMovePID extends Auto
 		@Override
 		public void start()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_MovePID_Start");
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
@@ -116,6 +119,7 @@ public class DistanceMovePID extends Auto
 		@Override
 		public void stop()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_MovePID_Stop");
 				RobotMap.brakes.set(false);
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
@@ -134,6 +138,7 @@ public class DistanceMovePID extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_MovePID_Succeeded");
 				return true;
 			}
 	}

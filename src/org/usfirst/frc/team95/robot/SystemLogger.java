@@ -3,6 +3,8 @@ package org.usfirst.frc.team95.robot;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -11,12 +13,25 @@ public class SystemLogger
 	{
 
 		private String systemDate;
+		private String systemDay;
+		private String systemMonth;
+		private String systemNoDay;
+		private String systemHour;
+		private String systemMinute;
+		private String systemSecond;
+		private String systemTimeZone;
+		private String systemYear;
+
+		private Date finalDate;
+		private Date currentDate;
+		private SimpleDateFormat dateFormat;
+
 		private String logFileTitleCSV;
-		private String logFileTitleRAW;
+		private String logFileTitleTimeline;
 		private File logFileCSV;
-		private File logFileRaw;
+		private File logFileTimeline;
 		private FileWriter fWCSV;
-		private FileWriter fWRAW;
+		private FileWriter fWTimeline;
 
 		public Double pixHeight = 0.0;
 		public Double pixDis = 0.0;
@@ -28,16 +43,41 @@ public class SystemLogger
 
 		private void SystemLoggerInit() throws IOException
 			{
-				Date currentDate = new Date();
+				currentDate = new Date();
 				systemDate = currentDate.toString();
-				logFileTitleCSV = systemDate;
-				logFileTitleRAW = systemDate + "_RAW";
+
+				// systemDay = systemDate.substring(1, 3);
+				// systemMonth = systemDate.substring(5, 7);
+				// systemNoDay = systemDate.substring(9, 10);
+				// systemHour = systemDate.substring(12, 13);
+				// systemMinute = systemDate.substring(15, 16);
+				// systemSecond = systemDate.substring(18, 19);
+				// systemTimeZone = systemDate.substring(21, 23);
+				// systemYear = systemDate.substring(25, 28);
+				//
+				// systemDate = systemYear + systemMonth + systemDay + "-" + systemHour + systemMinute + systemSecond;
+
+				dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+				try
+					{
+						finalDate = dateFormat.parse(systemDate);
+					}
+				catch (ParseException e)
+					{
+						e.printStackTrace();
+					}
+
+				logFileTitleCSV = finalDate.toString();
+				logFileTitleTimeline = finalDate.toString() + "_Timeline";
+				// logFileTitleCSV = systemDate;
+				// logFileTitleTimeline = systemDate + "_Timeline";
 
 				File logFileCSV = new File("/home/lvuser/Logs/" + logFileTitleCSV + ".csv");
-				File logFileRAW = new File("/home/lvuser/Logs/" + logFileTitleRAW + ".txt");
+				File logFileTimeline = new File("/home/lvuser/Logs/" + logFileTitleTimeline + ".txt");
 
 				fWCSV = new FileWriter(logFileCSV);
-				fWRAW = new FileWriter(logFileRAW);
+				fWTimeline = new FileWriter(logFileTimeline);
 
 				fWCSV.write("time, currentR, currentL, voltageR, voltageL, encoderR, encoderL,  rpmR, rpmL, heightoftargetinpix, distancetotarget, compressoronbol, groundloadgearbol, brakedeploybol, faceextendbol, tiphatbol, jazzhandsbol, automovechosen");
 			}
@@ -57,13 +97,12 @@ public class SystemLogger
 
 			}
 
-		public void SystemLoggerWriteRAW(String mData)
+		public void SystemLoggerWriteTimeline(String mData)
 			{
-
 				try
 					{
-						fWRAW.write(RobotMap.systemLoggerTimer.get() + " -- " + mData);
-						fWRAW.flush();
+						fWTimeline.write(RobotMap.systemLoggerTimer.get() + " -- " + mData + "\n");
+						fWTimeline.flush();
 					}
 				catch (IOException e)
 					{
@@ -71,8 +110,6 @@ public class SystemLogger
 					}
 
 			}
-
-		//
 
 		public void SystemLoggerNullCheck(Double doubleNullCheckHolder[], Boolean booleanNullCheckHolder[], String stringNullCheckHolder)
 			{
@@ -119,7 +156,7 @@ public class SystemLogger
 				try
 					{
 						fWCSV.close();
-						fWRAW.close();
+						fWTimeline.close();
 					}
 				catch (IOException e)
 					{

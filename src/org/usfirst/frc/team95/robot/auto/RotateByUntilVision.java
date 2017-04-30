@@ -20,13 +20,14 @@ public class RotateByUntilVision extends Auto
 		@Override
 		public void init()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVision_Init");
 				P = 0.35;
 			}
 
 		@Override
 		public void start()
 			{
-
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVision_Start");
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
@@ -133,7 +134,7 @@ public class RotateByUntilVision extends Auto
 		@Override
 		public void stop()
 			{
-
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVision_Stop");
 				if (!RobotMap.debugModeEnabled)
 					{
 						RobotMap.stopVisionProcessing();
@@ -163,6 +164,7 @@ public class RotateByUntilVision extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateByUntillVision_Succeeded");
 				return true;
 			}
 	}

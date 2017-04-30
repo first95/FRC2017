@@ -19,12 +19,14 @@ public class RotateBy extends Auto
 		@Override
 		public void init()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateBy_Init");
 				P = 0.35;
 			}
 
 		@Override
 		public void start()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateBy_Start");
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
@@ -110,6 +112,7 @@ public class RotateBy extends Auto
 		@Override
 		public void stop()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateBy_Stop");
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);
@@ -134,6 +137,7 @@ public class RotateBy extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("RotateBy_Succeeded");
 				return true;
 			}
 	}

@@ -8,13 +8,14 @@ public class ClosePooper extends Auto
 
 		public void init()
 			{
-				System.out.println("CLOSEPOOP Init");
+				
+				RobotMap.sL.SystemLoggerWriteTimeline("Close_Pooper_Init");
 				done = false;
 			}
 
 		public void start()
 			{
-				System.out.println("CLOSEPOOP Start");
+				RobotMap.sL.SystemLoggerWriteTimeline("Close_Pooper_Start");
 				RobotMap.gearPooper.set(false);
 			}
 
@@ -25,7 +26,7 @@ public class ClosePooper extends Auto
 
 		public void stop()
 			{
-				System.out.println("CLOSEPOOP Stop");
+				RobotMap.sL.SystemLoggerWriteTimeline("Close_Pooper_Stop");
 			}
 
 		public boolean isDone()
@@ -36,6 +37,7 @@ public class ClosePooper extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Close_Pooper_Succeeded");
 				return true;
 			}
 	}

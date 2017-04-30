@@ -24,13 +24,13 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void init()
 			{
-				System.out.println("vision init");
+				RobotMap.sL.SystemLoggerWriteTimeline("GoToLift_Advanced_Init");
 			}
 
 		@Override
 		public void start()
 			{
-				System.out.println("vision start");
+				RobotMap.sL.SystemLoggerWriteTimeline("GoToLift_Advanced_Start");
 
 				if (!RobotMap.debugModeEnabled)
 					{
@@ -133,6 +133,7 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public void stop()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("GoToLift_Advanced_Stop");
 				RobotMap.drive.arcade(0, 0);
 				RobotMap.driveLock = null;
 
@@ -152,6 +153,7 @@ public class GoToLiftAdvanced extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("GoToLIft_Advanced_Succeeded");
 				return succeeded;
 			}
 	}

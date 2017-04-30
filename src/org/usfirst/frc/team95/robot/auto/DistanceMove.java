@@ -20,12 +20,13 @@ public class DistanceMove extends Auto
 		@Override
 		public void init()
 			{
-
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_Move_Init");
 			}
 
 		@Override
 		public void start()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_Move_Start");
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
 					{
 						RobotMap.driveLock = this;
@@ -85,6 +86,7 @@ public class DistanceMove extends Auto
 		@Override
 		public void stop()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_Move_Stop");
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);
@@ -101,6 +103,7 @@ public class DistanceMove extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Distance_Move_Succeeded");
 				return true;
 			}
 	}

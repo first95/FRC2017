@@ -20,12 +20,14 @@ public class TimedMove extends Auto
 		@Override
 		public void init()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("TimedMove_Init");
 				done = false;
 			}
 
 		@Override
 		public void start()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("TimedMove_Start");
 				timer.reset();
 				timer.start();
 				if (RobotMap.driveLock == this || RobotMap.driveLock == null)
@@ -48,6 +50,7 @@ public class TimedMove extends Auto
 		@Override
 		public void stop()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("TimedMove_Stop");
 				if (RobotMap.driveLock == null || RobotMap.driveLock == this)
 					{
 						RobotMap.drive.tank(0, 0);
@@ -66,6 +69,7 @@ public class TimedMove extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("TimedMove_Succeeded");
 				System.out.println("-- Timed Moved Succeeded --");
 				return true;
 			}

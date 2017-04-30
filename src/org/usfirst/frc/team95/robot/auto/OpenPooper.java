@@ -18,11 +18,13 @@ public class OpenPooper extends Auto
 
 		public void init()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Open_Pooper_Init");
 				done = false;
 			}
 
 		public void start()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Open_Pooper_Start");
 				timer.reset();
 				timer.start();
 				RobotMap.gearPooper.set(true);
@@ -38,7 +40,7 @@ public class OpenPooper extends Auto
 
 		public void stop()
 			{
-
+				RobotMap.sL.SystemLoggerWriteTimeline("Open_Pooper_Stop");
 			}
 
 		public boolean isDone()
@@ -49,6 +51,7 @@ public class OpenPooper extends Auto
 		@Override
 		public boolean succeeded()
 			{
+				RobotMap.sL.SystemLoggerWriteTimeline("Open_Pooper_Succeeded");
 				return true;
 			}
 	}

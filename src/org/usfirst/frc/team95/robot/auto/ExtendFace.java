@@ -8,11 +8,13 @@ public class ExtendFace extends Auto{
 	
 	@Override
 	public void init() {
+		RobotMap.sL.SystemLoggerWriteTimeline("Extend_Face_Init");
 		done = false;
 	}
 
 	@Override
 	public void start() {
+		RobotMap.sL.SystemLoggerWriteTimeline("Extend_Face_Start");
 		RobotMap.pushFaceOut.set(true);
 	}
 
@@ -23,7 +25,7 @@ public class ExtendFace extends Auto{
 
 	@Override
 	public void stop() {
-		
+		RobotMap.sL.SystemLoggerWriteTimeline("Extend_Face_Stop");
 	}
 
 	@Override
@@ -33,6 +35,7 @@ public class ExtendFace extends Auto{
 
 	@Override
 	public boolean succeeded() {
+		RobotMap.sL.SystemLoggerWriteTimeline("Extend_Face_Succeeded");
 		return true;
 	}
 
