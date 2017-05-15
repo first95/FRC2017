@@ -58,7 +58,7 @@ public class RobotMap
 		public static void init()
 			{
 
-				try
+				/*try
 					{
 						sL = new SystemLogger();
 					}
@@ -87,7 +87,7 @@ public class RobotMap
 						System.out.println("- This Mean Vision Could Not Start                -");
 						System.out.println("- Plug In Cam And Restart Or Vision Will Not Work -");
 						System.out.println("---------------------------------------------------");
-					}
+					}*/
 
 				// DRIVE MOTERS:
 				left1 = new AdjustedTalon(1);

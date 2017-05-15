@@ -76,63 +76,63 @@ public class Robot extends IterativeRobot
 
 				RobotMap.init();
 
-				RobotMap.sL.SystemLoggerWriteRAW("Robot_Init");
+				////RobotMap.sL.SystemLoggerWriteRAW("Robot_Init");
 
 				if (RobotMap.debugModeEnabled)
 					{
-						RobotMap.sL.SystemLoggerWriteRAW("Vision_Debug_Mode_Active");
+						//RobotMap.sL.SystemLoggerWriteRAW("Vision_Debug_Mode_Active");
 					}
 
 				// Vision Debug Mode: This will shows the vision output on SmartDashboard if enabled
 				if (RobotMap.debugModeEnabled)
 					{
 						RobotMap.visionProcessingInit();
-						RobotMap.sL.SystemLoggerWriteRAW("Starting Vision Processing");
+						//RobotMap.sL.SystemLoggerWriteRAW("Starting Vision Processing");
 					}
 
 				gearCurrentTimer = new Timer();
-				RobotMap.sL.SystemLoggerWriteRAW("gearCurrentTimer_Created");
+				////RobotMap.sL.SystemLoggerWriteRAW("gearCurrentTimer_Created");
 
 				alpha = 0;
 				beta = 0;
 
 				chooser = new SendableChooser();
-				RobotMap.sL.SystemLoggerWriteRAW("SendableChooser_Created");
+				////RobotMap.sL.SystemLoggerWriteRAW("SendableChooser_Created");
 				SmartDashboard.putData("Auto mode", chooser);
 
 				artemis = new AnalogInput(0);
-				RobotMap.sL.SystemLoggerWriteRAW("artemis_Created");
+				////RobotMap.sL.SystemLoggerWriteRAW("artemis_Created");
 				variableStore = new VariableStore();
-				RobotMap.sL.SystemLoggerWriteRAW("variableStore_Created");
+				////RobotMap.sL.SystemLoggerWriteRAW("variableStore_Created");
 
 				// poseidon = new ADIS16448_IMU(variableStore);
 
 				panel = new PowerDistributionPanel();
-				RobotMap.sL.SystemLoggerWriteRAW("PowerDistributionPanel_Created");
+				////RobotMap.sL.SystemLoggerWriteRAW("PowerDistributionPanel_Created");
 				gotGear = false;
-				RobotMap.sL.SystemLoggerWriteRAW("gotGear_Set_To_False");
+				////RobotMap.sL.SystemLoggerWriteRAW("gotGear_Set_To_False");
 				compressorMode = true;
-				RobotMap.sL.SystemLoggerWriteRAW("compressorMode_Set_To_True");
+				////RobotMap.sL.SystemLoggerWriteRAW("compressorMode_Set_To_True");
 				// shooter = new VoltageCompensatedShooter(RobotMap.shooter, 4);
 
 				// DRIVE BUTTONS:
-				brakes = new ButtonTracker(Constants.DRIVE_STICK, 1); // A
-				slowMo = new ButtonTracker(Constants.DRIVE_STICK, 6); // R Bumber
-				compCal1 = new ButtonTracker(Constants.DRIVE_STICK, 7); // Select
-				compCalReset = new ButtonTracker(Constants.DRIVE_STICK, 8); // Start
-				RobotMap.sL.SystemLoggerWriteRAW("Drive_Button_Created");
+				brakes = new ButtonTracker(Constants.DRIVE_STICK, 8); // A
+				//slowMo = new ButtonTracker(Constants.DRIVE_STICK, 6); // R Bumber
+				//compCal1 = new ButtonTracker(Constants.DRIVE_STICK, 7); // Select
+				//compCalReset = new ButtonTracker(Constants.DRIVE_STICK, 8); // Start
+				////RobotMap.sL.SystemLoggerWriteRAW("Drive_Button_Created");
 				// changeDriveMode = new ButtonTracker(Constants.driveStick, 4);
 
 				// WEAPON BUTTONS:
-				tipHat = new ButtonTracker(Constants.WEAPON_STICK, 1); // A
+				tipHat = new ButtonTracker(Constants.DRIVE_STICK, 1); // A
 				autoPickerUpper = new ButtonTracker(Constants.WEAPON_STICK, 7);// select
-				poopGear = new ButtonTracker(Constants.WEAPON_STICK, 2); // B
-				facePush = new ButtonTracker(Constants.WEAPON_STICK, 5); // L Bumber
-				dropGroundLoader = new ButtonTracker(Constants.WEAPON_STICK, 6); // R Bumber
-				intakeFloorGear = new ButtonTracker(Constants.WEAPON_STICK, 3); // X
-				outFloorGear = new ButtonTracker(Constants.WEAPON_STICK, 4); // Y
+				poopGear = new ButtonTracker(Constants.DRIVE_STICK, 2); // B
+				facePush = new ButtonTracker(Constants.DRIVE_STICK, 5); // L Bumber
+				dropGroundLoader = new ButtonTracker(Constants.DRIVE_STICK, 6); // R Bumber
+				intakeFloorGear = new ButtonTracker(Constants.DRIVE_STICK, 3); // X
+				outFloorGear = new ButtonTracker(Constants.DRIVE_STICK, 4); // Y
 				disableCompressor = new ButtonTracker(Constants.WEAPON_STICK, 8); // start
-				RobotMap.sL.SystemLoggerWriteRAW("Weapon_Buttons_Created");
+				////RobotMap.sL.SystemLoggerWriteRAW("Weapon_Buttons_Created");
 				// intake = new ButtonTracker(Constants.weaponStick, 3);
 				// rangeFinder = new RangeFinder(initiateRangeFinder, new AnalogInput[] { range1, range2 });
 				// rangeBasedGearScorer = new RangeBasedGearScorer(RobotMap.gearPooper, RobotMap.pushFaceOut, rangeFinder);
@@ -177,7 +177,7 @@ public class Robot extends IterativeRobot
 				a.addObject("Timed Blue Left", new TimedScoreFromStart(false, 0));
 				a.addObject("Timed Blue Middle", new TimedScoreFromStart(false, 1));
 				a.addObject("Timed Blue Right", new TimedScoreFromStart(false, 2));
-				RobotMap.sL.SystemLoggerWriteRAW("Sendable_Chooser_Objects_A_Created");
+				//RobotMap.sL.SystemLoggerWriteRAW("Sendable_Chooser_Objects_A_Created");
 
 				// SENDABLE CHOSER TWO:
 				b.addDefault("None", new Nothing());
@@ -188,7 +188,7 @@ public class Robot extends IterativeRobot
 				b.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 				b.addObject("Left", new RotateBy(-Math.PI / 4));
 				b.addObject("Score Gear", new ScoreGear());
-				RobotMap.sL.SystemLoggerWriteRAW("Sendable_Chooser_Objects_B_Created");
+				//RobotMap.sL.SystemLoggerWriteRAW("Sendable_Chooser_Objects_B_Created");
 
 				// SENDAZBLE CHOSER THREE:
 				c.addDefault("None", new Nothing());
@@ -196,13 +196,13 @@ public class Robot extends IterativeRobot
 				c.addObject("Go Backward", new DistanceMove(-0.3, -0.3, 5));
 				c.addObject("Turn 45 Right", new RotateBy(Math.PI / 4));
 				c.addObject("Turn 45 Left", new RotateBy(-Math.PI / 4));
-				RobotMap.sL.SystemLoggerWriteRAW("Sendable_Chooser_Objects_C_Created'");
+				//RobotMap.sL.SystemLoggerWriteRAW("Sendable_Chooser_Objects_C_Created'");
 
 				// DISPLAY CHOSERS TO DASHBOARD:
 				SmartDashboard.putData("1st", a);
 				SmartDashboard.putData("2nd", b);
 				SmartDashboard.putData("3rd", c);
-				RobotMap.sL.SystemLoggerWriteRAW("Sendable_Choosers_Put_On_Dashboard");
+				//RobotMap.sL.SystemLoggerWriteRAW("Sendable_Choosers_Put_On_Dashboard");
 
 			}
 
@@ -220,7 +220,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right1.enableBrakeMode(false);
 				RobotMap.right2.enableBrakeMode(false);
 				RobotMap.right3.enableBrakeMode(false);
-				RobotMap.sL.SystemLoggerWriteRAW("Left_And_Right_Brake_Mode_Disabled");
+				//RobotMap.sL.SystemLoggerWriteRAW("Left_And_Right_Brake_Mode_Disabled");
 
 			}
 
@@ -249,7 +249,7 @@ public class Robot extends IterativeRobot
 				RobotMap.right1.enableBrakeMode(true);
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
-				RobotMap.sL.SystemLoggerWriteRAW("Left_Right_Brake_Mode_Enabled");
+				//RobotMap.sL.SystemLoggerWriteRAW("Left_Right_Brake_Mode_Enabled");
 
 				// RUN SELECTED AUTO MOVE:
 				Auto am = (Auto) a.getSelected();
@@ -261,16 +261,16 @@ public class Robot extends IterativeRobot
 				picked += cm.getClass().getName();
 
 				autoMovePicked = picked;
-				RobotMap.sL.SystemLoggerWriteRAW("Auto_Move_Picked_" + autoMovePicked);
+				//RobotMap.sL.SystemLoggerWriteRAW("Auto_Move_Picked_" + autoMovePicked);
 
 				DriverStation.reportError(picked, false);
 				Auto[] m =
 					{ am, bm, cm };
 				move = new SequentialMove(m);
 				move.init();
-				RobotMap.sL.SystemLoggerWriteRAW("Move_Init_Started");
+				//RobotMap.sL.SystemLoggerWriteRAW("Move_Init_Started");
 				move.start();
-				RobotMap.sL.SystemLoggerWriteRAW("Move_Start_Started");
+				//RobotMap.sL.SystemLoggerWriteRAW("Move_Start_Started");
 
 			}
 
@@ -282,7 +282,7 @@ public class Robot extends IterativeRobot
 
 				commonPeriodic();
 				move.update();
-				RobotMap.sL.SystemLoggerWriteRAW("Move_Update");
+				//RobotMap.sL.SystemLoggerWriteRAW("Move_Update");
 				Scheduler.getInstance().run();
 
 			}
@@ -298,11 +298,11 @@ public class Robot extends IterativeRobot
 				RobotMap.right1.enableBrakeMode(true);
 				RobotMap.right2.enableBrakeMode(true);
 				RobotMap.right3.enableBrakeMode(true);
-				RobotMap.sL.SystemLoggerWriteRAW("Left_Right_Brake_Mode_Disabled");
+				//RobotMap.sL.SystemLoggerWriteRAW("Left_Right_Brake_Mode_Disabled");
 
 				// AFTER AUTO AND VISION IS DONE, SWITCH CAMS -- FRONT TO BACK:
-				RobotMap.switchVisionCameras();
-				RobotMap.sL.SystemLoggerWriteRAW("Vision_Cameras_Switched");
+				//RobotMap.switchVisionCameras();
+				//RobotMap.sL.SystemLoggerWriteRAW("Vision_Cameras_Switched");
 
 				/*
 				 * This makes sure that the autonomous stops running when / teleop starts running. If you want the autonomous to /
@@ -323,20 +323,21 @@ public class Robot extends IterativeRobot
 				Scheduler.getInstance().run();
 
 				// SLOW MOVE DRIVE:
-				if (slowMo.isPressed())
-					{
-						RobotMap.sL.SystemLoggerWriteRAW("Slow_Mo_Button_Pressed");
-						RobotMap.drive.halfArcade(Constants.DRIVE_STICK, true);
-					}
-				else
-					{
-						RobotMap.drive.arcade(Constants.DRIVE_STICK, true);
-					}
-
+//				if (slowMo.isPressed())
+//					{
+//						//RobotMap.sL.SystemLoggerWriteRAW("Slow_Mo_Button_Pressed");
+//						RobotMap.drive.halfArcade(Constants.DRIVE_STICK, true);
+//					}
+//				else
+//					{
+//						RobotMap.drive.arcade(Constants.DRIVE_STICK, true);
+//					}
+				RobotMap.drive.arcade(Constants.DRIVE_STICK, true);
+				
 				// PNEUMATICS:
 				if (tipHat.isPressed())
 					{
-						RobotMap.sL.SystemLoggerWriteRAW("Tip_Hat_Pressed");
+						//RobotMap.sL.SystemLoggerWriteRAW("Tip_Hat_Pressed");
 						RobotMap.hatTip.set(true);
 						RobotMap.gearPooper.set(false);
 					}
@@ -350,32 +351,32 @@ public class Robot extends IterativeRobot
 				RobotMap.pushFaceOut.set(facePush.isPressed());
 				if (facePush.isPressed())
 					{
-						RobotMap.sL.SystemLoggerWriteRAW("Face_Push_Presssed");
+						//RobotMap.sL.SystemLoggerWriteRAW("Face_Push_Presssed");
 					}
 
 				// DEPLOY BRAKES:
 				RobotMap.brakes.set(brakes.isPressed());
 				if (brakes.isPressed())
 					{
-						RobotMap.sL.SystemLoggerWriteRAW("Brakes_Pressed");
+						//RobotMap.sL.SystemLoggerWriteRAW("Brakes_Pressed");
 					}
 
 				// GROUND GEAR HANDLER CHECK:
 				if (autoPickerUpper.wasJustReleased())
 					{
-						RobotMap.sL.SystemLoggerWriteRAW("Auto_Pick_Up_Was_Just_Pressed");
+						//RobotMap.sL.SystemLoggerWriteRAW("Auto_Pick_Up_Was_Just_Pressed");
 						autoGearInGroundLoaderJustRan = false;
 						RobotMap.lowerFloorLifter.set(false);
 						RobotMap.floorIntake.set(0);
 						gearCurrentTimer.stop();
-						RobotMap.sL.SystemLoggerWriteRAW("gearCurrentTimer_Stopped");
+						//RobotMap.sL.SystemLoggerWriteRAW("gearCurrentTimer_Stopped");
 					}
 
 				// AUTO GROUND GEAR HANDLER:
 				if (autoPickerUpper.isPressed() && !autoGearInGroundLoaderJustRan)
 					{
 
-						RobotMap.sL.SystemLoggerWriteRAW("Running_Gear_Auto_Pick_Up");
+						//RobotMap.sL.SystemLoggerWriteRAW("Running_Gear_Auto_Pick_Up");
 
 						RobotMap.lowerFloorLifter.set(true);
 
@@ -387,19 +388,19 @@ public class Robot extends IterativeRobot
 									{
 										gearCurrentTimer.reset();
 										gearCurrentTimer.start();
-										RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Started");
+										//RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Started");
 									}
 								if (gearCurrentTimer.get() > 1.2 && (RobotMap.floorIntake.getOutputCurrent() > Constants.MAX_FLOOR_INTAKE_CURRENT))
 									{
 										gearInGroundLoader = true;
 										gearCurrentTimer.stop();
-										RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Stopped");
+										//RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Stopped");
 									}
 							}
 
 						if (gearInGroundLoader)
 							{
-								RobotMap.sL.SystemLoggerWriteRAW("Gear_Is_In_Ground_Loader");
+								//RobotMap.sL.SystemLoggerWriteRAW("Gear_Is_In_Ground_Loader");
 								autoGearInGroundLoaderJustRan = true;
 								RobotMap.floorIntake.set(0);
 								RobotMap.lowerFloorLifter.set(false);
@@ -413,7 +414,7 @@ public class Robot extends IterativeRobot
 						if (intakeFloorGear.isPressed())
 							{
 
-								RobotMap.sL.SystemLoggerWriteRAW("Gear_Intake_Running");
+								//RobotMap.sL.SystemLoggerWriteRAW("Gear_Intake_Running");
 
 								RobotMap.floorIntake.set(-Constants.FLOOR_INTAKE_THROTTLE);
 
@@ -423,20 +424,20 @@ public class Robot extends IterativeRobot
 											{
 												gearCurrentTimer.reset();
 												gearCurrentTimer.start();
-												RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Start");
+												//RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Start");
 											}
 										if (gearCurrentTimer.get() > .8 && (RobotMap.floorIntake.getOutputCurrent() > Constants.MAX_FLOOR_INTAKE_CURRENT))
 											{
 												gearInGroundLoader = true;
 												gearCurrentTimer.stop();
-												RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Stop");
+												//RobotMap.sL.SystemLoggerWriteRAW("Gear_Current_Timer_Stop");
 											}
 									}
 
 							}
 						else if (outFloorGear.isPressed())
 							{
-								RobotMap.sL.SystemLoggerWriteRAW("Gear_Out_Running");
+								//RobotMap.sL.SystemLoggerWriteRAW("Gear_Out_Running");
 
 								RobotMap.floorIntake.set(Constants.FLOOR_INTAKE_THROTTLE);
 
@@ -453,7 +454,7 @@ public class Robot extends IterativeRobot
 						RobotMap.lowerFloorLifter.set(dropGroundLoader.isPressed());
 						if (dropGroundLoader.isPressed())
 							{
-								RobotMap.sL.SystemLoggerWriteRAW("Ground_Loader_Dropped");
+								//RobotMap.sL.SystemLoggerWriteRAW("Ground_Loader_Dropped");
 							}
 
 						if (dropGroundLoader.wasJustPressed())
@@ -465,14 +466,18 @@ public class Robot extends IterativeRobot
 					}
 
 				// CLIMBER:
-				if (Math.abs(Constants.WEAPON_STICK.getY()) > .18)
+				if (Math.abs(Constants.DRIVE_STICK.getRawAxis(3)) > .18)
 
 					{
-						RobotMap.winchRight.set(Constants.WEAPON_STICK.getY());
-						RobotMap.winchLeft.set(-Constants.WEAPON_STICK.getY());
-						RobotMap.sL.SystemLoggerWriteRAW("Winch_Running");
+						RobotMap.winchRight.set(Constants.DRIVE_STICK.getRawAxis(3));
+						RobotMap.winchLeft.set(-Constants.DRIVE_STICK.getRawAxis(3));
+						//RobotMap.sL.SystemLoggerWriteRAW("Winch_Running");
 					}
-				else
+				else if (Math.abs(Constants.DRIVE_STICK.getRawAxis(2)) > .18) {
+
+					RobotMap.winchRight.set(-Constants.DRIVE_STICK.getRawAxis(2));
+					RobotMap.winchLeft.set(Constants.DRIVE_STICK.getRawAxis(2));
+				}else 
 					{
 						RobotMap.winchRight.set(0);
 						RobotMap.winchLeft.set(0);
@@ -488,7 +493,7 @@ public class Robot extends IterativeRobot
 						if (!RobotMap.compressor.enabled())
 							{
 								RobotMap.compressor.start();
-								RobotMap.sL.SystemLoggerWriteRAW("Starting_Compressor");
+								//RobotMap.sL.SystemLoggerWriteRAW("Starting_Compressor");
 							}
 					}
 				else
@@ -496,7 +501,7 @@ public class Robot extends IterativeRobot
 						if (RobotMap.compressor.enabled())
 							{
 								RobotMap.compressor.stop();
-								RobotMap.sL.SystemLoggerWriteRAW("Stopping_Compressor");
+								//RobotMap.sL.SystemLoggerWriteRAW("Stopping_Compressor");
 							}
 					}
 
@@ -523,26 +528,26 @@ public class Robot extends IterativeRobot
 				// 4 Solenoids
 				// 1 String
 
-				try
-					{
-						Double[] doubleArray =
-							{ RobotMap.systemLoggerTimer.get(), RobotMap.right1.getOutputCurrent(), RobotMap.left1.getOutputCurrent(), RobotMap.right1.getOutputVoltage(), RobotMap.left1.getOutputVoltage(), (double) RobotMap.right1.getEncPosition(), (double) RobotMap.left1.getEncPosition(), RobotMap.right1.getSpeed(), RobotMap.left1.getSpeed(), RobotMap.sL.pixHeight, RobotMap.sL.pixDis };
-						Boolean[] booleanArray =
-							{ compressorMode, gearInGroundLoader };
-
-						RobotMap.sL.SystemLoggerNullCheck(doubleArray, booleanArray, autoMovePicked);
-						RobotMap.sL.SystemLoggerWrite(RobotMap.systemLoggerTimer.get() + "," + RobotMap.right1.getOutputCurrent() + "," + RobotMap.left1.getOutputCurrent() + "," + RobotMap.right1.getOutputVoltage() + "," + RobotMap.left1.getOutputVoltage() + "," + RobotMap.right1.getEncPosition() + "," + RobotMap.left1.getEncPosition() + "," + RobotMap.right1.getSpeed() + "," + RobotMap.left1.getSpeed() + "," + RobotMap.sL.pixHeight + "," + RobotMap.sL.pixDis + "," + compressorMode + "," + gearInGroundLoader + "," + RobotMap.brakes.get() + "," + RobotMap.pushFaceOut.get() + "," + RobotMap.hatTip.get() + "," + RobotMap.gearPooper.get() + "," + autoMovePicked);
-					}
-				catch (Exception e)
-					{
-						e.printStackTrace();
-					}
+//				try
+//					{
+//						Double[] doubleArray =
+//							{ RobotMap.systemLoggerTimer.get(), RobotMap.right1.getOutputCurrent(), RobotMap.left1.getOutputCurrent(), RobotMap.right1.getOutputVoltage(), RobotMap.left1.getOutputVoltage(), (double) RobotMap.right1.getEncPosition(), (double) RobotMap.left1.getEncPosition(), RobotMap.right1.getSpeed(), RobotMap.left1.getSpeed(), //RobotMap.sL.pixHeight, //RobotMap.sL.pixDis };
+//						Boolean[] booleanArray =
+//							{ compressorMode, gearInGroundLoader };
+//
+//						//RobotMap.sL.SystemLoggerNullCheck(doubleArray, booleanArray, autoMovePicked);
+//						//RobotMap.sL.SystemLoggerWrite(RobotMap.systemLoggerTimer.get() + "," + RobotMap.right1.getOutputCurrent() + "," + RobotMap.left1.getOutputCurrent() + "," + RobotMap.right1.getOutputVoltage() + "," + RobotMap.left1.getOutputVoltage() + "," + RobotMap.right1.getEncPosition() + "," + RobotMap.left1.getEncPosition() + "," + RobotMap.right1.getSpeed() + "," + RobotMap.left1.getSpeed() + "," + //RobotMap.sL.pixHeight + "," + //RobotMap.sL.pixDis + "," + compressorMode + "," + gearInGroundLoader + "," + RobotMap.brakes.get() + "," + RobotMap.pushFaceOut.get() + "," + RobotMap.hatTip.get() + "," + RobotMap.gearPooper.get() + "," + autoMovePicked);
+//					}
+//				catch (Exception e)
+//					{
+//						e.printStackTrace();
+//					}
 
 				if (RobotMap.debugModeEnabled)
 					{
 						RobotMap.gearLiftFinder.computeHeadingToTarget();
 						RobotMap.smartDashboardDebugVideoOutput.putFrame(RobotMap.gearLiftFinder.getAnnotatedFrame());
-						RobotMap.sL.SystemLoggerWriteRAW("Running_Vision_Processing");
+						//RobotMap.sL.SystemLoggerWriteRAW("Running_Vision_Processing");
 					}
 
 				// SMART DAHSBOARD OUTPUT:
@@ -550,7 +555,7 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putBoolean("Compressor", compressorMode);
 
 				// SmartDashboard.putNumber("Heading", poseidon.getHeading());
-
+				//System.out.println(Constants.DRIVE_STICK.getRawAxis(2));
 				SmartDashboard.putNumber("Left Encoder", RobotMap.left1.getEncPosition());
 				SmartDashboard.putNumber("Right Encoder", RobotMap.right1.getEncPosition());
 				SmartDashboard.putNumber("Alpha", variableStore.GetDouble(CompassReader.compassAlphaVariableName, 0));
@@ -562,7 +567,7 @@ public class Robot extends IterativeRobot
 
 				SmartDashboard.putNumber("RPMs For Left", RobotMap.left1.getSpeed());
 				SmartDashboard.putNumber("RPMs For Right", RobotMap.right1.getSpeed());
-				RobotMap.sL.SystemLoggerWriteRAW("Outputting_SmartDashboard_Values");
+				//RobotMap.sL.SystemLoggerWriteRAW("Outputting_SmartDashboard_Values");
 				// System.out.println(RobotMap.left1.getSpeed());
 
 				/*
@@ -611,16 +616,16 @@ public class Robot extends IterativeRobot
 				SmartDashboard.putBoolean("Gear In Ground Loader", gearInGroundLoader);
 
 				// UPDATES:
-				disableCompressor.update();
+				//disableCompressor.update();
 				brakes.update();
-				slowMo.update();
+				//slowMo.update();
 				tipHat.update();
 				poopGear.update();
 				facePush.update();
 				intakeFloorGear.update();
 				outFloorGear.update();
 				dropGroundLoader.update();
-				RobotMap.sL.SystemLoggerWriteRAW("Running_Button_Updates");
+				//RobotMap.sL.SystemLoggerWriteRAW("Running_Button_Updates");
 
 			}
 	}

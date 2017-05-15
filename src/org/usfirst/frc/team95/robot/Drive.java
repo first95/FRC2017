@@ -14,7 +14,7 @@ public class Drive
 				mLeft = left;
 				mRight = right;
 				
-				RobotMap.sL.SystemLoggerWriteRAW("Drive_Started");
+				//RobotMap.sL.SystemLoggerWriteRAW("Drive_Started");
 			}
 
 		public void tank(double leftsp, double rightsp)
