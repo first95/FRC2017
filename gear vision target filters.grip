@@ -30,6 +30,14 @@
       <property name="path[3]" value="C:\Users\spami\Documents\team95\2017\2017-4-8 test photos from robot\visionTestTeo.png"/>
       <property name="path[4]" value="C:\Users\spami\Documents\team95\2017\2017-4-8 test photos from robot\visionTestThree.png"/>
     </grip:MultiImageFile>
+    <grip:MultiImageFile>
+      <property name="numImages" value="4"/>
+      <property name="path[0]" value="C:\Users\spami\Documents\team95\2017\2017-4-27\PIctureFourExposure20.png"/>
+      <property name="path[1]" value="C:\Users\spami\Documents\team95\2017\2017-4-27\PictureOneExposure17.png"/>
+      <property name="index" value="0"/>
+      <property name="path[2]" value="C:\Users\spami\Documents\team95\2017\2017-4-27\PictureThreeExposure20.png"/>
+      <property name="path[3]" value="C:\Users\spami\Documents\team95\2017\2017-4-27\PictureTwoExposure15.png"/>
+    </grip:MultiImageFile>
   </sources>
   <steps>
     <grip:Step name="HSL Threshold">
@@ -43,7 +51,7 @@
       <grip:Input step="0" socket="2">
         <value>
           <double>96.96625440059259</double>
-          <double>212.100147286284</double>
+          <double>255.0</double>
         </value>
       </grip:Input>
       <grip:Input step="0" socket="3">
@@ -52,14 +60,14 @@
           <double>134.79797979797985</double>
         </value>
       </grip:Input>
-      <grip:Output step="0" socket="0" previewed="true"/>
+      <grip:Output step="0" socket="0" previewed="false"/>
     </grip:Step>
     <grip:Step name="Find Contours">
       <grip:Input step="1" socket="0"/>
       <grip:Input step="1" socket="1">
         <value>true</value>
       </grip:Input>
-      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Output step="1" socket="0" previewed="false"/>
     </grip:Step>
     <grip:Step name="Convex Hulls">
       <grip:Input step="2" socket="0"/>
@@ -108,20 +116,20 @@
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output source="1" socket="0" previewed="true"/>
-      <grip:Input step="0" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
-      <grip:Output step="1" socket="0" previewed="true"/>
-      <grip:Input step="2" socket="0"/>
+      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Input step="1" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="2" socket="0" previewed="false"/>
       <grip:Input step="3" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="true"/>
-      <grip:Input step="1" socket="0"/>
+      <grip:Output step="1" socket="0" previewed="false"/>
+      <grip:Input step="2" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="2" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>

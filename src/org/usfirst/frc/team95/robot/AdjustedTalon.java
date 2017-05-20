@@ -46,7 +46,11 @@ public class AdjustedTalon extends CANTalon
 		public void set(double rate)
 			{
 				
+<<<<<<< HEAD
 				RobotMap.sL.SystemLoggerWriteTimeline("Running_AdjustedTalon");
+=======
+				//RobotMap.sL.SystemLoggerWriteRAW("Running_AdjustedTalon");
+>>>>>>> bd4e0009969c8997995fdec19bc2f0b3b31361be
 				
 				double current = super.getOutputCurrent();
 				double voltage = panel.getVoltage();
@@ -90,7 +94,11 @@ public class AdjustedTalon extends CANTalon
 				// System.out.println("Voltage" + panel.getVoltage());
 				// System.out.println("Rate" + rate);
 				super.set(rate);
+<<<<<<< HEAD
 				RobotMap.sL.SystemLoggerWriteTimeline("Adjusted_Talon_Ran");
+=======
+				//RobotMap.sL.SystemLoggerWriteRAW("Adjusted_Talon_Ran");
+>>>>>>> bd4e0009969c8997995fdec19bc2f0b3b31361be
 			}
 
 	}
